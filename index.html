@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Laporan - Nurhaliza Farm</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent-daily: #27ae60;
+            --accent-pakan: #2980b9;
+            --bg-color: #f4f6f9;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 15px;
+            color: #333;
+        }
+        .container {
+            max-width: 550px;
+            background: #ffffff;
+            padding: 20px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin: auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h2 {
+            margin: 0;
+            color: var(--primary);
+            font-size: 22px;
+        }
+        .header p {
+            margin: 5px 0 0;
+            color: #7f8c8d;
+            font-size: 13px;
+        }
+        .tab-menu {
+            display: flex;
+            background: #e9ecef;
+            border-radius: 8px;
+            padding: 4px;
+            margin-bottom: 20px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            color: #555;
+        }
+        .tab-btn.active-daily {
+            background: var(--accent-daily);
+            color: white;
+            box-shadow: 0 2px 5px rgba(39, 174, 96, 0.3);
+        }
+        .tab-btn.active-pakan {
+            background: var(--accent-pakan);
+            color: white;
+            box-shadow: 0 2px 5px rgba(41, 128, 185, 0.3);
+        }
+        .form-section { display: none; }
+        .form-section.active { display: block; }
+        .form-group { margin-bottom: 14px; }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 13px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccd1d9;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+        .camera-note {
+            font-size: 11px;
+            color: #d35400;
+            margin-top: 4px;
+            font-style: italic;
+        }
+        .btn-daily {
+            background-color: var(--accent-daily);
+            color: white;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn-daily:hover { background-color: #219653; }
+        .btn-pakan {
+            background-color: var(--accent-pakan);
+            color: white;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn-pakan:hover { background-color: #2471a3; }
+        .loading {
+            text-align: center;
+            display: none;
+            color: #2980b9;
+            font-weight: bold;
+            margin-top: 12px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h2>Nurhaliza Farm</h2>
+        <p>Sistem Pelaporan Kandang Ayam Pedaging</p>
+    </div>
+
+    <!-- Tombol Tab Menu -->
+    <div class="tab-menu">
+        <button class="tab-btn active-daily" id="btnTabDaily" onclick="switchTab('daily')">1. Report Daily</button>
+        <button class="tab-btn" id="btnTabPakan" onclick="switchTab('pakan')">2. Report Pakan</button>
+    </div>
+
+    <!-- FORM 1: REPORT DAILY -->
+    <div id="sectionDaily" class="form-section active">
+        <form id="dailyForm">
+            <div class="form-group">
+                <label>Tanggal Laporan:</label>
+                <input type="date" id="d_tanggal" required>
+            </div>
+            <div class="form-group">
+                <label>Usia Ayam (Hari ke-):</label>
+                <input type="number" id="d_umur" placeholder="Contoh: 1" required>
+            </div>
+            <div class="form-group">
+                <label>ABW / Rata-rata Berat Badan (Gram):</label>
+                <input type="number" id="d_abw" placeholder="Contoh: 70" required>
+            </div>
+            <div class="form-group">
+                <label>Pakan Atas (Karung/Zak):</label>
+                <input type="number" id="d_pakan_atas" placeholder="Contoh: 4" required>
+            </div>
+            <div class="form-group">
+                <label>Pakan Bawah (Karung/Zak):</label>
+                <input type="number" id="d_pakan_bawah" placeholder="Contoh: 4" required>
+            </div>
+            <div class="form-group">
+                <label>Jumlah Kematian (Ekor):</label>
+                <input type="number" id="d_kematian" placeholder="Contoh: 20" required>
+            </div>
+            <div class="form-group">
+                <label>Dokumentasi Kematian:</label>
+                <input type="file" id="d_fotoMati" accept="image/*" capture="environment" required>
+                <div class="camera-note">⚠️ Wajib ambil foto langsung via kamera HP.</div>
+            </div>
+            <div class="form-group">
+                <label>Dokumentasi Timbangan (ABW):</label>
+                <input type="file" id="d_fotoTimbang" accept="image/*" capture="environment" required>
+                <div class="camera-note">⚠️ Wajib ambil foto langsung via kamera HP.</div>
+            </div>
+            
+            <button type="submit" class="btn-daily" id="submitDailyBtn">Kirim Report Daily</button>
+            <div class="loading" id="loadingDaily">Menyimpan data harian... Mohon tunggu.</div>
+        </form>
+    </div>
+
+    <!-- FORM 2: REPORT PAKAN -->
+    <div id="sectionPakan" class="form-section">
+        <form id="pakanForm">
+            <div class="form-group">
+                <label>Tanggal Penerimaan:</label>
+                <input type="date" id="p_tanggal" required>
+            </div>
+            <div class="form-group">
+                <label>Sumber Pakan:</label>
+                <select id="p_sumber" onchange="cekSumberPakan()" required>
+                    <option value="Supplier Resmi">Pembelian Suplier Resmi</option>
+                    <option value="Transfer Kandang Lain">Transfer dari Kandang Lain</option>
+                </select>
+            </div>
+            <div class="form-group" id="group_po">
+                <label>No. PO / Nomor Surat Jalan:</label>
+                <input type="text" id="p_po" placeholder="Contoh: 4070090223">
+            </div>
+            <div class="form-group" id="group_asal" style="display:none;">
+                <label>Keterangan Asal Kandang:</label>
+                <input type="text" id="p_kandang_asal" placeholder="Contoh: Transfer dari Kandang Saifudin">
+            </div>
+            <div class="form-group">
+                <label>Jumlah Zak:</label>
+                <input type="number" id="p_zak" placeholder="Contoh: 140" required>
+            </div>
+            <div class="form-group">
+                <label>Jumlah Kg (Otomatis / Bisa diedit):</label>
+                <input type="number" id="p_kg" placeholder="Contoh: 7000" required>
+            </div>
+            <div class="form-group">
+                <label>Kendaraan / Pengangkut:</label>
+                <input type="text" id="p_kendaraan" placeholder="Contoh: BG 8033 NX / Pak Kemis" required>
+            </div>
+            <div class="form-group">
+                <label>Deskripsi / Jenis Pakan:</label>
+                <textarea id="p_deskripsi" rows="3" placeholder="Contoh: SB 12 SUPER MED C-1 SEMI PLT" required></textarea>
+            </div>
+            <div class="form-group">
+                <label>Dokumentasi Foto Bongkar / Surat Jalan:</label>
+                <input type="file" id="p_foto" accept="image/*" capture="environment" required>
+                <div class="camera-note">⚠️ Wajib ambil foto langsung via kamera HP.</div>
+            </div>
+            
+            <button type="submit" class="btn-pakan" id="submitPakanBtn">Kirim Report Pakan</button>
+            <div class="loading" id="loadingPakan">Mengunggah data pakan... Mohon tunggu.</div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const WEB_APP_URL = "GANTI_DENGAN_URL_WEB_APP_ANDA";
+
+    const today = new Date();
+    document.getElementById('d_tanggal').valueAsDate = today;
+    document.getElementById('p_tanggal').valueAsDate = today;
+
+    function switchTab(type) {
+        const btnDaily = document.getElementById('btnTabDaily');
+        const btnPakan = document.getElementById('btnTabPakan');
+        const secDaily = document.getElementById('sectionDaily');
+        const secPakan = document.getElementById('sectionPakan');
+
+        if (type === 'daily') {
+            btnDaily.className = "tab-btn active-daily";
+            btnPakan.className = "tab-btn";
+            secDaily.className = "form-section active";
+            secPakan.className = "form-section";
+        } else {
+            btnDaily.className = "tab-btn";
+            btnPakan.className = "tab-btn active-pakan";
+            secDaily.className = "form-section";
+            secPakan.className = "form-section active";
+        }
+    }
+
+    function cekSumberPakan() {
+        let sumber = document.getElementById('p_sumber').value;
+        let groupPo = document.getElementById('group_po');
+        let groupAsal = document.getElementById('group_asal');
+        
+        if (sumber === 'Supplier Resmi') {
+            groupPo.style.display = 'block';
+            groupAsal.style.display = 'none';
+        } else {
+            groupPo.style.display = 'none';
+            groupAsal.style.display = 'block';
+        }
+    }
+
+    document.getElementById('p_zak').addEventListener('input', function() {
+        let zak = this.value;
+        document.getElementById('p_kg').value = zak ? zak * 50 : '';
+    });
+
+    document.getElementById('dailyForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        let btn = document.getElementById('submitDailyBtn');
+        let load = document.getElementById('loadingDaily');
+        btn.style.display = 'none';
+        load.style.display = 'block';
+
+        let fileMati = document.getElementById('d_fotoMati').files[0];
+        let fileTimbang = document.getElementById('d_fotoTimbang').files[0];
+
+        let readerMati = new FileReader();
+        let readerTimbang = new FileReader();
+
+        readerMati.onload = function(e1) {
+            let b64Mati = e1.target.result.split(',')[1];
+            readerTimbang.onload = function(e2) {
+                let b64Timbang = e2.target.result.split(',')[1];
+
+                let payload = {
+                    sheetName: "Report Daily",
+                    tanggal: document.getElementById('d_tanggal').value,
+                    umur_hari: document.getElementById('d_umur').value,
+                    abw: document.getElementById('d_abw').value,
+                    pakan_atas: document.getElementById('d_pakan_atas').value,
+                    pakan_bawah: document.getElementById('d_pakan_bawah').value,
+                    kematian: document.getElementById('d_kematian').value,
+                    
+                    fotoKematian: true,
+                    fotoKematianName: fileMati.name,
+                    fotoKematianMime: fileMati.type,
+                    fotoKematianData: b64Mati,
+
+                    fotoTimbangan: true,
+                    fotoTimbanganName: fileTimbang.name,
+                    fotoTimbanganMime: fileTimbang.type,
+                    fotoTimbanganData: b64Timbang
+                };
+
+                KirimKeServer(payload, btn, load, 'dailyForm');
+            };
+            readerTimbang.readAsDataURL(fileTimbang);
+        };
+        readerMati.readAsDataURL(fileMati);
+    });
+
+    document.getElementById('pakanForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        let btn = document.getElementById('submitPakanBtn');
+        let load = document.getElementById('loadingPakan');
+        btn.style.display = 'none';
+        load.style.display = 'block';
+
+        let sumber = document.getElementById('p_sumber').value;
+        let poAtauAsal = sumber === 'Supplier Resmi' ? document.getElementById('p_po').value : document.getElementById('p_kandang_asal').value;
+
+        let file = document.getElementById('p_foto').files[0];
+        let reader = new FileReader();
+
+        reader.onload = function(event) {
+            let base64 = event.target.result.split(',')[1];
+            let payload = {
+                sheetName: "Report Pakan",
+                tanggal: document.getElementById('p_tanggal').value,
+                sumber_pakan: sumber,
+                no_po_atau_asal: poAtauAsal,
+                jumlah_zak: document.getElementById('p_zak').value,
+                jumlah_kg: document.getElementById('p_kg').value,
+                kendaraan: document.getElementById('p_kendaraan').value,
+                deskripsi: document.getElementById('p_deskripsi').value,
+                foto: true,
+                fotoName: file.name,
+                fotoMime: file.type,
+                fotoData: base64
+            };
+
+            KirimKeServer(payload, btn, load, 'pakanForm');
+        };
+        reader.readAsDataURL(file);
+    });
+
+    function KirimKeServer(data, btn, load, formId) {
+        fetch(WEB_APP_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+            if(result.status === "success") {
+                alert('Laporan berhasil dikirim dan tercatat di sistem!');
+                document.getElementById(formId).reset();
+                if(formId === 'dailyForm') document.getElementById('d_tanggal').valueAsDate = new Date();
+                if(formId === 'pakanForm') {
+                    document.getElementById('p_tanggal').valueAsDate = new Date();
+                    cekSumberPakan();
+                }
+            } else {
+                alert('Gagal dari server: ' + result.message);
+            }
+            btn.style.display = 'block';
+            load.style.display = 'none';
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Terjadi kesalahan koneksi atau URL Web App salah.');
+            btn.style.display = 'block';
+            load.style.display = 'none';
+        });
+    }
+</script>
+</body>
+</html>
