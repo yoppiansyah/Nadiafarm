@@ -207,6 +207,12 @@
             color: #e74c3c;
         }
 
+        .form-group .hint {
+            font-size: 11px;
+            color: #9aa5b1;
+            margin-bottom: 6px;
+        }
+
         .form-group input,
         .form-group select,
         .form-group textarea {
@@ -343,6 +349,81 @@
             text-overflow: ellipsis;
         }
 
+        /* ===== 4-kolom slot foto kamera-only (Pakan & Kematian) ===== */
+        .photo-slot-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        .photo-slot {
+            border: 2px dashed #dce1e8;
+            border-radius: 8px;
+            padding: 10px 6px 8px;
+            text-align: center;
+            cursor: pointer;
+            background: #fafbfc;
+            transition: all 0.2s;
+        }
+
+        .photo-slot:hover {
+            border-color: #1a1a2e;
+            background: #f5f6fa;
+        }
+
+        .photo-slot input[type="file"] {
+            display: none;
+        }
+
+        .photo-slot .slot-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #5d6d7e;
+            margin-bottom: 6px;
+        }
+
+        .photo-slot .slot-icon {
+            font-size: 20px;
+            color: #9aa5b1;
+            line-height: 1;
+        }
+
+        .photo-slot .preview-single .item {
+            position: relative;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 2px solid #e8ecf1;
+            aspect-ratio: 1 / 1;
+            background: #f8f9fc;
+            margin-top: 2px;
+        }
+
+        .photo-slot .preview-single .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .photo-slot .preview-single .item .remove {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         .btn-submit {
             width: 100%;
             padding: 13px;
@@ -416,6 +497,7 @@
             .tab-btn { font-size: 11px; padding: 6px 8px; min-width: 50px; }
             .form-group input, .form-group select, .form-group textarea { padding: 7px 10px; font-size: 13px; }
             .btn-submit { padding: 11px; font-size: 14px; }
+            .photo-slot-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
@@ -488,7 +570,7 @@
                             <span class="icon">+</span>
                             Upload Foto Sekat 1 (multiple)
                         </span>
-                        <input type="file" id="dailyFoto1" accept="image/*" multiple onchange="previewPhotos(this, 'preview1')">
+                        <input type="file" id="dailyFoto1" accept="image/*" multiple onchange="handleFileSelect(this, 'preview1')">
                         <div id="preview1" class="preview-grid"></div>
                     </div>
                 </div>
@@ -502,7 +584,7 @@
                             <span class="icon">+</span>
                             Upload Foto Sekat 2 (multiple)
                         </span>
-                        <input type="file" id="dailyFoto2" accept="image/*" multiple onchange="previewPhotos(this, 'preview2')">
+                        <input type="file" id="dailyFoto2" accept="image/*" multiple onchange="handleFileSelect(this, 'preview2')">
                         <div id="preview2" class="preview-grid"></div>
                     </div>
                 </div>
@@ -516,7 +598,7 @@
                             <span class="icon">+</span>
                             Upload Foto Sekat 3 (multiple)
                         </span>
-                        <input type="file" id="dailyFoto3" accept="image/*" multiple onchange="previewPhotos(this, 'preview3')">
+                        <input type="file" id="dailyFoto3" accept="image/*" multiple onchange="handleFileSelect(this, 'preview3')">
                         <div id="preview3" class="preview-grid"></div>
                     </div>
                 </div>
@@ -530,7 +612,7 @@
                             <span class="icon">+</span>
                             Upload Foto Sekat 4 (multiple)
                         </span>
-                        <input type="file" id="dailyFoto4" accept="image/*" multiple onchange="previewPhotos(this, 'preview4')">
+                        <input type="file" id="dailyFoto4" accept="image/*" multiple onchange="handleFileSelect(this, 'preview4')">
                         <div id="preview4" class="preview-grid"></div>
                     </div>
                 </div>
@@ -585,13 +667,32 @@
 
                 <div class="form-group">
                     <label>Dokumentasi</label>
-                    <div class="upload-area" onclick="document.getElementById('pakanFoto').click()">
-                        <span class="label">
-                            <span class="icon">+</span>
-                            Upload Foto Surat Jalan (multiple)
-                        </span>
-                        <input type="file" id="pakanFoto" accept="image/*" multiple onchange="previewPhotos(this, 'previewPakan')">
-                        <div id="previewPakan" class="preview-grid"></div>
+                    <div class="hint">Foto wajib diambil langsung dari kamera, tidak bisa pilih dari galeri.</div>
+                    <div class="photo-slot-grid">
+                        <div class="photo-slot" onclick="document.getElementById('pakanFoto1').click()">
+                            <div class="slot-label">Foto 1</div>
+                            <span class="slot-icon">&#128247;</span>
+                            <input type="file" id="pakanFoto1" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewPakan1')">
+                            <div id="previewPakan1" class="preview-single"></div>
+                        </div>
+                        <div class="photo-slot" onclick="document.getElementById('pakanFoto2').click()">
+                            <div class="slot-label">Foto 2</div>
+                            <span class="slot-icon">&#128247;</span>
+                            <input type="file" id="pakanFoto2" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewPakan2')">
+                            <div id="previewPakan2" class="preview-single"></div>
+                        </div>
+                        <div class="photo-slot" onclick="document.getElementById('pakanFoto3').click()">
+                            <div class="slot-label">Foto 3</div>
+                            <span class="slot-icon">&#128247;</span>
+                            <input type="file" id="pakanFoto3" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewPakan3')">
+                            <div id="previewPakan3" class="preview-single"></div>
+                        </div>
+                        <div class="photo-slot" onclick="document.getElementById('pakanFoto4').click()">
+                            <div class="slot-label">Foto 4</div>
+                            <span class="slot-icon">&#128247;</span>
+                            <input type="file" id="pakanFoto4" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewPakan4')">
+                            <div id="previewPakan4" class="preview-single"></div>
+                        </div>
                     </div>
                 </div>
 
@@ -644,13 +745,32 @@
 
                 <div class="form-group">
                     <label>Dokumentasi</label>
-                    <div class="upload-area" onclick="document.getElementById('matiFoto').click()">
-                        <span class="label">
-                            <span class="icon">+</span>
-                            Upload Foto (multiple)
-                        </span>
-                        <input type="file" id="matiFoto" accept="image/*" multiple onchange="previewPhotos(this, 'previewMati')">
-                        <div id="previewMati" class="preview-grid"></div>
+                    <div class="hint">Foto wajib diambil langsung dari kamera, tidak bisa pilih dari galeri.</div>
+                    <div class="photo-slot-grid">
+                        <div class="photo-slot" onclick="document.getElementById('matiFoto1').click()">
+                            <div class="slot-label">Foto 1</div>
+                            <span class="slot-icon">&#128247;</span>
+                            <input type="file" id="matiFoto1" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewMati1')">
+                            <div id="previewMati1" class="preview-single"></div>
+                        </div>
+                        <div class="photo-slot" onclick="document.getElementById('matiFoto2').click()">
+                            <div class="slot-label">Foto 2</div>
+                            <span class="slot-icon">&#128247;</span>
+                            <input type="file" id="matiFoto2" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewMati2')">
+                            <div id="previewMati2" class="preview-single"></div>
+                        </div>
+                        <div class="photo-slot" onclick="document.getElementById('matiFoto3').click()">
+                            <div class="slot-label">Foto 3</div>
+                            <span class="slot-icon">&#128247;</span>
+                            <input type="file" id="matiFoto3" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewMati3')">
+                            <div id="previewMati3" class="preview-single"></div>
+                        </div>
+                        <div class="photo-slot" onclick="document.getElementById('matiFoto4').click()">
+                            <div class="slot-label">Foto 4</div>
+                            <span class="slot-icon">&#128247;</span>
+                            <input type="file" id="matiFoto4" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewMati4')">
+                            <div id="previewMati4" class="preview-single"></div>
+                        </div>
                     </div>
                 </div>
 
@@ -667,7 +787,7 @@
 </div>
 
 <script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw7uuptVkV3VzipPrSygxJhoCmJQGfLInZT8aKKhKrGbDaZBVWt_jGR2nfBXEMrwHnY/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbySJ652QhhbZwSo1uBlFasn-J4548L2u0csqbstoNRl9Ga3TrNvuCkyVaWoXDbvXkHv/exec';
     const alertEl = document.getElementById('alert');
     const loadingEl = document.getElementById('loading');
 
@@ -715,7 +835,23 @@
         alertEl._timer = setTimeout(() => alertEl.classList.remove('show'), 5000);
     }
 
-    function previewPhotos(input, previewId) {
+    // =========================================================
+    // Dipakai oleh tab Daily (Sekat 1-4): boleh banyak foto per
+    // sekat. File baru DITAMBAHKAN ke pilihan sebelumnya, bukan
+    // menggantikannya.
+    // =========================================================
+    function handleFileSelect(input, previewId) {
+        if (!input._accumulatedFiles) {
+            input._accumulatedFiles = new DataTransfer();
+        }
+        Array.from(input.files).forEach(file => {
+            input._accumulatedFiles.items.add(file);
+        });
+        input.files = input._accumulatedFiles.files;
+        renderPreview(input, previewId);
+    }
+
+    function renderPreview(input, previewId) {
         const container = document.getElementById(previewId);
         container.innerHTML = '';
 
@@ -740,12 +876,13 @@
                 remove.addEventListener('click', function(e) {
                     e.stopPropagation();
                     const dt = new DataTransfer();
-                    const files = input.files;
+                    const files = input._accumulatedFiles.files;
                     for (let i = 0; i < files.length; i++) {
                         if (i !== idx) dt.items.add(files[i]);
                     }
+                    input._accumulatedFiles = dt;
                     input.files = dt.files;
-                    previewPhotos(input, previewId);
+                    renderPreview(input, previewId);
                 });
 
                 item.appendChild(img);
@@ -755,6 +892,45 @@
             };
             reader.readAsDataURL(file);
         });
+    }
+
+    // =========================================================
+    // Dipakai oleh slot foto Pakan & Kematian: 1 kolom = 1 foto,
+    // capture="environment" memaksa buka kamera (gallery tidak
+    // ditawarkan di sebagian besar browser mobile). Foto baru
+    // MENGGANTIKAN foto lama di slot yang sama (bukan menumpuk).
+    // =========================================================
+    function handleSingleFileSelect(input, previewId) {
+        const container = document.getElementById(previewId);
+        container.innerHTML = '';
+
+        const file = input.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const item = document.createElement('div');
+            item.className = 'item';
+
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.alt = file.name;
+
+            const remove = document.createElement('button');
+            remove.className = 'remove';
+            remove.textContent = '×';
+            remove.type = 'button';
+            remove.addEventListener('click', function(e) {
+                e.stopPropagation();
+                input.value = '';
+                container.innerHTML = '';
+            });
+
+            item.appendChild(img);
+            item.appendChild(remove);
+            container.appendChild(item);
+        };
+        reader.readAsDataURL(file);
     }
 
     function fileToBase64(file) {
@@ -789,7 +965,11 @@
 
                 showAlert('Data berhasil disimpan.', 'success');
                 this.reset();
-                this.querySelectorAll('.preview-grid').forEach(el => el.innerHTML = '');
+                this.querySelectorAll('.preview-grid, .preview-single').forEach(el => el.innerHTML = '');
+                this.querySelectorAll('input[type="file"]').forEach(fi => {
+                    fi._accumulatedFiles = new DataTransfer();
+                    fi.files = fi._accumulatedFiles.files;
+                });
                 const dateInput = this.querySelector('input[type="date"]');
                 if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
             } catch (err) {
@@ -834,11 +1014,16 @@
         };
     }
 
+    // FIX: sekarang ambil dari 4 slot foto tunggal (pakanFoto1-4)
+    // bukan dari 1 input multiple. Format data yang dikirim ke
+    // backend (fotoList = array {data,name,mime}) TETAP SAMA,
+    // jadi Apps Script tidak perlu diubah.
     async function buildPakan(form) {
-        const files = document.getElementById('pakanFoto').files;
+        const ids = ['pakanFoto1', 'pakanFoto2', 'pakanFoto3', 'pakanFoto4'];
         const list = [];
-        for (const f of files) {
-            list.push({ data: await fileToBase64(f), name: f.name, mime: f.type });
+        for (const id of ids) {
+            const f = document.getElementById(id).files[0];
+            if (f) list.push({ data: await fileToBase64(f), name: f.name, mime: f.type });
         }
         return {
             tanggal: document.getElementById('pakanTanggal').value,
@@ -852,11 +1037,13 @@
         };
     }
 
+    // FIX: sama seperti Pakan, ambil dari 4 slot foto tunggal (matiFoto1-4)
     async function buildKematian(form) {
-        const files = document.getElementById('matiFoto').files;
+        const ids = ['matiFoto1', 'matiFoto2', 'matiFoto3', 'matiFoto4'];
         const list = [];
-        for (const f of files) {
-            list.push({ data: await fileToBase64(f), name: f.name, mime: f.type });
+        for (const id of ids) {
+            const f = document.getElementById(id).files[0];
+            if (f) list.push({ data: await fileToBase64(f), name: f.name, mime: f.type });
         }
         return {
             tanggal: document.getElementById('matiTanggal').value,
