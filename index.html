@@ -524,9 +524,9 @@
         <div id="alert" class="alert"></div>
 
         <div class="tabs">
-            <button class="tab-btn active" data-tab="daily">Laporan Harian</button>
-            <button class="tab-btn" data-tab="pakan">Laporan Pakan Masuk</button>
-            <button class="tab-btn" data-tab="kematian">Laporan Kematian</button>
+            <button class="tab-btn active" data-tab="daily">Harian</button>
+            <button class="tab-btn" data-tab="pakan">Pakan</button>
+            <button class="tab-btn" data-tab="kematian">Kematian</button>
         </div>
 
         <!-- TAB 1: DAILY -->
@@ -560,18 +560,17 @@
                 </div>
 
                 <div class="section-title">Dokumentasi Timbangan</div>
+                <div class="hint">Foto wajib diambil langsung dari kamera, tidak bisa pilih dari galeri.</div>
 
                 <!-- Sekat 1 -->
                 <div class="form-group">
                     <label>Sekat 1</label>
                     <input type="number" id="dailyAbw1" placeholder="Berat (gram)" step="0.1">
-                    <div class="upload-area" onclick="document.getElementById('dailyFoto1').click()">
-                        <span class="label">
-                            <span class="icon">+</span>
-                            Upload Foto Sekat 1 
-                        </span>
-                        <input type="file" id="dailyFoto1" accept="image/*" multiple onchange="handleFileSelect(this, 'preview1')">
-                        <div id="preview1" class="preview-grid"></div>
+                    <div class="photo-slot" onclick="document.getElementById('dailyFoto1').click()" style="margin-top: 6px;">
+                        <div class="slot-label">Foto Sekat 1</div>
+                        <span class="slot-icon">&#128247;</span>
+                        <input type="file" id="dailyFoto1" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'preview1')">
+                        <div id="preview1" class="preview-single"></div>
                     </div>
                 </div>
 
@@ -579,13 +578,11 @@
                 <div class="form-group">
                     <label>Sekat 2</label>
                     <input type="number" id="dailyAbw2" placeholder="Berat (gram)" step="0.1">
-                    <div class="upload-area" onclick="document.getElementById('dailyFoto2').click()">
-                        <span class="label">
-                            <span class="icon">+</span>
-                            Upload Foto Sekat 2
-                        </span>
-                        <input type="file" id="dailyFoto2" accept="image/*" multiple onchange="handleFileSelect(this, 'preview2')">
-                        <div id="preview2" class="preview-grid"></div>
+                    <div class="photo-slot" onclick="document.getElementById('dailyFoto2').click()" style="margin-top: 6px;">
+                        <div class="slot-label">Foto Sekat 2</div>
+                        <span class="slot-icon">&#128247;</span>
+                        <input type="file" id="dailyFoto2" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'preview2')">
+                        <div id="preview2" class="preview-single"></div>
                     </div>
                 </div>
 
@@ -593,13 +590,11 @@
                 <div class="form-group">
                     <label>Sekat 3</label>
                     <input type="number" id="dailyAbw3" placeholder="Berat (gram)" step="0.1">
-                    <div class="upload-area" onclick="document.getElementById('dailyFoto3').click()">
-                        <span class="label">
-                            <span class="icon">+</span>
-                            Upload Foto Sekat 3
-                        </span>
-                        <input type="file" id="dailyFoto3" accept="image/*" multiple onchange="handleFileSelect(this, 'preview3')">
-                        <div id="preview3" class="preview-grid"></div>
+                    <div class="photo-slot" onclick="document.getElementById('dailyFoto3').click()" style="margin-top: 6px;">
+                        <div class="slot-label">Foto Sekat 3</div>
+                        <span class="slot-icon">&#128247;</span>
+                        <input type="file" id="dailyFoto3" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'preview3')">
+                        <div id="preview3" class="preview-single"></div>
                     </div>
                 </div>
 
@@ -607,13 +602,11 @@
                 <div class="form-group">
                     <label>Sekat 4</label>
                     <input type="number" id="dailyAbw4" placeholder="Berat (gram)" step="0.1">
-                    <div class="upload-area" onclick="document.getElementById('dailyFoto4').click()">
-                        <span class="label">
-                            <span class="icon">+</span>
-                            Upload Foto Sekat 4
-                        </span>
-                        <input type="file" id="dailyFoto4" accept="image/*" multiple onchange="handleFileSelect(this, 'preview4')">
-                        <div id="preview4" class="preview-grid"></div>
+                    <div class="photo-slot" onclick="document.getElementById('dailyFoto4').click()" style="margin-top: 6px;">
+                        <div class="slot-label">Foto Sekat 4</div>
+                        <span class="slot-icon">&#128247;</span>
+                        <input type="file" id="dailyFoto4" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'preview4')">
+                        <div id="preview4" class="preview-single"></div>
                     </div>
                 </div>
 
@@ -836,69 +829,9 @@
     }
 
     // =========================================================
-    // Dipakai oleh tab Daily (Sekat 1-4): boleh banyak foto per
-    // sekat. File baru DITAMBAHKAN ke pilihan sebelumnya, bukan
-    // menggantikannya.
-    // =========================================================
-    function handleFileSelect(input, previewId) {
-        if (!input._accumulatedFiles) {
-            input._accumulatedFiles = new DataTransfer();
-        }
-        Array.from(input.files).forEach(file => {
-            input._accumulatedFiles.items.add(file);
-        });
-        input.files = input._accumulatedFiles.files;
-        renderPreview(input, previewId);
-    }
-
-    function renderPreview(input, previewId) {
-        const container = document.getElementById(previewId);
-        container.innerHTML = '';
-
-        Array.from(input.files).forEach((file, idx) => {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const item = document.createElement('div');
-                item.className = 'item';
-
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.alt = file.name;
-
-                const name = document.createElement('div');
-                name.className = 'fname';
-                name.textContent = file.name.length > 12 ? file.name.slice(0, 10) + '...' : file.name;
-
-                const remove = document.createElement('button');
-                remove.className = 'remove';
-                remove.textContent = '×';
-                remove.type = 'button';
-                remove.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const dt = new DataTransfer();
-                    const files = input._accumulatedFiles.files;
-                    for (let i = 0; i < files.length; i++) {
-                        if (i !== idx) dt.items.add(files[i]);
-                    }
-                    input._accumulatedFiles = dt;
-                    input.files = dt.files;
-                    renderPreview(input, previewId);
-                });
-
-                item.appendChild(img);
-                item.appendChild(name);
-                item.appendChild(remove);
-                container.appendChild(item);
-            };
-            reader.readAsDataURL(file);
-        });
-    }
-
-    // =========================================================
-    // Dipakai oleh slot foto Pakan & Kematian: 1 kolom = 1 foto,
-    // capture="environment" memaksa buka kamera (gallery tidak
-    // ditawarkan di sebagian besar browser mobile). Foto baru
-    // MENGGANTIKAN foto lama di slot yang sama (bukan menumpuk).
+    // Dipakai oleh slot foto Pakan & Kematian serta Harian: 1 kolom = 1 foto,
+    // capture="environment" memaksa buka kamera. Foto baru
+    // MENGGANTIKAN foto lama di slot yang sama.
     // =========================================================
     function handleSingleFileSelect(input, previewId) {
         const container = document.getElementById(previewId);
@@ -967,8 +900,7 @@
                 this.reset();
                 this.querySelectorAll('.preview-grid, .preview-single').forEach(el => el.innerHTML = '');
                 this.querySelectorAll('input[type="file"]').forEach(fi => {
-                    fi._accumulatedFiles = new DataTransfer();
-                    fi.files = fi._accumulatedFiles.files;
+                    fi.value = '';
                 });
                 const dateInput = this.querySelector('input[type="date"]');
                 if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
@@ -983,19 +915,19 @@
     }
 
     async function buildDaily(form) {
-        const getFileList = async (id) => {
-            const files = document.getElementById(id).files;
+        const getSingleFileAsList = async (id) => {
+            const f = document.getElementById(id).files[0];
             const list = [];
-            for (const f of files) {
+            if (f) {
                 list.push({ data: await fileToBase64(f), name: f.name, mime: f.type });
             }
             return list;
         };
 
-        const list1 = await getFileList('dailyFoto1');
-        const list2 = await getFileList('dailyFoto2');
-        const list3 = await getFileList('dailyFoto3');
-        const list4 = await getFileList('dailyFoto4');
+        const list1 = await getSingleFileAsList('dailyFoto1');
+        const list2 = await getSingleFileAsList('dailyFoto2');
+        const list3 = await getSingleFileAsList('dailyFoto3');
+        const list4 = await getSingleFileAsList('dailyFoto4');
 
         return {
             tanggal: document.getElementById('dailyTanggal').value,
@@ -1014,10 +946,6 @@
         };
     }
 
-    // FIX: sekarang ambil dari 4 slot foto tunggal (pakanFoto1-4)
-    // bukan dari 1 input multiple. Format data yang dikirim ke
-    // backend (fotoList = array {data,name,mime}) TETAP SAMA,
-    // jadi Apps Script tidak perlu diubah.
     async function buildPakan(form) {
         const ids = ['pakanFoto1', 'pakanFoto2', 'pakanFoto3', 'pakanFoto4'];
         const list = [];
@@ -1037,7 +965,6 @@
         };
     }
 
-    // FIX: sama seperti Pakan, ambil dari 4 slot foto tunggal (matiFoto1-4)
     async function buildKematian(form) {
         const ids = ['matiFoto1', 'matiFoto2', 'matiFoto3', 'matiFoto4'];
         const list = [];
