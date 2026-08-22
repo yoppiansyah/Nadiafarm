@@ -9,7 +9,6 @@
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; background: #f0f2f5; min-height: 100vh; padding: 20px; color: #1a1a2e; }
         .container { max-width: 960px; margin: 0 auto; }
         .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: white; padding: 20px 28px; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .header .brand { display: flex; align-items: center; gap: 12px; }
         .header .brand h1 { font-size: 22px; font-weight: 700; }
         .header .brand .sub { font-size: 11px; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px; }
         .header .status { display: flex; align-items: center; gap: 10px; font-size: 13px; background: rgba(255,255,255,0.06); padding: 6px 14px; border-radius: 20px; }
@@ -22,11 +21,15 @@
         .alert.show { display: flex; align-items: center; gap: 10px; }
         .alert.success { background: #eafaf1; color: #1a7a42; border-left-color: #2ecc71; }
         .alert.error { background: #fdf2f2; color: #a93226; border-left-color: #e74c3c; }
-        .periode-box { background: #f0fdf4; border: 2px solid #22c55e; padding: 16px; border-radius: 10px; margin-bottom: 24px; }
+        .periode-box { background: #f0fdf4; border: 2px solid #22c55e; padding: 16px; border-radius: 10px; margin-bottom: 16px; }
         .periode-box label { font-size: 13px; font-weight: 700; color: #15803d; display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
         .periode-box select { width: 100%; padding: 10px 14px; border: 2px solid #86efac; border-radius: 8px; font-size: 15px; font-weight: 600; color: #166534; background: white; cursor: pointer; outline: none; }
         .periode-box select:focus { border-color: #22c55e; }
         .periode-box .hint { font-size: 11px; color: #166534; margin-top: 8px; opacity: 0.8; }
+        .btn-add-periode { width: 100%; padding: 10px; background: #22c55e; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; }
+        .btn-add-periode:hover { background: #16a34a; }
+        .add-periode-form { display: none; margin-top: 16px; padding: 16px; background: white; border-radius: 8px; border: 2px solid #e8ecf1; }
+        .add-periode-form.active { display: block; }
         .tabs { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 2px solid #e8ecf1; flex-wrap: wrap; }
         .tab-btn { padding: 10px 22px; border: none; background: transparent; color: #7f8c8d; font-weight: 600; font-size: 14px; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
         .tab-btn.active { color: #1a1a2e; border-bottom-color: #1a1a2e; }
@@ -70,10 +73,8 @@
 <div class="container">
     <div class="header">
         <div class="brand">
-            <div>
-                <h1>Nadz Farm's</h1>
-                <div class="sub">Sistem Pencatatan Laporan</div>
-            </div>
+            <h1>Nadz Farm's</h1>
+            <div class="sub">Sistem Pencatatan Laporan</div>
         </div>
         <div class="status">
             <span class="dot online" id="statusDot"></span>
@@ -85,18 +86,58 @@
     <div class="card">
         <div id="alert" class="alert"></div>
 
-        <!-- SELECTOR PERIODE GLOBAL -->
+        <!-- SELECTOR PERIODE -->
         <div class="periode-box">
             <label>Periode / Siklus Aktif <span style="color: #e74c3c;">*</span></label>
             <select id="globalPeriode">
-                <option value="">-- Pilih Periode --</option>
-                <option value="Siklus 1 - Agt 2026">Siklus 1 (Agustus 2026)</option>
-                <option value="Siklus 2 - Okt 2026">Siklus 2 (Oktober 2026)</option>
+                <option value="">-- Memuat Periode... --</option>
             </select>
-            <div class="hint">ℹ️ Semua laporan yang dikirim akan otomatis masuk ke siklus ini.</div>
+            <div class="hint">ℹ️ Umur ayam akan dihitung otomatis dari tanggal bibit masuk.</div>
         </div>
 
-        <div class="tabs">
+        <!-- BUTTON TAMBAH PERIODE -->
+        <button type="button" class="btn-add-periode" onclick="toggleAddPeriode()">
+            ➕ Tambah Periode Baru
+        </button>
+
+        <!-- FORM TAMBAH PERIODE -->
+        <div id="addPeriodeForm" class="add-periode-form">
+            <h3 style="margin-bottom: 16px;">📅 Tambah Periode Baru</h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>ID Periode <span class="req">*</span></label>
+                    <input type="text" id="newPeriodeId" placeholder="Contoh: Siklus 3">
+                </div>
+                <div class="form-group">
+                    <label>Tanggal Bibit Masuk <span class="req">*</span></label>
+                    <input type="date" id="newPeriodeTanggalMasuk">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Estimasi Hari Panen</label>
+                    <input type="number" id="newPeriodeEstimasiHari" value="60" min="30" max="90">
+                </div>
+                <div class="form-group">
+                    <label>Jumlah Bibit</label>
+                    <input type="number" id="newPeriodeJumlahBibit" placeholder="5000" min="0">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Jenis Bibit</label>
+                <input type="text" id="newPeriodeJenisBibit" value="DOC Broiler">
+            </div>
+            
+            <button type="button" class="btn-submit" onclick="addNewPeriode()" style="margin-top: 0;">
+                Simpan Periode Baru
+            </button>
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs" style="margin-top: 24px;">
             <button class="tab-btn active" data-tab="daily">Harian</button>
             <button class="tab-btn" data-tab="pakan">Pakan</button>
             <button class="tab-btn" data-tab="kematian">Kematian</button>
@@ -107,18 +148,12 @@
             <form id="formDaily">
                 <div class="info-box">
                     <div class="title">Laporan Harian</div>
-                    <div class="desc">Laporan akhir hari mencakup data timbangan dan konsumsi pakan.</div>
+                    <div class="desc">Umur ayam dihitung otomatis dari tanggal bibit masuk.</div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Tanggal <span class="req">*</span></label>
-                        <input type="date" id="dailyTanggal" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Umur (Hari) <span class="req">*</span></label>
-                        <input type="number" id="dailyUmur" placeholder="25" required min="0">
-                    </div>
+                <div class="form-group">
+                    <label>Tanggal <span class="req">*</span></label>
+                    <input type="date" id="dailyTanggal" required>
                 </div>
 
                 <div class="form-row">
@@ -134,7 +169,7 @@
                 
                 <div class="info-box">
                     <div class="title">Dokumentasi Timbangan</div>
-                    <div class="desc">Foto wajib diambil langsung dari kamera, tidak bisa pilih dari galeri.</div>
+                    <div class="desc">Foto wajib diambil langsung dari kamera.</div>
                 </div>
 
                 <div class="form-group">
@@ -147,6 +182,7 @@
                         <div id="preview1" class="preview-single"></div>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label>Sekat 2</label>
                     <input type="number" id="dailyAbw2" placeholder="Berat (gram)" step="0.1">
@@ -157,6 +193,7 @@
                         <div id="preview2" class="preview-single"></div>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label>Sekat 3</label>
                     <input type="number" id="dailyAbw3" placeholder="Berat (gram)" step="0.1">
@@ -167,6 +204,7 @@
                         <div id="preview3" class="preview-single"></div>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label>Sekat 4</label>
                     <input type="number" id="dailyAbw4" placeholder="Berat (gram)" step="0.1">
@@ -189,18 +227,22 @@
                     <div class="title">Laporan Pakan Masuk</div>
                     <div class="desc">Catat setiap pengiriman pakan ke kandang.</div>
                 </div>
+                
                 <div class="form-group">
                     <label>Tanggal <span class="req">*</span></label>
                     <input type="date" id="pakanTanggal" required>
                 </div>
+                
                 <div class="form-group">
                     <label>Sumber Pakan <span class="req">*</span></label>
                     <input type="text" id="pakanSumber" placeholder="Nama supplier" required>
                 </div>
+                
                 <div class="form-group">
                     <label>Nomor PO / Asal</label>
                     <input type="text" id="pakanPo" placeholder="Nomor PO atau asal kandang">
                 </div>
+                
                 <div class="form-row">
                     <div class="form-group">
                         <label>Jumlah Zak <span class="req">*</span></label>
@@ -211,17 +253,20 @@
                         <input type="number" id="pakanKg" placeholder="0" required min="0" step="0.1">
                     </div>
                 </div>
+                
                 <div class="form-group">
                     <label>Kendaraan</label>
                     <input type="text" id="pakanKendaraan" placeholder="Nopol atau jenis kendaraan">
                 </div>
+                
                 <div class="form-group">
                     <label>Deskripsi</label>
                     <textarea id="pakanDeskripsi" placeholder="Catatan tambahan..."></textarea>
                 </div>
+                
                 <div class="form-group">
                     <label>Dokumentasi</label>
-                    <div class="hint">Foto wajib diambil langsung dari kamera, tidak bisa pilih dari galeri.</div>
+                    <div class="hint">Foto wajib diambil langsung dari kamera.</div>
                     <div class="photo-slot-grid">
                         <div class="photo-slot" onclick="document.getElementById('pakanFoto1').click()">
                             <div class="slot-label">Foto 1</div>
@@ -249,6 +294,7 @@
                         </div>
                     </div>
                 </div>
+                
                 <button type="submit" class="btn-submit">Kirim Laporan Pakan</button>
             </form>
         </div>
@@ -260,10 +306,12 @@
                     <div class="title">Laporan Kematian</div>
                     <div class="desc">Catat kematian ayam per jam untuk monitoring 24 jam.</div>
                 </div>
+                
                 <div class="form-group">
                     <label>Tanggal <span class="req">*</span></label>
                     <input type="date" id="matiTanggal" required>
                 </div>
+                
                 <div class="form-row">
                     <div class="form-group">
                         <label>Jam ke- <span class="req">*</span></label>
@@ -288,13 +336,15 @@
                         <input type="text" id="matiPelapor" placeholder="Nama pelapor">
                     </div>
                 </div>
+                
                 <div class="form-group">
                     <label>Jumlah Kematian <span class="req">*</span></label>
                     <input type="number" id="matiJumlah" placeholder="0" required min="0">
                 </div>
+                
                 <div class="form-group">
                     <label>Dokumentasi</label>
-                    <div class="hint">Foto wajib diambil langsung dari kamera, tidak bisa pilih dari galeri.</div>
+                    <div class="hint">Foto wajib diambil langsung dari kamera.</div>
                     <div class="photo-slot-grid">
                         <div class="photo-slot" onclick="document.getElementById('matiFoto1').click()">
                             <div class="slot-label">Foto 1</div>
@@ -322,6 +372,7 @@
                         </div>
                     </div>
                 </div>
+                
                 <button type="submit" class="btn-submit">Kirim Laporan Kematian</button>
             </form>
         </div>
@@ -334,10 +385,8 @@
 </div>
 
 <script>
-    // ==========================================
     // KONFIGURASI - GANTI DENGAN URL APPS SCRIPT ANDA
-    // ==========================================
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzG3sAWAdXKq1u5s7sQYMcNnXyyC1BTS_F_OkTA1QGDI3AXPCD6G7A_fiWvSSa8VpFu/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxQDTBNX4lh7UH1ArW7Ys1nA9aNk3SQKu4yI80Al0apM0gn4JY4F9D86CuuyaSPJ6gV/exec';
     
     const alertEl = document.getElementById('alert');
     const loadingEl = document.getElementById('loading');
@@ -392,7 +441,6 @@
         const file = input.files[0]; 
         if (!file) return; 
         
-        // Validasi ukuran file (max 5MB)
         if (file.size > 5 * 1024 * 1024) {
             showAlert('Ukuran foto terlalu besar (max 5MB)', 'error');
             input.value = '';
@@ -430,6 +478,82 @@
             reader.onerror = reject; 
             reader.readAsDataURL(file); 
         }); 
+    }
+
+    // Toggle form tambah periode
+    function toggleAddPeriode() {
+        const form = document.getElementById('addPeriodeForm');
+        form.classList.toggle('active');
+    }
+
+    // Load periode dari backend
+    async function loadPeriode() {
+        try {
+            const response = await fetch(SCRIPT_URL + '?action=getPeriode');
+            const result = await response.json();
+            
+            if (result.status === 'success' && result.data) {
+                const select = document.getElementById('globalPeriode');
+                select.innerHTML = '<option value="">-- Pilih Periode --</option>';
+                
+                result.data.forEach(periode => {
+                    const option = document.createElement('option');
+                    option.value = periode.id_periode;
+                    option.textContent = periode.display_name || periode.id_periode;
+                    select.appendChild(option);
+                });
+                
+                const activePeriode = result.data.find(p => p.status === 'Aktif');
+                if (activePeriode) {
+                    select.value = activePeriode.id_periode;
+                }
+            }
+        } catch (error) {
+            console.error('Gagal load periode:', error);
+        }
+    }
+
+    // Tambah periode baru
+    async function addNewPeriode() {
+        const idPeriode = document.getElementById('newPeriodeId').value;
+        const tanggalMasuk = document.getElementById('newPeriodeTanggalMasuk').value;
+        const estimasiHari = document.getElementById('newPeriodeEstimasiHari').value || 60;
+        const jumlahBibit = document.getElementById('newPeriodeJumlahBibit').value;
+        const jenisBibit = document.getElementById('newPeriodeJenisBibit').value;
+        
+        if (!idPeriode || !tanggalMasuk) {
+            showAlert('ID Periode dan Tanggal Bibit Masuk wajib diisi!', 'error');
+            return;
+        }
+        
+        try {
+            await fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({
+                    action: 'addPeriode',
+                    data: {
+                        id_periode: idPeriode,
+                        tanggal_masuk: tanggalMasuk,
+                        estimasi_hari: estimasiHari,
+                        jumlah_bibit: jumlahBibit,
+                        jenis_bibit: jenisBibit
+                    }
+                })
+            });
+            
+            showAlert('Periode baru berhasil ditambahkan!', 'success');
+            
+            document.getElementById('newPeriodeId').value = '';
+            document.getElementById('newPeriodeTanggalMasuk').value = '';
+            document.getElementById('addPeriodeForm').classList.remove('active');
+            
+            loadPeriode();
+            
+        } catch (error) {
+            showAlert('Error: ' + error.message, 'error');
+        }
     }
 
     // Get selected periode
@@ -502,7 +626,6 @@
         
         return {
             tanggal: document.getElementById('dailyTanggal').value,
-            umur_hari: document.getElementById('dailyUmur').value,
             pakan_atas: document.getElementById('dailyPakanAtas').value || 0,
             pakan_bawah: document.getElementById('dailyPakanBawah').value || 0,
             abw_sekat1: document.getElementById('dailyAbw1').value || 0,
@@ -558,13 +681,16 @@
     initForm('formPakan', 'Report Pakan', buildPakan);
     initForm('formKematian', 'Report Kematian', buildKematian);
 
+    // Load periode saat halaman dimuat
+    loadPeriode();
+
     // Set tanggal default
     const today = new Date().toISOString().split('T')[0];
     document.querySelectorAll('input[type="date"]').forEach(el => { 
         if (!el.value) el.value = today; 
     });
     
-    console.log('Nadz Farm\'s Form loaded.');
+    console.log('Nadz Farm\'s Form loaded dengan periode dinamis.');
 </script>
 
 </body>
