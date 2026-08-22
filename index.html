@@ -3,68 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nadz Farm's - Sistem Laporan</title>
+    <title>Nadz Farm's - Dashboard</title>
     <style>
-        /* ... (CSS sebelumnya tetap sama) ... */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; background: #f0f2f5; min-height: 100vh; padding: 20px; color: #1a1a2e; }
-        .container { max-width: 960px; margin: 0 auto; }
-        .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: white; padding: 20px 28px; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .header .brand { display: flex; align-items: center; gap: 12px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: white; padding: 20px 28px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
         .header .brand h1 { font-size: 22px; font-weight: 700; }
         .header .brand .sub { font-size: 11px; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px; }
-        .header .status { display: flex; align-items: center; gap: 10px; font-size: 13px; background: rgba(255,255,255,0.06); padding: 6px 14px; border-radius: 20px; }
-        .status .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
-        .status .dot.online { background: #2ecc71; }
-        .status .dot.offline { background: #e74c3c; }
-        .status .time { opacity: 0.5; font-size: 12px; }
-        .card { background: white; border-radius: 0 0 12px 12px; padding: 28px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
-        .alert { padding: 12px 18px; border-radius: 8px; margin-bottom: 18px; display: none; font-size: 14px; font-weight: 500; border-left: 4px solid transparent; }
-        .alert.show { display: flex; align-items: center; gap: 10px; }
-        .alert.success { background: #eafaf1; color: #1a7a42; border-left-color: #2ecc71; }
-        .alert.error { background: #fdf2f2; color: #a93226; border-left-color: #e74c3c; }
-        
-        /* CSS KHUSUS UNTUK PERIODE BOX */
-        .periode-box { background: #f0fdf4; border: 2px solid #22c55e; padding: 16px; border-radius: 10px; margin-bottom: 24px; }
-        .periode-box label { font-size: 13px; font-weight: 700; color: #15803d; display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .periode-box select { width: 100%; padding: 10px 14px; border: 2px solid #86efac; border-radius: 8px; font-size: 15px; font-weight: 600; color: #166534; background: white; cursor: pointer; outline: none; }
-        .periode-box select:focus { border-color: #22c55e; }
-        .periode-box .hint { font-size: 11px; color: #166534; margin-top: 8px; opacity: 0.8; }
-
-        .tabs { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 2px solid #e8ecf1; flex-wrap: wrap; }
-        .tab-btn { padding: 10px 22px; border: none; background: transparent; color: #7f8c8d; font-weight: 600; font-size: 14px; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
-        .tab-btn.active { color: #1a1a2e; border-bottom-color: #1a1a2e; }
-        .tab-content { display: none; animation: fade 0.3s ease; }
-        .tab-content.active { display: block; }
-        @keyframes fade { 0% { opacity: 0; transform: translateY(6px); } 100% { opacity: 1; transform: translateY(0); } }
-        .info-box { background: #f8f9fc; padding: 14px 18px; border-radius: 8px; border-left: 4px solid #1a1a2e; margin-bottom: 20px; }
-        .info-box .title { font-weight: 700; font-size: 14px; }
-        .info-box .desc { font-size: 13px; color: #5d6d7e; margin-top: 2px; }
-        .form-group { margin-bottom: 16px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 13px; color: #2c3e50; }
-        .form-group label .req { color: #e74c3c; }
-        .form-group .hint { font-size: 11px; color: #9aa5b1; margin-bottom: 6px; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 9px 13px; border: 2px solid #e8ecf1; border-radius: 8px; font-size: 14px; background: white; color: #1a1a2e; }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #1a1a2e; }
-        .form-group textarea { min-height: 60px; resize: vertical; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        .photo-slot-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 4px; }
-        .photo-slot { border: 2px dashed #dce1e8; border-radius: 8px; padding: 10px 6px 8px; text-align: center; cursor: pointer; background: #fafbfc; }
-        .photo-slot input[type="file"] { display: none; }
-        .photo-slot .slot-label { font-size: 11px; font-weight: 700; color: #5d6d7e; margin-bottom: 6px; }
-        .photo-slot .slot-icon { font-size: 20px; color: #9aa5b1; }
-        .photo-slot .preview-single .item { position: relative; border-radius: 6px; overflow: hidden; border: 2px solid #e8ecf1; aspect-ratio: 1/1; margin-top: 2px; }
-        .photo-slot .preview-single .item img { width: 100%; height: 100%; object-fit: cover; }
-        .photo-slot .preview-single .item .remove { position: absolute; top: -5px; right: -5px; background: #e74c3c; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; cursor: pointer; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
-        .btn-submit { width: 100%; padding: 13px; background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%); color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 8px; }
-        .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
-        .loading { display: none; text-align: center; padding: 24px 0; }
-        .loading.active { display: block; }
-        .loading .spinner { width: 36px; height: 36px; border: 4px solid #e8ecf1; border-top-color: #1a1a2e; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 10px; }
+        .filter-box { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .filter-box select, .filter-box input { padding: 10px; border: 2px solid #e8ecf1; border-radius: 8px; font-size: 14px; margin-right: 10px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px; }
+        .stat-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .stat-card .label { font-size: 12px; color: #7f8c8d; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-card .value { font-size: 28px; font-weight: 700; margin-top: 8px; }
+        .stat-card .value.green { color: #2ecc71; }
+        .stat-card .value.red { color: #e74c3c; }
+        .stat-card .value.blue { color: #3498db; }
+        .card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .card h2 { font-size: 18px; margin-bottom: 16px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e8ecf1; font-size: 14px; }
+        th { background: #f8f9fc; font-weight: 700; color: #2c3e50; }
+        tr:hover { background: #f8f9fc; }
+        .loading { text-align: center; padding: 40px; }
+        .spinner { width: 40px; height: 40px; border: 4px solid #e8ecf1; border-top-color: #1a1a2e; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 10px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .loading .text { color: #5d6d7e; font-size: 14px; }
-        @media (max-width: 768px) { .header { flex-direction: column; align-items: stretch; } .form-row { grid-template-columns: 1fr; gap: 0; } .tab-btn { flex: 1; text-align: center; } }
-        @media (max-width: 480px) { .photo-slot-grid { grid-template-columns: repeat(2, 1fr); } }
+        .btn-refresh { background: #1a1a2e; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .btn-refresh:hover { opacity: 0.9; }
+        @media (max-width: 768px) { .header { flex-direction: column; align-items: stretch; } }
     </style>
 </head>
 <body>
@@ -72,392 +39,164 @@
 <div class="container">
     <div class="header">
         <div class="brand">
-            <div>
-                <h1>Nadz Farm's</h1>
-                <div class="sub">Sistem Pencatatan Laporan</div>
-            </div>
+            <h1>Nadz Farm's</h1>
+            <div class="sub">Dashboard Monitoring</div>
         </div>
-        <div class="status">
-            <span class="dot online" id="statusDot"></span>
-            <span id="statusText">Online</span>
-            <span class="time" id="currentTime"></span>
+        <button class="btn-refresh" onclick="loadDashboard()">🔄 Refresh Data</button>
+    </div>
+
+    <div class="filter-box">
+        <label style="font-weight: 600; margin-right: 10px;">Filter Periode:</label>
+        <select id="filterPeriode" onchange="loadDashboard()">
+            <option value="">Semua Periode</option>
+            <option value="Siklus 1 - Agt 2026">Siklus 1 (Agustus 2026)</option>
+            <option value="Siklus 2 - Okt 2026">Siklus 2 (Oktober 2026)</option>
+        </select>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="label">Total Data Harian</div>
+            <div class="value blue" id="totalDaily">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Total Pakan Masuk</div>
+            <div class="value green" id="totalPakan">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Total Kematian</div>
+            <div class="value red" id="totalMati">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Rata-rata ABW</div>
+            <div class="value blue" id="avgAbw">0g</div>
         </div>
     </div>
 
-    <div class="card">
-        <div id="alert" class="alert"></div>
-
-        <!-- ========================================== -->
-        <!-- SELECTOR PERIODE GLOBAL -->
-        <!-- ========================================== -->
-        <div class="periode-box">
-            <label>Periode / Siklus Aktif <span style="color: #e74c3c;">*</span></label>
-            <select id="globalPeriode">
-                <option value="">-- Memuat Data Siklus... --</option>
-                <!-- Opsi Dummy sementara. Nanti bisa diisi otomatis dari API Apps Script -->
-                <option value="Siklus 1 - Agt 2026" selected>Siklus 1 (Agustus 2026)</option>
-                <option value="Siklus 2 - Okt 2026">Siklus 2 (Oktober 2026)</option>
-            </select>
-            <div class="hint">ℹ️ Semua laporan yang dikirim akan otomatis masuk ke siklus ini.</div>
-        </div>
-
-        <div class="tabs">
-            <button class="tab-btn active" data-tab="daily">Harian</button>
-            <button class="tab-btn" data-tab="pakan">Pakan</button>
-            <button class="tab-btn" data-tab="kematian">Kematian</button>
-        </div>
-
-        <!-- TAB 1: DAILY -->
-        <div id="tab-daily" class="tab-content active">
-            <form id="formDaily">
-                <div class="info-box">
-                    <div class="title">Laporan Harian</div>
-                    <div class="desc">Laporan akhir hari mencakup data timbangan dan konsumsi pakan.</div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Tanggal <span class="req">*</span></label>
-                        <input type="date" id="dailyTanggal" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Umur (Hari) <span class="req">*</span></label>
-                        <input type="number" id="dailyUmur" placeholder="25" required min="0">
-                    </div>
-                </div>
-
-                <!-- Sisa form daily sama seperti sebelumnya... -->
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Pakan Atas (Karung)</label>
-                        <input type="number" id="dailyPakanAtas" placeholder="0" min="0" value="0">
-                    </div>
-                    <div class="form-group">
-                        <label>Pakan Bawah (Karung)</label>
-                        <input type="number" id="dailyPakanBawah" placeholder="0" min="0" value="0">
-                    </div>
-                </div>
-                
-                <div class="info-box">
-                     <div class="title">Dokumentasi Timbangan</div>
-                    <div class="desc">Foto wajib diambil langsung dari kamera, tidak bisa pilih dari galeri.</div>
-                </div>
-
-                <!-- Sekat 1 - 4 disingkat untuk keterbacaan (Gunakan kode asli Anda untuk sekat 1-4) -->
-                <div class="form-group">
-                    <label>Sekat 1</label>
-                    <input type="number" id="dailyAbw1" placeholder="Berat (gram)" step="0.1">
-                    <div class="photo-slot" onclick="document.getElementById('dailyFoto1').click()" style="margin-top: 6px;">
-                        <div class="slot-label">Foto Sekat 1</div>
-                        <span class="slot-icon">&#128247;</span>
-                        <input type="file" id="dailyFoto1" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'preview1')">
-                        <div id="preview1" class="preview-single"></div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Sekat 2</label>
-                    <input type="number" id="dailyAbw2" placeholder="Berat (gram)" step="0.1">
-                    <div class="photo-slot" onclick="document.getElementById('dailyFoto2').click()" style="margin-top: 6px;">
-                        <div class="slot-label">Foto Sekat 2</div>
-                        <span class="slot-icon">&#128247;</span>
-                        <input type="file" id="dailyFoto2" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'preview2')">
-                        <div id="preview2" class="preview-single"></div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Sekat 3</label>
-                    <input type="number" id="dailyAbw3" placeholder="Berat (gram)" step="0.1">
-                    <div class="photo-slot" onclick="document.getElementById('dailyFoto3').click()" style="margin-top: 6px;">
-                        <div class="slot-label">Foto Sekat 3</div>
-                        <span class="slot-icon">&#128247;</span>
-                        <input type="file" id="dailyFoto3" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'preview3')">
-                        <div id="preview3" class="preview-single"></div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Sekat 4</label>
-                    <input type="number" id="dailyAbw4" placeholder="Berat (gram)" step="0.1">
-                    <div class="photo-slot" onclick="document.getElementById('dailyFoto4').click()" style="margin-top: 6px;">
-                        <div class="slot-label">Foto Sekat 4</div>
-                        <span class="slot-icon">&#128247;</span>
-                        <input type="file" id="dailyFoto4" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'preview4')">
-                        <div id="preview4" class="preview-single"></div>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn-submit">Kirim Laporan Harian</button>
-            </form>
-        </div>
-
-        <!-- TAB 2: PAKAN -->
-        <div id="tab-pakan" class="tab-content">
-            <form id="formPakan">
-                <!-- Isi form pakan sama seperti sebelumnya, tidak dirubah... -->
-                <div class="info-box">
-                    <div class="title">Laporan Pakan Masuk</div>
-                    <div class="desc">Catat setiap pengiriman pakan ke kandang.</div>
-                </div>
-                <div class="form-group">
-                    <label>Tanggal <span class="req">*</span></label>
-                    <input type="date" id="pakanTanggal" required>
-                </div>
-                <div class="form-group">
-                    <label>Sumber Pakan <span class="req">*</span></label>
-                    <input type="text" id="pakanSumber" placeholder="Nama supplier" required>
-                </div>
-                <div class="form-group">
-                    <label>Nomor PO / Asal</label>
-                    <input type="text" id="pakanPo" placeholder="Nomor PO atau asal kandang">
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Jumlah Zak <span class="req">*</span></label>
-                        <input type="number" id="pakanZak" placeholder="0" required min="0">
-                    </div>
-                    <div class="form-group">
-                        <label>Jumlah Kg <span class="req">*</span></label>
-                        <input type="number" id="pakanKg" placeholder="0" required min="0" step="0.1">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Kendaraan</label>
-                    <input type="text" id="pakanKendaraan" placeholder="Nopol atau jenis kendaraan">
-                </div>
-                <div class="form-group">
-                    <label>Deskripsi</label>
-                    <textarea id="pakanDeskripsi" placeholder="Catatan tambahan..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Dokumentasi</label>
-                    <div class="hint">Foto wajib diambil langsung dari kamera, tidak bisa pilih dari galeri.</div>
-                    <div class="photo-slot-grid">
-                        <div class="photo-slot" onclick="document.getElementById('pakanFoto1').click()">
-                            <div class="slot-label">Foto 1</div>
-                            <span class="slot-icon">&#128247;</span>
-                            <input type="file" id="pakanFoto1" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewPakan1')">
-                            <div id="previewPakan1" class="preview-single"></div>
-                        </div>
-                        <div class="photo-slot" onclick="document.getElementById('pakanFoto2').click()">
-                            <div class="slot-label">Foto 2</div>
-                            <span class="slot-icon">&#128247;</span>
-                            <input type="file" id="pakanFoto2" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewPakan2')">
-                            <div id="previewPakan2" class="preview-single"></div>
-                        </div>
-                        <div class="photo-slot" onclick="document.getElementById('pakanFoto3').click()">
-                            <div class="slot-label">Foto 3</div>
-                            <span class="slot-icon">&#128247;</span>
-                            <input type="file" id="pakanFoto3" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewPakan3')">
-                            <div id="previewPakan3" class="preview-single"></div>
-                        </div>
-                        <div class="photo-slot" onclick="document.getElementById('pakanFoto4').click()">
-                            <div class="slot-label">Foto 4</div>
-                            <span class="slot-icon">&#128247;</span>
-                            <input type="file" id="pakanFoto4" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewPakan4')">
-                            <div id="previewPakan4" class="preview-single"></div>
-                        </div>
-                    </div>
-                </div>
-                <button type="submit" class="btn-submit">Kirim Laporan Pakan</button>
-            </form>
-        </div>
-
-        <!-- TAB 3: KEMATIAN -->
-        <div id="tab-kematian" class="tab-content">
-            <form id="formKematian">
-                <!-- Isi form kematian sama seperti sebelumnya... -->
-                <div class="info-box">
-                    <div class="title">Laporan Kematian</div>
-                    <div class="desc">Catat kematian ayam per jam untuk monitoring 24 jam.</div>
-                </div>
-                <div class="form-group">
-                    <label>Tanggal <span class="req">*</span></label>
-                    <input type="date" id="matiTanggal" required>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Jam ke- <span class="req">*</span></label>
-                        <select id="matiJam" required>
-                            <option value="">Pilih Jam</option>
-                            <option value="1">01:00</option><option value="2">02:00</option>
-                            <option value="3">03:00</option><option value="4">04:00</option>
-                            <option value="5">05:00</option><option value="6">06:00</option>
-                            <option value="7">07:00</option><option value="8">08:00</option>
-                            <option value="9">09:00</option><option value="10">10:00</option>
-                            <option value="11">11:00</option><option value="12">12:00</option>
-                            <option value="13">13:00</option><option value="14">14:00</option>
-                            <option value="15">15:00</option><option value="16">16:00</option>
-                            <option value="17">17:00</option><option value="18">18:00</option>
-                            <option value="19">19:00</option><option value="20">20:00</option>
-                            <option value="21">21:00</option><option value="22">22:00</option>
-                            <option value="23">23:00</option><option value="24">24:00</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Pelapor</label>
-                        <input type="text" id="matiPelapor" placeholder="Nama pelapor">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Jumlah Kematian <span class="req">*</span></label>
-                    <input type="number" id="matiJumlah" placeholder="0" required min="0">
-                </div>
-                <div class="form-group">
-                    <label>Dokumentasi</label>
-                    <div class="hint">Foto wajib diambil langsung dari kamera, tidak bisa pilih dari galeri.</div>
-                    <div class="photo-slot-grid">
-                        <div class="photo-slot" onclick="document.getElementById('matiFoto1').click()">
-                            <div class="slot-label">Foto 1</div>
-                            <span class="slot-icon">&#128247;</span>
-                            <input type="file" id="matiFoto1" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewMati1')">
-                            <div id="previewMati1" class="preview-single"></div>
-                        </div>
-                        <div class="photo-slot" onclick="document.getElementById('matiFoto2').click()">
-                            <div class="slot-label">Foto 2</div>
-                            <span class="slot-icon">&#128247;</span>
-                            <input type="file" id="matiFoto2" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewMati2')">
-                            <div id="previewMati2" class="preview-single"></div>
-                        </div>
-                        <div class="photo-slot" onclick="document.getElementById('matiFoto3').click()">
-                            <div class="slot-label">Foto 3</div>
-                            <span class="slot-icon">&#128247;</span>
-                            <input type="file" id="matiFoto3" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewMati3')">
-                            <div id="previewMati3" class="preview-single"></div>
-                        </div>
-                        <div class="photo-slot" onclick="document.getElementById('matiFoto4').click()">
-                            <div class="slot-label">Foto 4</div>
-                            <span class="slot-icon">&#128247;</span>
-                            <input type="file" id="matiFoto4" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewMati4')">
-                            <div id="previewMati4" class="preview-single"></div>
-                        </div>
-                    </div>
-                </div>
-                <button type="submit" class="btn-submit">Kirim Laporan Kematian</button>
-            </form>
-        </div>
-
-        <div class="loading" id="loading">
+    <div id="dashboardContent">
+        <div class="loading">
             <div class="spinner"></div>
-            <div class="text">Menyimpan data...</div>
+            <div>Memuat data...</div>
         </div>
     </div>
 </div>
 
 <script>
+    // ==========================================
+    // KONFIGURASI - GANTI DENGAN URL APPS SCRIPT ANDA
+    // ==========================================
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzI7K5XPegjN5uFP3FAbzCUJqCqfrF54Ib2dtBWm9VcjVIUHv2XDn_X91T0ziYGtnZt/exec';
-    const alertEl = document.getElementById('alert');
-    const loadingEl = document.getElementById('loading');
 
-    // ... (Fungsi updateTime, checkStatus, tabs, file preview tetap sama seperti kode Anda) ...
-    function updateTime() { const now = new Date(); document.getElementById('currentTime').textContent = now.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }); } updateTime(); setInterval(updateTime, 1000);
-    async function checkStatus() { try { await fetch(SCRIPT_URL, { method: 'GET', mode: 'no-cors' }); document.getElementById('statusDot').className = 'dot online'; document.getElementById('statusText').textContent = 'Online'; } catch (_) { document.getElementById('statusDot').className = 'dot offline'; document.getElementById('statusText').textContent = 'Offline'; } } checkStatus(); setInterval(checkStatus, 30000);
-    document.querySelectorAll('.tab-btn').forEach(btn => { btn.addEventListener('click', function() { document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active')); this.classList.add('active'); document.getElementById('tab-' + this.dataset.tab).classList.add('active'); }); });
-    function showAlert(msg, type) { alertEl.className = 'alert show ' + type; alertEl.innerHTML = '<span>' + (type === 'success' ? '✓' : '✗') + '</span> ' + msg; clearTimeout(alertEl._timer); alertEl._timer = setTimeout(() => alertEl.classList.remove('show'), 5000); }
-    function handleSingleFileSelect(input, previewId) { const container = document.getElementById(previewId); container.innerHTML = ''; const file = input.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = function(e) { const item = document.createElement('div'); item.className = 'item'; const img = document.createElement('img'); img.src = e.target.result; img.alt = file.name; const remove = document.createElement('button'); remove.className = 'remove'; remove.textContent = '×'; remove.type = 'button'; remove.addEventListener('click', function(e) { e.stopPropagation(); input.value = ''; container.innerHTML = ''; }); item.appendChild(img); item.appendChild(remove); container.appendChild(item); }; reader.readAsDataURL(file); }
-    function fileToBase64(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve(reader.result.split(',')[1]); reader.onerror = reject; reader.readAsDataURL(file); }); }
-
-    // ==========================================
-    // FUNGSI UNTUK MENDAPATKAN PERIODE (BARU)
-    // ==========================================
-    function getSelectedPeriode() {
-        const periode = document.getElementById('globalPeriode').value;
-        if (!periode) throw new Error("Silakan pilih Periode / Siklus Aktif terlebih dahulu di bagian atas form!");
-        return periode;
+    async function loadDashboard() {
+        const content = document.getElementById('dashboardContent');
+        content.innerHTML = '<div class="loading"><div class="spinner"></div><div>Memuat data...</div></div>';
+        
+        try {
+            const periode = document.getElementById('filterPeriode').value;
+            let url = SCRIPT_URL + '?action=getAll';
+            if (periode) url += '&periode=' + encodeURIComponent(periode);
+            
+            const response = await fetch(url);
+            const result = await response.json();
+            
+            if (result.status === 'success') {
+                displayDashboard(result.data);
+            } else {
+                content.innerHTML = '<div style="text-align: center; padding: 40px; color: #e74c3c;">Error: ' + (result.message || 'Gagal memuat data') + '</div>';
+            }
+        } catch (error) {
+            content.innerHTML = '<div style="text-align: center; padding: 40px; color: #e74c3c;">Error: ' + error.message + '</div>';
+        }
     }
 
-    // ==========================================
-    // INJEKSI PERIODE KE PAYLOAD DATA
-    // ==========================================
-    function initForm(formId, sheetName, dataBuilder) {
-        const form = document.getElementById(formId);
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            loadingEl.classList.add('active');
-            const btn = this.querySelector('.btn-submit');
-            btn.disabled = true;
-
-            try {
-                // 1. Validasi Periode sebelum menyusun data yang berat (seperti gambar)
-                const activePeriode = getSelectedPeriode(); 
-
-                const data = await dataBuilder(this);
-                data.sheetName = sheetName;
-                data.id_periode = activePeriode; // 2. Sisipkan ID Periode ke backend
-
-                await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-
-                showAlert('Data berhasil disimpan ke ' + activePeriode + '.', 'success');
-                this.reset();
-                this.querySelectorAll('.preview-grid, .preview-single').forEach(el => el.innerHTML = '');
-                this.querySelectorAll('input[type="file"]').forEach(fi => { fi.value = ''; });
-                const dateInput = this.querySelector('input[type="date"]');
-                if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
-            } catch (err) {
-                showAlert('Error: ' + err.message, 'error');
-                console.error(err);
-            } finally {
-                loadingEl.classList.remove('active');
-                btn.disabled = false;
+    function displayDashboard(data) {
+        const content = document.getElementById('dashboardContent');
+        
+        // Hitung statistik
+        let totalDaily = 0;
+        let totalPakan = 0;
+        let totalMati = 0;
+        let totalAbw = 0;
+        let abwCount = 0;
+        
+        data.forEach(item => {
+            if (item.sheet === 'Daily') {
+                totalDaily++;
+                const abw = (parseFloat(item.abw_sekat1) + parseFloat(item.abw_sekat2) + parseFloat(item.abw_sekat3) + parseFloat(item.abw_sekat4)) / 4;
+                if (abw > 0) {
+                    totalAbw += abw;
+                    abwCount++;
+                }
+                totalMati += parseInt(item.jumlah_mati) || 0;
+            } else if (item.sheet === 'Pakan') {
+                totalPakan++;
             }
         });
+        
+        document.getElementById('totalDaily').textContent = totalDaily;
+        document.getElementById('totalPakan').textContent = totalPakan;
+        document.getElementById('totalMati').textContent = totalMati;
+        document.getElementById('avgAbw').textContent = abwCount > 0 ? Math.round(totalAbw / abwCount) + 'g' : '0g';
+        
+        // Buat tabel
+        let html = '';
+        
+        // Tabel Daily
+        const dailyData = data.filter(item => item.sheet === 'Daily');
+        if (dailyData.length > 0) {
+            html += '<div class="card"><h2>📊 Laporan Harian</h2><div style="overflow-x: auto;"><table>';
+            html += '<thead><tr><th>Tanggal</th><th>Periode</th><th>Umur</th><th>Pakan Atas</th><th>Pakan Bawah</th><th>ABW 1</th><th>ABW 2</th><th>ABW 3</th><th>ABW 4</th><th>Kematian</th></tr></thead>';
+            html += '<tbody>';
+            dailyData.forEach(item => {
+                html += '<tr>';
+                html += '<td>' + item.tanggal + '</td>';
+                html += '<td>' + item.id_periode + '</td>';
+                html += '<td>' + item.umur_hari + ' hari</td>';
+                html += '<td>' + item.pakan_atas + '</td>';
+                html += '<td>' + item.pakan_bawah + '</td>';
+                html += '<td>' + item.abw_sekat1 + 'g</td>';
+                html += '<td>' + item.abw_sekat2 + 'g</td>';
+                html += '<td>' + item.abw_sekat3 + 'g</td>';
+                html += '<td>' + item.abw_sekat4 + 'g</td>';
+                html += '<td style="color: #e74c3c; font-weight: 600;">' + item.jumlah_mati + ' ekor</td>';
+                html += '</tr>';
+            });
+            html += '</tbody></table></div></div>';
+        }
+        
+        // Tabel Pakan
+        const pakanData = data.filter(item => item.sheet === 'Pakan');
+        if (pakanData.length > 0) {
+            html += '<div class="card"><h2>📦 Riwayat Pakan Masuk</h2><div style="overflow-x: auto;"><table>';
+            html += '<thead><tr><th>Tanggal</th><th>Periode</th><th>Sumber</th><th>No. PO</th><th>Zak</th><th>Kg</th><th>Kendaraan</th><th>Deskripsi</th></tr></thead>';
+            html += '<tbody>';
+            pakanData.forEach(item => {
+                html += '<tr>';
+                html += '<td>' + item.tanggal + '</td>';
+                html += '<td>' + item.id_periode + '</td>';
+                html += '<td>' + item.sumber_pakan + '</td>';
+                html += '<td>' + item.no_po + '</td>';
+                html += '<td>' + item.jumlah_zak + '</td>';
+                html += '<td>' + item.jumlah_kg + '</td>';
+                html += '<td>' + item.kendaraan + '</td>';
+                html += '<td>' + (item.deskripsi || '-') + '</td>';
+                html += '</tr>';
+            });
+            html += '</tbody></table></div></div>';
+        }
+        
+        if (html === '') {
+            html = '<div style="text-align: center; padding: 40px; color: #7f8c8d;">Belum ada data untuk periode ini.</div>';
+        }
+        
+        content.innerHTML = html;
     }
 
-    async function buildDaily(form) {
-        const getSingleFileAsList = async (id) => { const f = document.getElementById(id).files[0]; const list = []; if (f) { list.push({ data: await fileToBase64(f), name: f.name, mime: f.type }); } return list; };
-        return {
-            tanggal: document.getElementById('dailyTanggal').value,
-            umur_hari: document.getElementById('dailyUmur').value,
-            pakan_atas: document.getElementById('dailyPakanAtas').value || 0,
-            pakan_bawah: document.getElementById('dailyPakanBawah').value || 0,
-            abw_sekat1: document.getElementById('dailyAbw1').value || 0,
-            abw_sekat2: document.getElementById('dailyAbw2').value || 0,
-            abw_sekat3: document.getElementById('dailyAbw3').value || 0,
-            abw_sekat4: document.getElementById('dailyAbw4').value || 0,
-            fotoList1: await getSingleFileAsList('dailyFoto1'),
-            fotoList2: await getSingleFileAsList('dailyFoto2'),
-            fotoList3: await getSingleFileAsList('dailyFoto3'),
-            fotoList4: await getSingleFileAsList('dailyFoto4')
-        };
-    }
-
-    async function buildPakan(form) {
-        const ids = ['pakanFoto1', 'pakanFoto2', 'pakanFoto3', 'pakanFoto4']; const list = [];
-        for (const id of ids) { const f = document.getElementById(id).files[0]; if (f) list.push({ data: await fileToBase64(f), name: f.name, mime: f.type }); }
-        return {
-            tanggal: document.getElementById('pakanTanggal').value,
-            sumber_pakan: document.getElementById('pakanSumber').value,
-            no_po_atau_asal: document.getElementById('pakanPo').value,
-            jumlah_zak: document.getElementById('pakanZak').value,
-            jumlah_kg: document.getElementById('pakanKg').value,
-            kendaraan: document.getElementById('pakanKendaraan').value,
-            deskripsi: document.getElementById('pakanDeskripsi').value,
-            fotoList: list
-        };
-    }
-
-    async function buildKematian(form) {
-        const ids = ['matiFoto1', 'matiFoto2', 'matiFoto3', 'matiFoto4']; const list = [];
-        for (const id of ids) { const f = document.getElementById(id).files[0]; if (f) list.push({ data: await fileToBase64(f), name: f.name, mime: f.type }); }
-        return {
-            tanggal: document.getElementById('matiTanggal').value,
-            jam: document.getElementById('matiJam').value,
-            pelapor: document.getElementById('matiPelapor').value,
-            jumlah_mati: document.getElementById('matiJumlah').value,
-            fotoList: list
-        };
-    }
-
-    initForm('formDaily', 'Report Daily', buildDaily);
-    initForm('formPakan', 'Report Pakan', buildPakan);
-    initForm('formKematian', 'Report Kematian', buildKematian);
-
-    const today = new Date().toISOString().split('T')[0];
-    document.querySelectorAll('input[type="date"]').forEach(el => { if (!el.value) el.value = today; });
-    console.log('Nadz Farm\'s loaded with Periode support.');
+    // Load dashboard saat halaman dimuat
+    loadDashboard();
+    
+    // Auto refresh setiap 5 menit
+    setInterval(loadDashboard, 300000);
 </script>
 
 </body>
