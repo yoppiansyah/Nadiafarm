@@ -86,612 +86,226 @@
     <div class="card">
         <div id="alert" class="alert"></div>
 
-        <!-- SELECTOR PERIODE -->
         <div class="periode-box">
             <label>Periode / Siklus Aktif <span style="color: #e74c3c;">*</span></label>
             <select id="globalPeriode">
                 <option value="">-- Memuat Periode... --</option>
             </select>
-            <div class="hint">ℹ️ Umur ayam akan dihitung otomatis dari tanggal bibit masuk.</div>
+            <div class="hint">ℹ️ Umur ayam dihitung otomatis dari tanggal bibit masuk.</div>
         </div>
 
-        <!-- BUTTON TAMBAH PERIODE -->
-        <button type="button" class="btn-add-periode" onclick="toggleAddPeriode()">
-            ➕ Tambah Periode Baru
-        </button>
+        <button type="button" class="btn-add-periode" onclick="toggleAddPeriode()">➕ Tambah Periode Baru</button>
 
-        <!-- FORM TAMBAH PERIODE -->
         <div id="addPeriodeForm" class="add-periode-form">
             <h3 style="margin-bottom: 16px;">Tambah Periode Baru</h3>
-            
             <div class="form-row">
-                <div class="form-group">
-                    <label>ID Periode <span class="req">*</span></label>
-                    <input type="text" id="newPeriodeId" placeholder="Contoh: Siklus 3">
-                </div>
-                <div class="form-group">
-                    <label>Tanggal Bibit Masuk <span class="req">*</span></label>
-                    <input type="date" id="newPeriodeTanggalMasuk">
-                </div>
+                <div class="form-group"><label>ID Periode <span class="req">*</span></label><input type="text" id="newPeriodeId" placeholder="Contoh: Siklus 3"></div>
+                <div class="form-group"><label>Tanggal Bibit Masuk <span class="req">*</span></label><input type="date" id="newPeriodeTanggalMasuk"></div>
             </div>
-            
             <div class="form-row">
-                <div class="form-group">
-                    <label>Estimasi Hari Panen</label>
-                    <input type="number" id="newPeriodeEstimasiHari" value="60" min="30" max="90">
-                </div>
-                <div class="form-group">
-                    <label>Jumlah Bibit</label>
-                    <input type="number" id="newPeriodeJumlahBibit" placeholder="5000" min="0">
-                </div>
+                <div class="form-group"><label>Estimasi Hari Panen</label><input type="number" id="newPeriodeEstimasiHari" value="60" min="30" max="90"></div>
+                <div class="form-group"><label>Jumlah Bibit</label><input type="number" id="newPeriodeJumlahBibit" placeholder="5000" min="0"></div>
             </div>
-            
-            <div class="form-group">
-                <label>Jenis Bibit</label>
-                <input type="text" id="newPeriodeJenisBibit" value="DOC Broiler">
-            </div>
-            
-            <button type="button" class="btn-submit" onclick="addNewPeriode()" style="margin-top: 0;">
-                Simpan Periode Baru
-            </button>
+            <div class="form-group"><label>Jenis Bibit</label><input type="text" id="newPeriodeJenisBibit" value="DOC Broiler"></div>
+            <button type="button" class="btn-submit" onclick="addNewPeriode()" style="margin-top: 0;">Simpan Periode Baru</button>
         </div>
 
-        <!-- TABS -->
         <div class="tabs" style="margin-top: 24px;">
             <button class="tab-btn active" data-tab="daily">Harian</button>
             <button class="tab-btn" data-tab="pakan">Pakan</button>
             <button class="tab-btn" data-tab="kematian">Kematian</button>
         </div>
 
-        <!-- TAB 1: DAILY -->
         <div id="tab-daily" class="tab-content active">
             <form id="formDaily">
-                <div class="info-box">
-                    <div class="title">Laporan Harian</div>
-                    <div class="desc">Umur ayam dihitung otomatis dari tanggal bibit masuk.</div>
-                </div>
-
-                <div class="form-group">
-                    <label>Tanggal <span class="req">*</span></label>
-                    <input type="date" id="dailyTanggal" required>
-                </div>
-
+                <div class="info-box"><div class="title">Laporan Harian</div></div>
+                <div class="form-group"><label>Tanggal <span class="req">*</span></label><input type="date" id="dailyTanggal" required></div>
                 <div class="form-row">
-                    <div class="form-group">
-                        <label>Pakan Atas (Karung)</label>
-                        <input type="number" id="dailyPakanAtas" placeholder="0" min="0" value="0">
-                    </div>
-                    <div class="form-group">
-                        <label>Pakan Bawah (Karung)</label>
-                        <input type="number" id="dailyPakanBawah" placeholder="0" min="0" value="0">
-                    </div>
+                    <div class="form-group"><label>Pakan Atas (Karung)</label><input type="number" id="dailyPakanAtas" placeholder="0" min="0" value="0"></div>
+                    <div class="form-group"><label>Pakan Bawah (Karung)</label><input type="number" id="dailyPakanBawah" placeholder="0" min="0" value="0"></div>
                 </div>
-                
-                <div class="info-box">
-                    <div class="title">Dokumentasi Timbangan</div>
-                    <div class="desc">Foto wajib diambil langsung dari kamera.</div>
-                </div>
-
-                <div class="form-group">
-                    <label>Sekat 1</label>
-                    <input type="number" id="dailyAbw1" placeholder="Berat (gram)" step="0.1">
-                    <div class="photo-slot" onclick="document.getElementById('dailyFoto1').click()" style="margin-top: 6px;">
-                        <div class="slot-label">Foto Sekat 1</div>
-                        <span class="slot-icon">&#128247;</span>
-                        <input type="file" id="dailyFoto1" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'preview1')">
-                        <div id="preview1" class="preview-single"></div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Sekat 2</label>
-                    <input type="number" id="dailyAbw2" placeholder="Berat (gram)" step="0.1">
-                    <div class="photo-slot" onclick="document.getElementById('dailyFoto2').click()" style="margin-top: 6px;">
-                        <div class="slot-label">Foto Sekat 2</div>
-                        <span class="slot-icon">&#128247;</span>
-                        <input type="file" id="dailyFoto2" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'preview2')">
-                        <div id="preview2" class="preview-single"></div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Sekat 3</label>
-                    <input type="number" id="dailyAbw3" placeholder="Berat (gram)" step="0.1">
-                    <div class="photo-slot" onclick="document.getElementById('dailyFoto3').click()" style="margin-top: 6px;">
-                        <div class="slot-label">Foto Sekat 3</div>
-                        <span class="slot-icon">&#128247;</span>
-                        <input type="file" id="dailyFoto3" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'preview3')">
-                        <div id="preview3" class="preview-single"></div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Sekat 4</label>
-                    <input type="number" id="dailyAbw4" placeholder="Berat (gram)" step="0.1">
-                    <div class="photo-slot" onclick="document.getElementById('dailyFoto4').click()" style="margin-top: 6px;">
-                        <div class="slot-label">Foto Sekat 4</div>
-                        <span class="slot-icon">&#128247;</span>
-                        <input type="file" id="dailyFoto4" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'preview4')">
-                        <div id="preview4" class="preview-single"></div>
-                    </div>
-                </div>
-
+                <div class="info-box"><div class="title">Dokumentasi Timbangan</div></div>
+                <div class="form-group"><label>Sekat 1</label><input type="number" id="dailyAbw1" placeholder="Berat (gram)" step="0.1"><div class="photo-slot" onclick="document.getElementById('dailyFoto1').click()" style="margin-top: 6px;"><div class="slot-label">Foto Sekat 1</div><span class="slot-icon">&#128247;</span><input type="file" id="dailyFoto1" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'preview1')"><div id="preview1" class="preview-single"></div></div></div>
+                <div class="form-group"><label>Sekat 2</label><input type="number" id="dailyAbw2" placeholder="Berat (gram)" step="0.1"><div class="photo-slot" onclick="document.getElementById('dailyFoto2').click()" style="margin-top: 6px;"><div class="slot-label">Foto Sekat 2</div><span class="slot-icon">&#128247;</span><input type="file" id="dailyFoto2" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'preview2')"><div id="preview2" class="preview-single"></div></div></div>
+                <div class="form-group"><label>Sekat 3</label><input type="number" id="dailyAbw3" placeholder="Berat (gram)" step="0.1"><div class="photo-slot" onclick="document.getElementById('dailyFoto3').click()" style="margin-top: 6px;"><div class="slot-label">Foto Sekat 3</div><span class="slot-icon">&#128247;</span><input type="file" id="dailyFoto3" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'preview3')"><div id="preview3" class="preview-single"></div></div></div>
+                <div class="form-group"><label>Sekat 4</label><input type="number" id="dailyAbw4" placeholder="Berat (gram)" step="0.1"><div class="photo-slot" onclick="document.getElementById('dailyFoto4').click()" style="margin-top: 6px;"><div class="slot-label">Foto Sekat 4</div><span class="slot-icon">&#128247;</span><input type="file" id="dailyFoto4" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'preview4')"><div id="preview4" class="preview-single"></div></div></div>
                 <button type="submit" class="btn-submit">Kirim Laporan Harian</button>
             </form>
         </div>
 
-        <!-- TAB 2: PAKAN -->
         <div id="tab-pakan" class="tab-content">
             <form id="formPakan">
-                <div class="info-box">
-                    <div class="title">Laporan Pakan Masuk</div>
-                    <div class="desc">Catat setiap pengiriman pakan ke kandang.</div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Tanggal <span class="req">*</span></label>
-                    <input type="date" id="pakanTanggal" required>
-                </div>
-                
-                <div class="form-group">
-                    <label>Sumber Pakan <span class="req">*</span></label>
-                    <input type="text" id="pakanSumber" placeholder="Nama supplier" required>
-                </div>
-                
-                <div class="form-group">
-                    <label>Nomor PO / Asal</label>
-                    <input type="text" id="pakanPo" placeholder="Nomor PO atau asal kandang">
-                </div>
-                
+                <div class="info-box"><div class="title">Laporan Pakan Masuk</div></div>
+                <div class="form-group"><label>Tanggal <span class="req">*</span></label><input type="date" id="pakanTanggal" required></div>
+                <div class="form-group"><label>Sumber Pakan <span class="req">*</span></label><input type="text" id="pakanSumber" placeholder="Nama supplier" required></div>
+                <div class="form-group"><label>Nomor PO / Asal</label><input type="text" id="pakanPo" placeholder="Nomor PO atau asal kandang"></div>
                 <div class="form-row">
-                    <div class="form-group">
-                        <label>Jumlah Zak <span class="req">*</span></label>
-                        <input type="number" id="pakanZak" placeholder="0" required min="0">
-                    </div>
-                    <div class="form-group">
-                        <label>Jumlah Kg <span class="req">*</span></label>
-                        <input type="number" id="pakanKg" placeholder="0" required min="0" step="0.1">
-                    </div>
+                    <div class="form-group"><label>Jumlah Zak <span class="req">*</span></label><input type="number" id="pakanZak" placeholder="0" required min="0"></div>
+                    <div class="form-group"><label>Jumlah Kg <span class="req">*</span></label><input type="number" id="pakanKg" placeholder="0" required min="0" step="0.1"></div>
                 </div>
-                
-                <div class="form-group">
-                    <label>Kendaraan</label>
-                    <input type="text" id="pakanKendaraan" placeholder="Nopol atau jenis kendaraan">
-                </div>
-                
-                <div class="form-group">
-                    <label>Deskripsi</label>
-                    <textarea id="pakanDeskripsi" placeholder="Catatan tambahan..."></textarea>
-                </div>
-                
+                <div class="form-group"><label>Kendaraan</label><input type="text" id="pakanKendaraan" placeholder="Nopol atau jenis kendaraan"></div>
+                <div class="form-group"><label>Deskripsi</label><textarea id="pakanDeskripsi" placeholder="Catatan tambahan..."></textarea></div>
                 <div class="form-group">
                     <label>Dokumentasi</label>
-                    <div class="hint">Foto wajib diambil langsung dari kamera.</div>
                     <div class="photo-slot-grid">
-                        <div class="photo-slot" onclick="document.getElementById('pakanFoto1').click()">
-                            <div class="slot-label">Foto 1</div>
-                            <span class="slot-icon">&#128247;</span>
-                            <input type="file" id="pakanFoto1" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewPakan1')">
-                            <div id="previewPakan1" class="preview-single"></div>
-                        </div>
-                        <div class="photo-slot" onclick="document.getElementById('pakanFoto2').click()">
-                            <div class="slot-label">Foto 2</div>
-                            <span class="slot-icon">&#128247;</span>
-                            <input type="file" id="pakanFoto2" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewPakan2')">
-                            <div id="previewPakan2" class="preview-single"></div>
-                        </div>
-                        <div class="photo-slot" onclick="document.getElementById('pakanFoto3').click()">
-                            <div class="slot-label">Foto 3</div>
-                            <span class="slot-icon">&#128247;</span>
-                            <input type="file" id="pakanFoto3" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewPakan3')">
-                            <div id="previewPakan3" class="preview-single"></div>
-                        </div>
-                        <div class="photo-slot" onclick="document.getElementById('pakanFoto4').click()">
-                            <div class="slot-label">Foto 4</div>
-                            <span class="slot-icon">&#128247;</span>
-                            <input type="file" id="pakanFoto4" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewPakan4')">
-                            <div id="previewPakan4" class="preview-single"></div>
-                        </div>
+                        <div class="photo-slot" onclick="document.getElementById('pakanFoto1').click()"><div class="slot-label">Foto 1</div><span class="slot-icon">&#128247;</span><input type="file" id="pakanFoto1" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewPakan1')"><div id="previewPakan1" class="preview-single"></div></div>
+                        <div class="photo-slot" onclick="document.getElementById('pakanFoto2').click()"><div class="slot-label">Foto 2</div><span class="slot-icon">&#128247;</span><input type="file" id="pakanFoto2" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewPakan2')"><div id="previewPakan2" class="preview-single"></div></div>
+                        <div class="photo-slot" onclick="document.getElementById('pakanFoto3').click()"><div class="slot-label">Foto 3</div><span class="slot-icon">&#128247;</span><input type="file" id="pakanFoto3" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewPakan3')"><div id="previewPakan3" class="preview-single"></div></div>
+                        <div class="photo-slot" onclick="document.getElementById('pakanFoto4').click()"><div class="slot-label">Foto 4</div><span class="slot-icon">&#128247;</span><input type="file" id="pakanFoto4" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewPakan4')"><div id="previewPakan4" class="preview-single"></div></div>
                     </div>
                 </div>
-                
                 <button type="submit" class="btn-submit">Kirim Laporan Pakan</button>
             </form>
         </div>
 
-        <!-- TAB 3: KEMATIAN -->
         <div id="tab-kematian" class="tab-content">
             <form id="formKematian">
-                <div class="info-box">
-                    <div class="title">Laporan Kematian</div>
-                    <div class="desc">Catat kematian ayam per jam untuk monitoring 24 jam.</div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Tanggal <span class="req">*</span></label>
-                    <input type="date" id="matiTanggal" required>
-                </div>
-                
+                <div class="info-box"><div class="title">Laporan Kematian</div></div>
+                <div class="form-group"><label>Tanggal <span class="req">*</span></label><input type="date" id="matiTanggal" required></div>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Jam ke- <span class="req">*</span></label>
-                        <select id="matiJam" required>
-                            <option value="">Pilih Jam</option>
-                            <option value="1">01:00</option><option value="2">02:00</option>
-                            <option value="3">03:00</option><option value="4">04:00</option>
-                            <option value="5">05:00</option><option value="6">06:00</option>
-                            <option value="7">07:00</option><option value="8">08:00</option>
-                            <option value="9">09:00</option><option value="10">10:00</option>
-                            <option value="11">11:00</option><option value="12">12:00</option>
-                            <option value="13">13:00</option><option value="14">14:00</option>
-                            <option value="15">15:00</option><option value="16">16:00</option>
-                            <option value="17">17:00</option><option value="18">18:00</option>
-                            <option value="19">19:00</option><option value="20">20:00</option>
-                            <option value="21">21:00</option><option value="22">22:00</option>
-                            <option value="23">23:00</option><option value="24">24:00</option>
-                        </select>
+                        <select id="matiJam" required><option value="">Pilih Jam</option><option value="1">01:00</option><option value="2">02:00</option><option value="3">03:00</option><option value="4">04:00</option><option value="5">05:00</option><option value="6">06:00</option><option value="7">07:00</option><option value="8">08:00</option><option value="9">09:00</option><option value="10">10:00</option><option value="11">11:00</option><option value="12">12:00</option><option value="13">13:00</option><option value="14">14:00</option><option value="15">15:00</option><option value="16">16:00</option><option value="17">17:00</option><option value="18">18:00</option><option value="19">19:00</option><option value="20">20:00</option><option value="21">21:00</option><option value="22">22:00</option><option value="23">23:00</option><option value="24">24:00</option></select>
                     </div>
-                    <div class="form-group">
-                        <label>Pelapor</label>
-                        <input type="text" id="matiPelapor" placeholder="Nama pelapor">
-                    </div>
+                    <div class="form-group"><label>Pelapor</label><input type="text" id="matiPelapor" placeholder="Nama pelapor"></div>
                 </div>
-                
-                <div class="form-group">
-                    <label>Jumlah Kematian <span class="req">*</span></label>
-                    <input type="number" id="matiJumlah" placeholder="0" required min="0">
-                </div>
-                
+                <div class="form-group"><label>Jumlah Kematian <span class="req">*</span></label><input type="number" id="matiJumlah" placeholder="0" required min="0"></div>
                 <div class="form-group">
                     <label>Dokumentasi</label>
-                    <div class="hint">Foto wajib diambil langsung dari kamera.</div>
                     <div class="photo-slot-grid">
-                        <div class="photo-slot" onclick="document.getElementById('matiFoto1').click()">
-                            <div class="slot-label">Foto 1</div>
-                            <span class="slot-icon">&#128247;</span>
-                            <input type="file" id="matiFoto1" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewMati1')">
-                            <div id="previewMati1" class="preview-single"></div>
-                        </div>
-                        <div class="photo-slot" onclick="document.getElementById('matiFoto2').click()">
-                            <div class="slot-label">Foto 2</div>
-                            <span class="slot-icon">&#128247;</span>
-                            <input type="file" id="matiFoto2" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewMati2')">
-                            <div id="previewMati2" class="preview-single"></div>
-                        </div>
-                        <div class="photo-slot" onclick="document.getElementById('matiFoto3').click()">
-                            <div class="slot-label">Foto 3</div>
-                            <span class="slot-icon">&#128247;</span>
-                            <input type="file" id="matiFoto3" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewMati3')">
-                            <div id="previewMati3" class="preview-single"></div>
-                        </div>
-                        <div class="photo-slot" onclick="document.getElementById('matiFoto4').click()">
-                            <div class="slot-label">Foto 4</div>
-                            <span class="slot-icon">&#128247;</span>
-                            <input type="file" id="matiFoto4" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewMati4')">
-                            <div id="previewMati4" class="preview-single"></div>
-                        </div>
+                        <div class="photo-slot" onclick="document.getElementById('matiFoto1').click()"><div class="slot-label">Foto 1</div><span class="slot-icon">&#128247;</span><input type="file" id="matiFoto1" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewMati1')"><div id="previewMati1" class="preview-single"></div></div>
+                        <div class="photo-slot" onclick="document.getElementById('matiFoto2').click()"><div class="slot-label">Foto 2</div><span class="slot-icon">&#128247;</span><input type="file" id="matiFoto2" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewMati2')"><div id="previewMati2" class="preview-single"></div></div>
+                        <div class="photo-slot" onclick="document.getElementById('matiFoto3').click()"><div class="slot-label">Foto 3</div><span class="slot-icon">&#128247;</span><input type="file" id="matiFoto3" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewMati3')"><div id="previewMati3" class="preview-single"></div></div>
+                        <div class="photo-slot" onclick="document.getElementById('matiFoto4').click()"><div class="slot-label">Foto 4</div><span class="slot-icon">&#128247;</span><input type="file" id="matiFoto4" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewMati4')"><div id="previewMati4" class="preview-single"></div></div>
                     </div>
                 </div>
-                
                 <button type="submit" class="btn-submit">Kirim Laporan Kematian</button>
             </form>
         </div>
-
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <div class="text">Menyimpan data...</div>
-        </div>
+        <div class="loading" id="loading"><div class="spinner"></div><div class="text">Menyimpan data...</div></div>
     </div>
 </div>
 
 <script>
-    // KONFIGURASI - GANTI DENGAN URL APPS SCRIPT ANDA
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzPUT7OjMjIJ9IHavNFX_FOWQ1T5MaGVIq3JI0Wi4MhWeP9OzUnfhShQ-6Ec5jZkxtF/exec';
+    // MASUKKAN URL WEB APP ANDA DI SINI
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCPMTD1QMjh05zejnyS_pG7T1OZZojCi5HxTKtHIc9Bll7-HZZTicv3zW-24TyTx1qow/exec';
     
     const alertEl = document.getElementById('alert');
     const loadingEl = document.getElementById('loading');
 
-    // Update waktu real-time
     function updateTime() { 
         const now = new Date(); 
-        document.getElementById('currentTime').textContent = now.toLocaleDateString('id-ID', { 
-            weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', 
-            hour: '2-digit', minute: '2-digit', second: '2-digit' 
-        }); 
+        document.getElementById('currentTime').textContent = now.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }); 
     } 
-    updateTime(); 
-    setInterval(updateTime, 1000);
+    updateTime(); setInterval(updateTime, 1000);
 
-    // Check status koneksi
     async function checkStatus() { 
-        try { 
-            await fetch(SCRIPT_URL, { method: 'GET', mode: 'no-cors' }); 
-            document.getElementById('statusDot').className = 'dot online'; 
-            document.getElementById('statusText').textContent = 'Online'; 
-        } catch (_) { 
-            document.getElementById('statusDot').className = 'dot offline'; 
-            document.getElementById('statusText').textContent = 'Offline'; 
-        } 
+        try { await fetch(SCRIPT_URL, { method: 'GET', mode: 'no-cors' }); document.getElementById('statusDot').className = 'dot online'; document.getElementById('statusText').textContent = 'Online'; } 
+        catch (_) { document.getElementById('statusDot').className = 'dot offline'; document.getElementById('statusText').textContent = 'Offline'; } 
     } 
-    checkStatus(); 
-    setInterval(checkStatus, 30000);
+    checkStatus(); setInterval(checkStatus, 30000);
 
-    // Tab switching
     document.querySelectorAll('.tab-btn').forEach(btn => { 
         btn.addEventListener('click', function() { 
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); 
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active')); 
-            this.classList.add('active'); 
-            document.getElementById('tab-' + this.dataset.tab).classList.add('active'); 
+            this.classList.add('active'); document.getElementById('tab-' + this.dataset.tab).classList.add('active'); 
         }); 
     });
 
-    // Alert function
     function showAlert(msg, type) { 
-        alertEl.className = 'alert show ' + type; 
-        alertEl.innerHTML = '<span>' + (type === 'success' ? '✓' : '✗') + '</span> ' + msg; 
-        clearTimeout(alertEl._timer); 
-        alertEl._timer = setTimeout(() => alertEl.classList.remove('show'), 5000); 
+        alertEl.className = 'alert show ' + type; alertEl.innerHTML = '<span>' + (type === 'success' ? '✓' : '✗') + '</span> ' + msg; 
+        clearTimeout(alertEl._timer); alertEl._timer = setTimeout(() => alertEl.classList.remove('show'), 5000); 
     }
 
-    // Handle file selection
     function handleSingleFileSelect(input, previewId) { 
-        const container = document.getElementById(previewId); 
-        container.innerHTML = ''; 
-        const file = input.files[0]; 
+        const container = document.getElementById(previewId); container.innerHTML = ''; const file = input.files[0]; 
         if (!file) return; 
-        
-        if (file.size > 5 * 1024 * 1024) {
-            showAlert('Ukuran foto terlalu besar (max 5MB)', 'error');
-            input.value = '';
-            return;
-        }
-        
+        if (file.size > 5 * 1024 * 1024) { showAlert('Ukuran foto terlalu besar (max 5MB)', 'error'); input.value = ''; return; }
         const reader = new FileReader(); 
         reader.onload = function(e) { 
-            const item = document.createElement('div'); 
-            item.className = 'item'; 
-            const img = document.createElement('img'); 
-            img.src = e.target.result; 
-            img.alt = file.name; 
-            const remove = document.createElement('button'); 
-            remove.className = 'remove'; 
-            remove.textContent = '×'; 
-            remove.type = 'button'; 
-            remove.addEventListener('click', function(e) { 
-                e.stopPropagation(); 
-                input.value = ''; 
-                container.innerHTML = ''; 
-            }); 
-            item.appendChild(img); 
-            item.appendChild(remove); 
-            container.appendChild(item); 
+            const item = document.createElement('div'); item.className = 'item'; 
+            const img = document.createElement('img'); img.src = e.target.result; img.alt = file.name; 
+            const remove = document.createElement('button'); remove.className = 'remove'; remove.textContent = '×'; remove.type = 'button'; 
+            remove.addEventListener('click', function(e) { e.stopPropagation(); input.value = ''; container.innerHTML = ''; }); 
+            item.appendChild(img); item.appendChild(remove); container.appendChild(item); 
         }; 
         reader.readAsDataURL(file); 
     }
 
-    // Convert file to base64
     function fileToBase64(file) { 
         return new Promise((resolve, reject) => { 
-            const reader = new FileReader(); 
-            reader.onload = () => resolve(reader.result.split(',')[1]); 
-            reader.onerror = reject; 
-            reader.readAsDataURL(file); 
+            const reader = new FileReader(); reader.onload = () => resolve(reader.result.split(',')[1]); reader.onerror = reject; reader.readAsDataURL(file); 
         }); 
     }
 
-    // Toggle form tambah periode
-    function toggleAddPeriode() {
-        const form = document.getElementById('addPeriodeForm');
-        form.classList.toggle('active');
-    }
+    function toggleAddPeriode() { document.getElementById('addPeriodeForm').classList.toggle('active'); }
 
-    // Load periode dari backend
     async function loadPeriode() {
         try {
             const response = await fetch(SCRIPT_URL + '?action=getPeriode');
             const result = await response.json();
-            
             if (result.status === 'success' && result.data) {
-                const select = document.getElementById('globalPeriode');
-                select.innerHTML = '<option value="">-- Pilih Periode --</option>';
-                
+                const select = document.getElementById('globalPeriode'); select.innerHTML = '<option value="">-- Pilih Periode --</option>';
                 result.data.forEach(periode => {
-                    const option = document.createElement('option');
-                    option.value = periode.id_periode;
-                    option.textContent = periode.display_name || periode.id_periode;
-                    select.appendChild(option);
+                    const option = document.createElement('option'); option.value = periode.id_periode; option.textContent = periode.display_name || periode.id_periode; select.appendChild(option);
                 });
-                
-                const activePeriode = result.data.find(p => p.status === 'Aktif');
-                if (activePeriode) {
-                    select.value = activePeriode.id_periode;
-                }
+                const activePeriode = result.data.find(p => p.status === 'Aktif'); if (activePeriode) { select.value = activePeriode.id_periode; }
             }
-        } catch (error) {
-            console.error('Gagal load periode:', error);
-        }
+        } catch (error) { console.error('Gagal load periode:', error); }
     }
 
-    // Tambah periode baru
     async function addNewPeriode() {
-        const idPeriode = document.getElementById('newPeriodeId').value;
-        const tanggalMasuk = document.getElementById('newPeriodeTanggalMasuk').value;
-        const estimasiHari = document.getElementById('newPeriodeEstimasiHari').value || 60;
-        const jumlahBibit = document.getElementById('newPeriodeJumlahBibit').value;
-        const jenisBibit = document.getElementById('newPeriodeJenisBibit').value;
-        
-        if (!idPeriode || !tanggalMasuk) {
-            showAlert('ID Periode dan Tanggal Bibit Masuk wajib diisi!', 'error');
-            return;
-        }
-        
+        const idPeriode = document.getElementById('newPeriodeId').value; const tanggalMasuk = document.getElementById('newPeriodeTanggalMasuk').value;
+        const estimasiHari = document.getElementById('newPeriodeEstimasiHari').value || 60; const jumlahBibit = document.getElementById('newPeriodeJumlahBibit').value; const jenisBibit = document.getElementById('newPeriodeJenisBibit').value;
+        if (!idPeriode || !tanggalMasuk) { showAlert('ID Periode dan Tanggal Bibit Masuk wajib diisi!', 'error'); return; }
         try {
-            await fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify({
-                    action: 'addPeriode',
-                    data: {
-                        id_periode: idPeriode,
-                        tanggal_masuk: tanggalMasuk,
-                        estimasi_hari: estimasiHari,
-                        jumlah_bibit: jumlahBibit,
-                        jenis_bibit: jenisBibit
-                    }
-                })
-            });
-            
+            await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: 'addPeriode', data: { id_periode: idPeriode, tanggal_masuk: tanggalMasuk, estimasi_hari: estimasiHari, jumlah_bibit: jumlahBibit, jenis_bibit: jenisBibit } }) });
             showAlert('Periode baru berhasil ditambahkan!', 'success');
-            
-            document.getElementById('newPeriodeId').value = '';
-            document.getElementById('newPeriodeTanggalMasuk').value = '';
-            document.getElementById('addPeriodeForm').classList.remove('active');
-            
-            loadPeriode();
-            
-        } catch (error) {
-            showAlert('Error: ' + error.message, 'error');
-        }
+            document.getElementById('newPeriodeId').value = ''; document.getElementById('newPeriodeTanggalMasuk').value = ''; document.getElementById('addPeriodeForm').classList.remove('active'); loadPeriode();
+        } catch (error) { showAlert('Error: ' + error.message, 'error'); }
     }
 
-    // Get selected periode
     function getSelectedPeriode() {
-        const periode = document.getElementById('globalPeriode').value;
-        if (!periode) throw new Error("Silakan pilih Periode / Siklus Aktif terlebih dahulu!");
-        return periode;
+        const periode = document.getElementById('globalPeriode').value; if (!periode) throw new Error("Silakan pilih Periode / Siklus Aktif terlebih dahulu!"); return periode;
     }
 
-    // Initialize form
     function initForm(formId, sheetName, dataBuilder) {
         const form = document.getElementById(formId);
         form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            if (!this.checkValidity()) {
-                this.reportValidity();
-                return;
-            }
-            
-            loadingEl.classList.add('active');
-            const btn = this.querySelector('.btn-submit');
-            btn.disabled = true;
-            const originalText = btn.textContent;
-            btn.textContent = 'Menyimpan...';
-
+            e.preventDefault(); if (!this.checkValidity()) { this.reportValidity(); return; }
+            loadingEl.classList.add('active'); const btn = this.querySelector('.btn-submit'); btn.disabled = true; const originalText = btn.textContent; btn.textContent = 'Menyimpan...';
             try {
-                const activePeriode = getSelectedPeriode(); 
-                const data = await dataBuilder(this);
-                data.sheetName = sheetName;
-                data.id_periode = activePeriode;
-
-                await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(data)
-                });
-
+                const activePeriode = getSelectedPeriode(); const data = await dataBuilder(this); data.sheetName = sheetName; data.id_periode = activePeriode;
+                await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(data) });
                 showAlert('Data berhasil disimpan ke ' + activePeriode + '.', 'success');
-                
-                this.reset();
-                this.querySelectorAll('.preview-single').forEach(el => el.innerHTML = '');
-                this.querySelectorAll('input[type="file"]').forEach(fi => { fi.value = ''; });
-                
-                const dateInput = this.querySelector('input[type="date"]');
-                if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
-
-            } catch (err) {
-                showAlert('Error: ' + err.message, 'error');
-                console.error(err);
-            } finally {
-                loadingEl.classList.remove('active');
-                btn.disabled = false;
-                btn.textContent = originalText;
-            }
+                this.reset(); this.querySelectorAll('.preview-single').forEach(el => el.innerHTML = ''); this.querySelectorAll('input[type="file"]').forEach(fi => { fi.value = ''; });
+                const dateInput = this.querySelector('input[type="date"]'); if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
+            } catch (err) { showAlert('Error: ' + err.message, 'error'); console.error(err); } 
+            finally { loadingEl.classList.remove('active'); btn.disabled = false; btn.textContent = originalText; }
         });
     }
 
-    // Build data untuk Daily
     async function buildDaily(form) {
-        const getSingleFileAsList = async (id) => { 
-            const f = document.getElementById(id).files[0]; 
-            const list = []; 
-            if (f) { 
-                list.push({ data: await fileToBase64(f), name: f.name, mime: f.type }); 
-            } 
-            return list; 
-        };
-        
-        return {
-            tanggal: document.getElementById('dailyTanggal').value,
-            pakan_atas: document.getElementById('dailyPakanAtas').value || 0,
-            pakan_bawah: document.getElementById('dailyPakanBawah').value || 0,
-            abw_sekat1: document.getElementById('dailyAbw1').value || 0,
-            abw_sekat2: document.getElementById('dailyAbw2').value || 0,
-            abw_sekat3: document.getElementById('dailyAbw3').value || 0,
-            abw_sekat4: document.getElementById('dailyAbw4').value || 0,
-            fotoList1: await getSingleFileAsList('dailyFoto1'),
-            fotoList2: await getSingleFileAsList('dailyFoto2'),
-            fotoList3: await getSingleFileAsList('dailyFoto3'),
-            fotoList4: await getSingleFileAsList('dailyFoto4')
-        };
+        const getSingleFileAsList = async (id) => { const f = document.getElementById(id).files[0]; const list = []; if (f) { list.push({ data: await fileToBase64(f), name: f.name, mime: f.type }); } return list; };
+        return { tanggal: document.getElementById('dailyTanggal').value, pakan_atas: document.getElementById('dailyPakanAtas').value || 0, pakan_bawah: document.getElementById('dailyPakanBawah').value || 0, abw_sekat1: document.getElementById('dailyAbw1').value || 0, abw_sekat2: document.getElementById('dailyAbw2').value || 0, abw_sekat3: document.getElementById('dailyAbw3').value || 0, abw_sekat4: document.getElementById('dailyAbw4').value || 0, fotoList1: await getSingleFileAsList('dailyFoto1'), fotoList2: await getSingleFileAsList('dailyFoto2'), fotoList3: await getSingleFileAsList('dailyFoto3'), fotoList4: await getSingleFileAsList('dailyFoto4') };
     }
 
-    // Build data untuk Pakan
     async function buildPakan(form) {
-        const ids = ['pakanFoto1', 'pakanFoto2', 'pakanFoto3', 'pakanFoto4']; 
-        const list = [];
-        for (const id of ids) { 
-            const f = document.getElementById(id).files[0]; 
-            if (f) list.push({ data: await fileToBase64(f), name: f.name, mime: f.type }); 
-        }
-        return {
-            tanggal: document.getElementById('pakanTanggal').value,
-            sumber_pakan: document.getElementById('pakanSumber').value,
-            no_po_atau_asal: document.getElementById('pakanPo').value,
-            jumlah_zak: document.getElementById('pakanZak').value,
-            jumlah_kg: document.getElementById('pakanKg').value,
-            kendaraan: document.getElementById('pakanKendaraan').value,
-            deskripsi: document.getElementById('pakanDeskripsi').value,
-            fotoList: list
-        };
+        const ids = ['pakanFoto1', 'pakanFoto2', 'pakanFoto3', 'pakanFoto4']; const list = [];
+        for (const id of ids) { const f = document.getElementById(id).files[0]; if (f) list.push({ data: await fileToBase64(f), name: f.name, mime: f.type }); }
+        return { tanggal: document.getElementById('pakanTanggal').value, sumber_pakan: document.getElementById('pakanSumber').value, no_po_atau_asal: document.getElementById('pakanPo').value, jumlah_zak: document.getElementById('pakanZak').value, jumlah_kg: document.getElementById('pakanKg').value, kendaraan: document.getElementById('pakanKendaraan').value, deskripsi: document.getElementById('pakanDeskripsi').value, fotoList: list };
     }
 
-    // Build data untuk Kematian
     async function buildKematian(form) {
-        const ids = ['matiFoto1', 'matiFoto2', 'matiFoto3', 'matiFoto4']; 
-        const list = [];
-        for (const id of ids) { 
-            const f = document.getElementById(id).files[0]; 
-            if (f) list.push({ data: await fileToBase64(f), name: f.name, mime: f.type }); 
-        }
-        return {
-            tanggal: document.getElementById('matiTanggal').value,
-            jam: document.getElementById('matiJam').value,
-            pelapor: document.getElementById('matiPelapor').value || 'Staff',
-            jumlah_mati: document.getElementById('matiJumlah').value,
-            fotoList: list
-        };
+        const ids = ['matiFoto1', 'matiFoto2', 'matiFoto3', 'matiFoto4']; const list = [];
+        for (const id of ids) { const f = document.getElementById(id).files[0]; if (f) list.push({ data: await fileToBase64(f), name: f.name, mime: f.type }); }
+        return { tanggal: document.getElementById('matiTanggal').value, jam: document.getElementById('matiJam').value, pelapor: document.getElementById('matiPelapor').value || 'Staff', jumlah_mati: document.getElementById('matiJumlah').value, fotoList: list };
     }
 
-    // Inisialisasi semua form
-    initForm('formDaily', 'Report Daily', buildDaily);
-    initForm('formPakan', 'Report Pakan', buildPakan);
-    initForm('formKematian', 'Report Kematian', buildKematian);
-
-    // Load periode saat halaman dimuat
+    initForm('formDaily', 'Report Daily', buildDaily); initForm('formPakan', 'Report Pakan', buildPakan); initForm('formKematian', 'Report Kematian', buildKematian);
     loadPeriode();
-
-    // Set tanggal default
-    const today = new Date().toISOString().split('T')[0];
-    document.querySelectorAll('input[type="date"]').forEach(el => { 
-        if (!el.value) el.value = today; 
-    });
-    
-    console.log('Nadz Farm\'s Form loaded dengan periode dinamis.');
+    const today = new Date().toISOString().split('T')[0]; document.querySelectorAll('input[type="date"]').forEach(el => { if (!el.value) el.value = today; });
 </script>
-
 </body>
 </html>
