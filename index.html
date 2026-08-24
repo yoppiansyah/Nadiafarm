@@ -4,67 +4,161 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nadz Farm's - Input Laporan</title>
+    <!-- Font & Professional Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
+        :root {
+            --primary: #1a1a2e;
+            --primary-light: #16213e;
+            --accent: #22c55e;
+            --accent-hover: #16a34a;
+            --bg-color: #f0f2f5;
+            --card-bg: #ffffff;
+            --text-main: #1a1a2e;
+            --text-muted: #64748b;
+            --border: #e8ecf1;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+        }
+
+        /* Dark Mode Support (Konsisten dengan Dashboard) */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #0f172a;
+                --card-bg: #1e293b;
+                --text-main: #f1f5f9;
+                --text-muted: #94a3b8;
+                --border: #334155;
+                --primary: #8b5cf6;
+                --primary-light: #7c3aed;
+            }
+            body { color: var(--text-main); }
+            .form-group input, .form-group select, .form-group textarea { background: #334155 !important; color: white !important; border-color: #475569 !important; }
+            .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary) !important; }
+            .periode-box { background: rgba(34, 197, 94, 0.1) !important; border-color: rgba(34, 197, 94, 0.3) !important; }
+            .periode-box select { background: var(--card-bg) !important; color: var(--text-main) !important; border-color: var(--border) !important; }
+            .populasi-info { background: linear-gradient(135deg, rgba(30, 64, 175, 0.1) 0%, rgba(22, 163, 74, 0.1) 100%) !important; border-color: var(--border) !important; }
+            .populasi-item { background: var(--card-bg) !important; }
+            .photo-slot { background: #334155 !important; border-color: #475569 !important; }
+            .photo-slot:hover { border-color: var(--primary) !important; background: #475569 !important; }
+            .info-box { background: #334155 !important; border-left-color: var(--primary) !important; }
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; background: #f0f2f5; min-height: 100vh; padding: 20px; color: #1a1a2e; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-color); min-height: 100vh; padding: 20px; color: var(--text-main); transition: background 0.3s; }
         .container { max-width: 960px; margin: 0 auto; }
-        .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: white; padding: 20px 28px; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .header .brand h1 { font-size: 22px; font-weight: 700; }
-        .header .brand .sub { font-size: 11px; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px; }
-        .header .status { display: flex; align-items: center; gap: 10px; font-size: 13px; background: rgba(255,255,255,0.06); padding: 6px 14px; border-radius: 20px; }
+        
+        .header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); color: white; padding: 20px 28px; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .header .brand h1 { font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .header .brand .sub { font-size: 11px; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+        .header .status { display: flex; align-items: center; gap: 10px; font-size: 13px; background: rgba(255,255,255,0.1); padding: 6px 14px; border-radius: 20px; backdrop-filter: blur(5px); }
         .status .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
-        .status .dot.online { background: #2ecc71; }
-        .status .dot.offline { background: #e74c3c; }
-        .status .time { opacity: 0.5; font-size: 12px; }
-        .card { background: white; border-radius: 0 0 12px 12px; padding: 28px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
-        .alert { padding: 12px 18px; border-radius: 8px; margin-bottom: 18px; display: none; font-size: 14px; font-weight: 500; border-left: 4px solid transparent; }
-        .alert.show { display: flex; align-items: center; gap: 10px; }
-        .alert.success { background: #eafaf1; color: #1a7a42; border-left-color: #2ecc71; }
-        .alert.error { background: #fdf2f2; color: #a93226; border-left-color: #e74c3c; }
-        .periode-box { background: #f0fdf4; border: 2px solid #22c55e; padding: 16px; border-radius: 10px; margin-bottom: 16px; }
+        .status .dot.online { background: var(--success); box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.3); }
+        .status .dot.offline { background: var(--danger); box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.3); }
+        .status .time { opacity: 0.7; font-size: 12px; }
+        
+        .card { background: var(--card-bg); border-radius: 0 0 12px 12px; padding: 28px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: background 0.3s; }
+        
+        .alert { padding: 12px 18px; border-radius: 8px; margin-bottom: 18px; display: none; font-size: 14px; font-weight: 500; border-left: 4px solid transparent; align-items: center; gap: 10px; }
+        .alert.show { display: flex; animation: slideDown 0.3s ease; }
+        .alert i { font-size: 18px; flex-shrink: 0; }
+        .alert.success { background: rgba(46, 204, 113, 0.1); color: #15803d; border-left-color: var(--success); }
+        .alert.error { background: rgba(231, 76, 60, 0.1); color: #b91c1c; border-left-color: var(--danger); }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .periode-box { background: rgba(34, 197, 94, 0.08); border: 2px solid var(--accent); padding: 16px; border-radius: 10px; margin-bottom: 16px; }
         .periode-box label { font-size: 13px; font-weight: 700; color: #15803d; display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .periode-box select { width: 100%; padding: 10px 14px; border: 2px solid #86efac; border-radius: 8px; font-size: 15px; font-weight: 600; color: #166534; background: white; cursor: pointer; outline: none; }
-        .periode-box select:focus { border-color: #22c55e; }
-        .periode-box .hint { font-size: 11px; color: #166534; margin-top: 8px; opacity: 0.8; }
-        .btn-add-periode { width: 100%; padding: 10px; background: #22c55e; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; }
-        .btn-add-periode:hover { background: #16a34a; }
-        .add-periode-form { display: none; margin-top: 16px; padding: 16px; background: white; border-radius: 8px; border: 2px solid #e8ecf1; }
+        @media (prefers-color-scheme: dark) { .periode-box label { color: #4ade80; } }
+        
+        .periode-box select { width: 100%; padding: 10px 14px; border: 2px solid #86efac; border-radius: 8px; font-size: 15px; font-weight: 600; color: #166534; background: white; cursor: pointer; outline: none; font-family: inherit; }
+        .periode-box select:focus { border-color: var(--accent); }
+        .periode-box .hint { font-size: 11px; color: #166534; margin-top: 8px; opacity: 0.8; display: flex; align-items: center; gap: 4px; }
+        @media (prefers-color-scheme: dark) { .periode-box .hint { color: #86efac; } }
+
+        .populasi-info { margin-top: 12px; padding: 14px; background: linear-gradient(135deg, rgba(30, 64, 175, 0.05) 0%, rgba(22, 163, 74, 0.05) 100%); border-radius: 8px; border: 1px solid #bae6fd; display: none; }
+        .populasi-info.active { display: block; animation: fadeIn 0.3s ease; }
+        .populasi-info .title { font-weight: 700; color: #0369a1; margin-bottom: 12px; font-size: 13px; display: flex; align-items: center; gap: 6px; }
+        @media (prefers-color-scheme: dark) { .populasi-info .title { color: #7dd3fc; } }
+        
+        .populasi-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; text-align: center; }
+        .populasi-item { background: var(--card-bg); padding: 12px 8px; border-radius: 8px; border: 1px solid var(--border); }
+        .populasi-item .label { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .populasi-item .label i { font-size: 14px; }
+        .populasi-item .value { font-size: 18px; font-weight: 800; }
+        .populasi-item .value.blue { color: #1e40af; }
+        .populasi-item .value.red { color: #dc2626; }
+        .populasi-item .value.green { color: #16a34a; }
+        .mortalitas { margin-top: 12px; text-align: center; font-size: 12px; color: var(--text-muted); padding-top: 10px; border-top: 1px dashed var(--border); }
+
+        .btn-add-periode { width: 100%; padding: 12px; background: var(--accent); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; font-family: inherit; }
+        .btn-add-periode:hover { background: var(--accent-hover); transform: translateY(-1px); }
+        .btn-add-periode i { font-size: 18px; }
+
+        .add-periode-form { display: none; margin-top: 16px; padding: 20px; background: var(--card-bg); border-radius: 10px; border: 2px solid var(--border); animation: fadeIn 0.3s ease; }
         .add-periode-form.active { display: block; }
-        .tabs { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 2px solid #e8ecf1; flex-wrap: wrap; }
-        .tab-btn { padding: 10px 22px; border: none; background: transparent; color: #7f8c8d; font-weight: 600; font-size: 14px; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
-        .tab-btn.active { color: #1a1a2e; border-bottom-color: #1a1a2e; }
-        .tab-content { display: none; animation: fade 0.3s ease; }
+        .add-periode-form h3 { font-size: 16px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+
+        .tabs { display: flex; gap: 4px; margin-top: 24px; margin-bottom: 24px; border-bottom: 2px solid var(--border); flex-wrap: wrap; }
+        .tab-btn { padding: 12px 22px; border: none; background: transparent; color: var(--text-muted); font-weight: 600; font-size: 14px; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s; display: flex; align-items: center; gap: 6px; font-family: inherit; }
+        .tab-btn i { font-size: 18px; }
+        .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+        .tab-btn:hover:not(.active) { color: var(--text-main); background: rgba(0,0,0,0.02); border-radius: 8px 8px 0 0; }
+
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
         .tab-content.active { display: block; }
-        @keyframes fade { 0% { opacity: 0; transform: translateY(6px); } 100% { opacity: 1; transform: translateY(0); } }
-        .info-box { background: #f8f9fc; padding: 14px 18px; border-radius: 8px; border-left: 4px solid #1a1a2e; margin-bottom: 20px; }
-        .info-box .title { font-weight: 700; font-size: 14px; }
-        .info-box .desc { font-size: 13px; color: #5d6d7e; margin-top: 2px; }
-        .form-group { margin-bottom: 16px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 13px; color: #2c3e50; }
-        .form-group label .req { color: #e74c3c; }
-        .form-group .hint { font-size: 11px; color: #9aa5b1; margin-bottom: 6px; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 9px 13px; border: 2px solid #e8ecf1; border-radius: 8px; font-size: 14px; background: white; color: #1a1a2e; }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #1a1a2e; }
-        .form-group textarea { min-height: 60px; resize: vertical; }
+        @keyframes fadeIn { 0% { opacity: 0; transform: translateY(6px); } 100% { opacity: 1; transform: translateY(0); } }
+
+        .info-box { background: rgba(26, 26, 46, 0.03); padding: 14px 18px; border-radius: 8px; border-left: 4px solid var(--primary); margin-bottom: 20px; }
+        @media (prefers-color-scheme: dark) { .info-box { background: rgba(139, 92, 246, 0.1); } }
+        .info-box .title { font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+        .info-box .title i { font-size: 16px; color: var(--primary); }
+
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: var(--text-main); display: flex; align-items: center; gap: 4px; }
+        .form-group label .req { color: var(--danger); }
+        .form-group .hint { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 14px; border: 2px solid var(--border); border-radius: 8px; font-size: 14px; background: var(--card-bg); color: var(--text-main); font-family: inherit; transition: 0.2s; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1); }
+        .form-group textarea { min-height: 70px; resize: vertical; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        .photo-slot-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 4px; }
-        .photo-slot { border: 2px dashed #dce1e8; border-radius: 8px; padding: 10px 6px 8px; text-align: center; cursor: pointer; background: #fafbfc; transition: all 0.2s; }
-        .photo-slot:hover { border-color: #1a1a2e; background: #f0f2f5; }
+
+        .photo-slot-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 8px; }
+        .photo-slot { border: 2px dashed var(--border); border-radius: 10px; padding: 12px 6px; text-align: center; cursor: pointer; background: rgba(0,0,0,0.01); transition: all 0.2s; }
+        .photo-slot:hover { border-color: var(--primary); background: rgba(139, 92, 246, 0.05); }
         .photo-slot input[type="file"] { display: none; }
-        .photo-slot .slot-label { font-size: 11px; font-weight: 700; color: #5d6d7e; margin-bottom: 6px; }
-        .photo-slot .slot-icon { font-size: 20px; color: #9aa5b1; }
-        .photo-slot .preview-single .item { position: relative; border-radius: 6px; overflow: hidden; border: 2px solid #e8ecf1; aspect-ratio: 1/1; margin-top: 2px; }
+        .photo-slot .slot-label { font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; }
+        .photo-slot .slot-icon { font-size: 24px; color: var(--text-muted); display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .photo-slot:hover .slot-icon { color: var(--primary); transform: scale(1.1); }
+        
+        .photo-slot .preview-single .item { position: relative; border-radius: 8px; overflow: hidden; border: 2px solid var(--border); aspect-ratio: 1/1; margin-top: 4px; background: #f1f5f9; }
         .photo-slot .preview-single .item img { width: 100%; height: 100%; object-fit: cover; }
-        .photo-slot .preview-single .item .remove { position: absolute; top: -5px; right: -5px; background: #e74c3c; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; cursor: pointer; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
-        .btn-submit { width: 100%; padding: 13px; background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%); color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 8px; transition: all 0.2s; }
-        .btn-submit:hover { opacity: 0.9; }
-        .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
-        .loading { display: none; text-align: center; padding: 24px 0; }
+        .photo-slot .preview-single .item .remove { position: absolute; top: -6px; right: -6px; background: var(--danger); color: white; border: 2px solid white; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: 0.2s; }
+        .photo-slot .preview-single .item .remove:hover { transform: scale(1.1); }
+
+        .btn-submit { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 12px; transition: all 0.2s; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-submit:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26, 26, 46, 0.2); }
+        .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        .loading { display: none; text-align: center; padding: 30px 0; }
         .loading.active { display: block; }
-        .loading .spinner { width: 36px; height: 36px; border: 4px solid #e8ecf1; border-top-color: #1a1a2e; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 10px; }
+        .loading .spinner { width: 36px; height: 36px; border: 4px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
+        .loading .text { font-size: 14px; font-weight: 600; color: var(--text-muted); }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @media (max-width: 768px) { .header { flex-direction: column; align-items: stretch; } .form-row { grid-template-columns: 1fr; gap: 0; } .tab-btn { flex: 1; text-align: center; } }
-        @media (max-width: 480px) { .photo-slot-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        @media (max-width: 768px) { 
+            .header { flex-direction: column; align-items: stretch; text-align: center; } 
+            .header .brand h1 { justify-content: center; }
+            .header .status { justify-content: center; }
+            .form-row { grid-template-columns: 1fr; gap: 0; } 
+            .tab-btn { flex: 1; justify-content: center; font-size: 13px; padding: 10px; } 
+            .tab-btn span { display: none; } /* Hide text on very small screens, keep icon */
+            .populasi-grid { grid-template-columns: 1fr; } 
+        }
+        @media (max-width: 480px) { 
+            .photo-slot-grid { grid-template-columns: repeat(2, 1fr); } 
+            .tab-btn span { display: inline; } /* Revert for normal mobile */
+        }
     </style>
 </head>
 <body>
@@ -72,7 +166,7 @@
 <div class="container">
     <div class="header">
         <div class="brand">
-            <h1>Nadz Farm's</h1>
+            <h1><i class="ph ph-plant"></i> Nadz Farm's</h1>
             <div class="sub">Sistem Pencatatan Laporan</div>
         </div>
         <div class="status">
@@ -86,121 +180,289 @@
         <div id="alert" class="alert"></div>
 
         <div class="periode-box">
-            <label>Periode / Siklus Aktif <span style="color: #e74c3c;">*</span></label>
-            <select id="globalPeriode">
+            <label>Periode / Siklus Aktif <span style="color: var(--danger);">*</span></label>
+            <select id="globalPeriode" onchange="onPeriodeChange()">
                 <option value="">-- Memuat Periode... --</option>
             </select>
-            <div class="hint">ℹ️ Umur ayam dihitung otomatis dari tanggal bibit masuk.</div>
+            <div class="hint"><i class="ph ph-info"></i> Umur ayam dihitung otomatis dari tanggal bibit masuk.</div>
+            <div id="populasiInfo" class="populasi-info"></div>
         </div>
 
-        <button type="button" class="btn-add-periode" onclick="toggleAddPeriode()">➕ Tambah Periode Baru</button>
+        <button type="button" class="btn-add-periode" onclick="toggleAddPeriode()">
+            <i class="ph ph-plus-circle"></i> Tambah Periode Baru
+        </button>
 
         <div id="addPeriodeForm" class="add-periode-form">
-            <h3 style="margin-bottom: 16px;">Tambah Periode Baru</h3>
+            <h3><i class="ph ph-calendar-plus"></i> Tambah Periode Baru</h3>
             <div class="form-row">
-                <div class="form-group"><label>ID Periode <span class="req">*</span></label><input type="text" id="newPeriodeId" placeholder="Contoh: Siklus 3"></div>
-                <div class="form-group"><label>Tanggal Bibit Masuk <span class="req">*</span></label><input type="date" id="newPeriodeTanggalMasuk"></div>
+                <div class="form-group">
+                    <label>ID Periode <span class="req">*</span></label>
+                    <input type="text" id="newPeriodeId" placeholder="Contoh: Siklus 3">
+                </div>
+                <div class="form-group">
+                    <label>Tanggal Bibit Masuk <span class="req">*</span></label>
+                    <input type="date" id="newPeriodeTanggalMasuk">
+                </div>
             </div>
             <div class="form-row">
-                <div class="form-group"><label>Estimasi Hari Panen</label><input type="number" id="newPeriodeEstimasiHari" value="60" min="30" max="90"></div>
-                <div class="form-group"><label>Jumlah Bibit</label><input type="number" id="newPeriodeJumlahBibit" placeholder="5000" min="0"></div>
+                <div class="form-group">
+                    <label>Estimasi Hari Panen</label>
+                    <input type="number" id="newPeriodeEstimasiHari" value="60" min="30" max="90">
+                </div>
+                <div class="form-group">
+                    <label>Jumlah Bibit <span class="req">*</span></label>
+                    <input type="number" id="newPeriodeJumlahBibit" placeholder="5000" min="1" required>
+                </div>
             </div>
-            <div class="form-group"><label>Jenis Bibit</label><input type="text" id="newPeriodeJenisBibit" value="DOC Broiler"></div>
-            <button type="button" class="btn-submit" onclick="addNewPeriode()" style="margin-top: 0;">Simpan Periode Baru</button>
+            <div class="form-group">
+                <label>Jenis Bibit</label>
+                <input type="text" id="newPeriodeJenisBibit" value="DOC Broiler">
+            </div>
+            <button type="button" class="btn-submit" onclick="addNewPeriode()" style="margin-top: 0;">
+                <i class="ph ph-floppy-disk"></i> Simpan Periode Baru
+            </button>
         </div>
 
-        <div class="tabs" style="margin-top: 24px;">
-            <button class="tab-btn active" data-tab="daily">Harian</button>
-            <button class="tab-btn" data-tab="pakan">Pakan</button>
-            <button class="tab-btn" data-tab="kematian">Kematian</button>
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="daily"><i class="ph ph-clipboard-text"></i> <span>Harian</span></button>
+            <button class="tab-btn" data-tab="pakan"><i class="ph ph-bowl-food"></i> <span>Pakan</span></button>
+            <button class="tab-btn" data-tab="kematian"><i class="ph ph-warning-octagon"></i> <span>Kematian</span></button>
         </div>
 
+        <!-- TAB HARIAN -->
         <div id="tab-daily" class="tab-content active">
             <form id="formDaily">
-                <div class="info-box"><div class="title">Laporan Harian</div></div>
-                <div class="form-group"><label>Tanggal <span class="req">*</span></label><input type="date" id="dailyTanggal" required></div>
-                <div class="form-row">
-                    <div class="form-group"><label>Pakan Atas (Karung)</label><input type="number" id="dailyPakanAtas" placeholder="0" min="0" value="0"></div>
-                    <div class="form-group"><label>Pakan Bawah (Karung)</label><input type="number" id="dailyPakanBawah" placeholder="0" min="0" value="0"></div>
+                <div class="info-box">
+                    <div class="title"><i class="ph ph-list-dashes"></i> Laporan Harian</div>
                 </div>
-                <div class="info-box"><div class="title">Dokumentasi Timbangan</div></div>
-                <div class="form-group"><label>Sekat 1</label><input type="number" id="dailyAbw1" placeholder="Berat (gram)" step="0.1"><div class="photo-slot" onclick="document.getElementById('dailyFoto1').click()" style="margin-top: 6px;"><div class="slot-label">Foto Sekat 1</div><span class="slot-icon">&#128247;</span><input type="file" id="dailyFoto1" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'preview1')"><div id="preview1" class="preview-single"></div></div></div>
-                <div class="form-group"><label>Sekat 2</label><input type="number" id="dailyAbw2" placeholder="Berat (gram)" step="0.1"><div class="photo-slot" onclick="document.getElementById('dailyFoto2').click()" style="margin-top: 6px;"><div class="slot-label">Foto Sekat 2</div><span class="slot-icon">&#128247;</span><input type="file" id="dailyFoto2" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'preview2')"><div id="preview2" class="preview-single"></div></div></div>
-                <div class="form-group"><label>Sekat 3</label><input type="number" id="dailyAbw3" placeholder="Berat (gram)" step="0.1"><div class="photo-slot" onclick="document.getElementById('dailyFoto3').click()" style="margin-top: 6px;"><div class="slot-label">Foto Sekat 3</div><span class="slot-icon">&#128247;</span><input type="file" id="dailyFoto3" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'preview3')"><div id="preview3" class="preview-single"></div></div></div>
-                <div class="form-group"><label>Sekat 4</label><input type="number" id="dailyAbw4" placeholder="Berat (gram)" step="0.1"><div class="photo-slot" onclick="document.getElementById('dailyFoto4').click()" style="margin-top: 6px;"><div class="slot-label">Foto Sekat 4</div><span class="slot-icon">&#128247;</span><input type="file" id="dailyFoto4" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'preview4')"><div id="preview4" class="preview-single"></div></div></div>
-                <button type="submit" class="btn-submit">Kirim Laporan Harian</button>
+                <div class="form-group">
+                    <label>Tanggal <span class="req">*</span></label>
+                    <input type="date" id="dailyTanggal" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Pakan Atas (Karung)</label>
+                        <input type="number" id="dailyPakanAtas" placeholder="0" min="0" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Pakan Bawah (Karung)</label>
+                        <input type="number" id="dailyPakanBawah" placeholder="0" min="0" value="0">
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <div class="title"><i class="ph ph-camera"></i> Dokumentasi Timbangan</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Sekat 1</label>
+                    <input type="number" id="dailyAbw1" placeholder="Berat (gram)" step="0.1">
+                    <div class="photo-slot" onclick="document.getElementById('dailyFoto1').click()" style="margin-top: 8px;">
+                        <div class="slot-label">Foto Sekat 1</div>
+                        <div class="slot-icon"><i class="ph ph-camera-plus"></i></div>
+                        <input type="file" id="dailyFoto1" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'preview1')">
+                        <div id="preview1" class="preview-single"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Sekat 2</label>
+                    <input type="number" id="dailyAbw2" placeholder="Berat (gram)" step="0.1">
+                    <div class="photo-slot" onclick="document.getElementById('dailyFoto2').click()" style="margin-top: 8px;">
+                        <div class="slot-label">Foto Sekat 2</div>
+                        <div class="slot-icon"><i class="ph ph-camera-plus"></i></div>
+                        <input type="file" id="dailyFoto2" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'preview2')">
+                        <div id="preview2" class="preview-single"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Sekat 3</label>
+                    <input type="number" id="dailyAbw3" placeholder="Berat (gram)" step="0.1">
+                    <div class="photo-slot" onclick="document.getElementById('dailyFoto3').click()" style="margin-top: 8px;">
+                        <div class="slot-label">Foto Sekat 3</div>
+                        <div class="slot-icon"><i class="ph ph-camera-plus"></i></div>
+                        <input type="file" id="dailyFoto3" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'preview3')">
+                        <div id="preview3" class="preview-single"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Sekat 4</label>
+                    <input type="number" id="dailyAbw4" placeholder="Berat (gram)" step="0.1">
+                    <div class="photo-slot" onclick="document.getElementById('dailyFoto4').click()" style="margin-top: 8px;">
+                        <div class="slot-label">Foto Sekat 4</div>
+                        <div class="slot-icon"><i class="ph ph-camera-plus"></i></div>
+                        <input type="file" id="dailyFoto4" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'preview4')">
+                        <div id="preview4" class="preview-single"></div>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit"><i class="ph ph-paper-plane-right"></i> Kirim Laporan Harian</button>
             </form>
         </div>
 
+        <!-- TAB PAKAN -->
         <div id="tab-pakan" class="tab-content">
             <form id="formPakan">
-                <div class="info-box"><div class="title">Laporan Pakan Masuk</div></div>
-                <div class="form-group"><label>Tanggal <span class="req">*</span></label><input type="date" id="pakanTanggal" required></div>
-                <div class="form-group"><label>Sumber Pakan <span class="req">*</span></label><input type="text" id="pakanSumber" placeholder="Nama supplier" required></div>
-                <div class="form-group"><label>Nomor PO / Asal</label><input type="text" id="pakanPo" placeholder="Nomor PO atau asal kandang"></div>
-                <div class="form-row">
-                    <div class="form-group"><label>Jumlah Zak <span class="req">*</span></label><input type="number" id="pakanZak" placeholder="0" required min="0"></div>
-                    <div class="form-group"><label>Jumlah Kg <span class="req">*</span></label><input type="number" id="pakanKg" placeholder="0" required min="0" step="0.1"></div>
+                <div class="info-box">
+                    <div class="title"><i class="ph ph-truck"></i> Laporan Pakan Masuk</div>
                 </div>
-                <div class="form-group"><label>Kendaraan</label><input type="text" id="pakanKendaraan" placeholder="Nopol atau jenis kendaraan"></div>
-                <div class="form-group"><label>Deskripsi</label><textarea id="pakanDeskripsi" placeholder="Catatan tambahan..."></textarea></div>
+                <div class="form-group">
+                    <label>Tanggal <span class="req">*</span></label>
+                    <input type="date" id="pakanTanggal" required>
+                </div>
+                <div class="form-group">
+                    <label>Sumber Pakan <span class="req">*</span></label>
+                    <input type="text" id="pakanSumber" placeholder="Nama supplier" required>
+                </div>
+                <div class="form-group">
+                    <label>Nomor PO / Asal</label>
+                    <input type="text" id="pakanPo" placeholder="Nomor PO atau asal kandang">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Jumlah Zak <span class="req">*</span></label>
+                        <input type="number" id="pakanZak" placeholder="0" required min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Jumlah Kg <span class="req">*</span></label>
+                        <input type="number" id="pakanKg" placeholder="0" required min="0" step="0.1">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Kendaraan</label>
+                    <input type="text" id="pakanKendaraan" placeholder="Nopol atau jenis kendaraan">
+                </div>
+                <div class="form-group">
+                    <label>Deskripsi</label>
+                    <textarea id="pakanDeskripsi" placeholder="Catatan tambahan..."></textarea>
+                </div>
                 <div class="form-group">
                     <label>Dokumentasi</label>
                     <div class="photo-slot-grid">
-                        <div class="photo-slot" onclick="document.getElementById('pakanFoto1').click()"><div class="slot-label">Foto 1</div><span class="slot-icon">&#128247;</span><input type="file" id="pakanFoto1" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewPakan1')"><div id="previewPakan1" class="preview-single"></div></div>
-                        <div class="photo-slot" onclick="document.getElementById('pakanFoto2').click()"><div class="slot-label">Foto 2</div><span class="slot-icon">&#128247;</span><input type="file" id="pakanFoto2" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewPakan2')"><div id="previewPakan2" class="preview-single"></div></div>
-                        <div class="photo-slot" onclick="document.getElementById('pakanFoto3').click()"><div class="slot-label">Foto 3</div><span class="slot-icon">&#128247;</span><input type="file" id="pakanFoto3" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewPakan3')"><div id="previewPakan3" class="preview-single"></div></div>
-                        <div class="photo-slot" onclick="document.getElementById('pakanFoto4').click()"><div class="slot-label">Foto 4</div><span class="slot-icon">&#128247;</span><input type="file" id="pakanFoto4" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewPakan4')"><div id="previewPakan4" class="preview-single"></div></div>
+                        <div class="photo-slot" onclick="document.getElementById('pakanFoto1').click()">
+                            <div class="slot-label">Foto 1</div>
+                            <div class="slot-icon"><i class="ph ph-camera-plus"></i></div>
+                            <input type="file" id="pakanFoto1" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewPakan1')">
+                            <div id="previewPakan1" class="preview-single"></div>
+                        </div>
+                        <div class="photo-slot" onclick="document.getElementById('pakanFoto2').click()">
+                            <div class="slot-label">Foto 2</div>
+                            <div class="slot-icon"><i class="ph ph-camera-plus"></i></div>
+                            <input type="file" id="pakanFoto2" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewPakan2')">
+                            <div id="previewPakan2" class="preview-single"></div>
+                        </div>
+                        <div class="photo-slot" onclick="document.getElementById('pakanFoto3').click()">
+                            <div class="slot-label">Foto 3</div>
+                            <div class="slot-icon"><i class="ph ph-camera-plus"></i></div>
+                            <input type="file" id="pakanFoto3" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewPakan3')">
+                            <div id="previewPakan3" class="preview-single"></div>
+                        </div>
+                        <div class="photo-slot" onclick="document.getElementById('pakanFoto4').click()">
+                            <div class="slot-label">Foto 4</div>
+                            <div class="slot-icon"><i class="ph ph-camera-plus"></i></div>
+                            <input type="file" id="pakanFoto4" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewPakan4')">
+                            <div id="previewPakan4" class="preview-single"></div>
+                        </div>
                     </div>
                 </div>
-                <button type="submit" class="btn-submit">Kirim Laporan Pakan</button>
+                <button type="submit" class="btn-submit"><i class="ph ph-paper-plane-right"></i> Kirim Laporan Pakan</button>
             </form>
         </div>
 
+        <!-- TAB KEMATIAN -->
         <div id="tab-kematian" class="tab-content">
             <form id="formKematian">
-                <div class="info-box"><div class="title">Laporan Kematian</div></div>
-                <div class="form-group"><label>Tanggal <span class="req">*</span></label><input type="date" id="matiTanggal" required></div>
+                <div class="info-box">
+                    <div class="title"><i class="ph ph-warning-octagon"></i> Laporan Kematian</div>
+                </div>
+                <div class="form-group">
+                    <label>Tanggal <span class="req">*</span></label>
+                    <input type="date" id="matiTanggal" required>
+                </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Jam ke- <span class="req">*</span></label>
-                        <select id="matiJam" required><option value="">Pilih Jam</option><option value="1">01:00</option><option value="2">02:00</option><option value="3">03:00</option><option value="4">04:00</option><option value="5">05:00</option><option value="6">06:00</option><option value="7">07:00</option><option value="8">08:00</option><option value="9">09:00</option><option value="10">10:00</option><option value="11">11:00</option><option value="12">12:00</option><option value="13">13:00</option><option value="14">14:00</option><option value="15">15:00</option><option value="16">16:00</option><option value="17">17:00</option><option value="18">18:00</option><option value="19">19:00</option><option value="20">20:00</option><option value="21">21:00</option><option value="22">22:00</option><option value="23">23:00</option><option value="24">24:00</option></select>
+                        <select id="matiJam" required>
+                            <option value="">Pilih Jam</option>
+                            <option value="1">01:00</option><option value="2">02:00</option><option value="3">03:00</option>
+                            <option value="4">04:00</option><option value="5">05:00</option><option value="6">06:00</option>
+                            <option value="7">07:00</option><option value="8">08:00</option><option value="9">09:00</option>
+                            <option value="10">10:00</option><option value="11">11:00</option><option value="12">12:00</option>
+                            <option value="13">13:00</option><option value="14">14:00</option><option value="15">15:00</option>
+                            <option value="16">16:00</option><option value="17">17:00</option><option value="18">18:00</option>
+                            <option value="19">19:00</option><option value="20">20:00</option><option value="21">21:00</option>
+                            <option value="22">22:00</option><option value="23">23:00</option><option value="24">24:00</option>
+                        </select>
                     </div>
-                    <div class="form-group"><label>Pelapor</label><input type="text" id="matiPelapor" placeholder="Nama pelapor"></div>
+                    <div class="form-group">
+                        <label>Pelapor</label>
+                        <input type="text" id="matiPelapor" placeholder="Nama pelapor">
+                    </div>
                 </div>
-                <div class="form-group"><label>Jumlah Kematian <span class="req">*</span></label><input type="number" id="matiJumlah" placeholder="0" required min="0"></div>
+                <div class="form-group">
+                    <label>Jumlah Kematian <span class="req">*</span></label>
+                    <input type="number" id="matiJumlah" placeholder="0" required min="0">
+                </div>
                 <div class="form-group">
                     <label>Dokumentasi</label>
                     <div class="photo-slot-grid">
-                        <div class="photo-slot" onclick="document.getElementById('matiFoto1').click()"><div class="slot-label">Foto 1</div><span class="slot-icon">&#128247;</span><input type="file" id="matiFoto1" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewMati1')"><div id="previewMati1" class="preview-single"></div></div>
-                        <div class="photo-slot" onclick="document.getElementById('matiFoto2').click()"><div class="slot-label">Foto 2</div><span class="slot-icon">&#128247;</span><input type="file" id="matiFoto2" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewMati2')"><div id="previewMati2" class="preview-single"></div></div>
-                        <div class="photo-slot" onclick="document.getElementById('matiFoto3').click()"><div class="slot-label">Foto 3</div><span class="slot-icon">&#128247;</span><input type="file" id="matiFoto3" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewMati3')"><div id="previewMati3" class="preview-single"></div></div>
-                        <div class="photo-slot" onclick="document.getElementById('matiFoto4').click()"><div class="slot-label">Foto 4</div><span class="slot-icon">&#128247;</span><input type="file" id="matiFoto4" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewMati4')"><div id="previewMati4" class="preview-single"></div></div>
+                        <div class="photo-slot" onclick="document.getElementById('matiFoto1').click()">
+                            <div class="slot-label">Foto 1</div>
+                            <div class="slot-icon"><i class="ph ph-camera-plus"></i></div>
+                            <input type="file" id="matiFoto1" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewMati1')">
+                            <div id="previewMati1" class="preview-single"></div>
+                        </div>
+                        <div class="photo-slot" onclick="document.getElementById('matiFoto2').click()">
+                            <div class="slot-label">Foto 2</div>
+                            <div class="slot-icon"><i class="ph ph-camera-plus"></i></div>
+                            <input type="file" id="matiFoto2" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewMati2')">
+                            <div id="previewMati2" class="preview-single"></div>
+                        </div>
+                        <div class="photo-slot" onclick="document.getElementById('matiFoto3').click()">
+                            <div class="slot-label">Foto 3</div>
+                            <div class="slot-icon"><i class="ph ph-camera-plus"></i></div>
+                            <input type="file" id="matiFoto3" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewMati3')">
+                            <div id="previewMati3" class="preview-single"></div>
+                        </div>
+                        <div class="photo-slot" onclick="document.getElementById('matiFoto4').click()">
+                            <div class="slot-label">Foto 4</div>
+                            <div class="slot-icon"><i class="ph ph-camera-plus"></i></div>
+                            <input type="file" id="matiFoto4" accept="image/*" capture="environment" onchange="handleSingleFileSelect(this, 'previewMati4')">
+                            <div id="previewMati4" class="preview-single"></div>
+                        </div>
                     </div>
                 </div>
-                <button type="submit" class="btn-submit">Kirim Laporan Kematian</button>
+                <button type="submit" class="btn-submit"><i class="ph ph-paper-plane-right"></i> Kirim Laporan Kematian</button>
             </form>
         </div>
-        <div class="loading" id="loading"><div class="spinner"></div><div class="text">Menyimpan data...</div></div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <div class="text">Menyimpan data...</div>
+        </div>
     </div>
 </div>
 
 <script>
-    // URL Web App Anda terhubung di sini
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzkX8eEI9dxowEMlxvgZ2LQqgajub4qR674bemHA0HrXQfAZYEKIqaCWc4Iz8bCQKTR/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwHy9VJfewZ0fP-LWAJUB-fvfBE3RGj0YA4KZegtx6AlVsiVdcsFsHu1odsjhbCnMdW/exec';
     
     const alertEl = document.getElementById('alert');
     const loadingEl = document.getElementById('loading');
+    let currentPeriodeList = [];
 
     function updateTime() { 
         const now = new Date(); 
-        document.getElementById('currentTime').textContent = now.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }); 
+        document.getElementById('currentTime').textContent = now.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }); 
     } 
-    updateTime(); setInterval(updateTime, 1000);
+    updateTime(); setInterval(updateTime, 60000);
 
     async function checkStatus() { 
-        try { await fetch(SCRIPT_URL, { method: 'GET', mode: 'no-cors' }); document.getElementById('statusDot').className = 'dot online'; document.getElementById('statusText').textContent = 'Online'; } 
-        catch (_) { document.getElementById('statusDot').className = 'dot offline'; document.getElementById('statusText').textContent = 'Offline'; } 
+        try { 
+            await fetch(SCRIPT_URL, { method: 'GET', mode: 'no-cors' }); 
+            document.getElementById('statusDot').className = 'dot online'; 
+            document.getElementById('statusText').textContent = 'Online'; 
+        } catch (_) { 
+            document.getElementById('statusDot').className = 'dot offline'; 
+            document.getElementById('statusText').textContent = 'Offline'; 
+        } 
     } 
     checkStatus(); setInterval(checkStatus, 30000);
 
@@ -208,103 +470,295 @@
         btn.addEventListener('click', function() { 
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); 
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active')); 
-            this.classList.add('active'); document.getElementById('tab-' + this.dataset.tab).classList.add('active'); 
+            this.classList.add('active'); 
+            document.getElementById('tab-' + this.dataset.tab).classList.add('active'); 
         }); 
     });
 
     function showAlert(msg, type) { 
-        alertEl.className = 'alert show ' + type; alertEl.innerHTML = '<span>' + (type === 'success' ? '✓' : '✗') + '</span> ' + msg; 
-        clearTimeout(alertEl._timer); alertEl._timer = setTimeout(() => alertEl.classList.remove('show'), 5000); 
+        const icon = type === 'success' ? 'ph-check-circle' : 'ph-x-circle';
+        alertEl.className = 'alert show ' + type; 
+        alertEl.innerHTML = `<i class="ph ${icon}"></i> <span>${msg}</span>`; 
+        clearTimeout(alertEl._timer); 
+        alertEl._timer = setTimeout(() => alertEl.classList.remove('show'), 5000); 
     }
 
     function handleSingleFileSelect(input, previewId) { 
-        const container = document.getElementById(previewId); container.innerHTML = ''; const file = input.files[0]; 
+        const container = document.getElementById(previewId); 
+        container.innerHTML = ''; 
+        const file = input.files[0]; 
         if (!file) return; 
-        if (file.size > 5 * 1024 * 1024) { showAlert('Ukuran foto terlalu besar (max 5MB)', 'error'); input.value = ''; return; }
+        if (file.size > 5 * 1024 * 1024) { 
+            showAlert('Ukuran foto terlalu besar (max 5MB)', 'error'); 
+            input.value = ''; 
+            return; 
+        }
         const reader = new FileReader(); 
         reader.onload = function(e) { 
-            const item = document.createElement('div'); item.className = 'item'; 
-            const img = document.createElement('img'); img.src = e.target.result; img.alt = file.name; 
-            const remove = document.createElement('button'); remove.className = 'remove'; remove.textContent = '×'; remove.type = 'button'; 
-            remove.addEventListener('click', function(e) { e.stopPropagation(); input.value = ''; container.innerHTML = ''; }); 
-            item.appendChild(img); item.appendChild(remove); container.appendChild(item); 
+            const item = document.createElement('div'); 
+            item.className = 'item'; 
+            const img = document.createElement('img'); 
+            img.src = e.target.result; 
+            img.alt = file.name; 
+            const remove = document.createElement('button'); 
+            remove.className = 'remove'; 
+            remove.innerHTML = '<i class="ph ph-x"></i>'; 
+            remove.type = 'button'; 
+            remove.addEventListener('click', function(e) { 
+                e.stopPropagation(); 
+                input.value = ''; 
+                container.innerHTML = ''; 
+            }); 
+            item.appendChild(img); 
+            item.appendChild(remove); 
+            container.appendChild(item); 
         }; 
         reader.readAsDataURL(file); 
     }
 
     function fileToBase64(file) { 
         return new Promise((resolve, reject) => { 
-            const reader = new FileReader(); reader.onload = () => resolve(reader.result.split(',')[1]); reader.onerror = reject; reader.readAsDataURL(file); 
+            const reader = new FileReader(); 
+            reader.onload = () => resolve(reader.result.split(',')[1]); 
+            reader.onerror = reject; 
+            reader.readAsDataURL(file); 
         }); 
     }
 
-    function toggleAddPeriode() { document.getElementById('addPeriodeForm').classList.toggle('active'); }
+    function toggleAddPeriode() { 
+        document.getElementById('addPeriodeForm').classList.toggle('active'); 
+    }
 
     async function loadPeriode() {
         try {
             const response = await fetch(SCRIPT_URL + '?action=getPeriode');
             const result = await response.json();
             if (result.status === 'success' && result.data) {
-                const select = document.getElementById('globalPeriode'); select.innerHTML = '<option value="">-- Pilih Periode --</option>';
+                currentPeriodeList = result.data;
+                const select = document.getElementById('globalPeriode');
+                select.innerHTML = '<option value="">-- Pilih Periode --</option>';
+                
                 result.data.forEach(periode => {
-                    const option = document.createElement('option'); option.value = periode.id_periode; option.textContent = periode.display_name || periode.id_periode; select.appendChild(option);
+                    if (periode.id_periode === "Belum Ada") return;
+                    const option = document.createElement('option');
+                    option.value = periode.id_periode;
+                    
+                    if (periode.populasi) {
+                        option.textContent = `${periode.id_periode} | Populasi: ${periode.populasi.populasi_sekarang} ekor`;
+                    } else {
+                        option.textContent = periode.display_name || periode.id_periode;
+                    }
+                    select.appendChild(option);
                 });
-                const activePeriode = result.data.find(p => p.status === 'Aktif'); if (activePeriode) { select.value = activePeriode.id_periode; }
+                
+                const activePeriode = result.data.find(p => p.status === 'Aktif' && p.populasi);
+                if (activePeriode) {
+                    select.value = activePeriode.id_periode;
+                    updatePopulasiInfo(activePeriode.populasi);
+                }
             }
-        } catch (error) { console.error('Gagal load periode:', error); }
+        } catch (error) { 
+            console.error('Gagal load periode:', error); 
+            showAlert('Gagal memuat data periode', 'error');
+        }
+    }
+
+    function onPeriodeChange() {
+        const selectedPeriode = document.getElementById('globalPeriode').value;
+        if (selectedPeriode) {
+            const periodeData = currentPeriodeList.find(p => p.id_periode === selectedPeriode);
+            if (periodeData && periodeData.populasi) {
+                updatePopulasiInfo(periodeData.populasi);
+            } else {
+                document.getElementById('populasiInfo').classList.remove('active');
+            }
+        } else {
+            document.getElementById('populasiInfo').classList.remove('active');
+        }
+    }
+
+    function updatePopulasiInfo(populasi) {
+        const infoElement = document.getElementById('populasiInfo');
+        if (populasi) {
+            infoElement.innerHTML = `
+                <div class="title"><i class="ph ph-chart-bar"></i> INFO POPULASI REAL-TIME</div>
+                <div class="populasi-grid">
+                    <div class="populasi-item">
+                        <div class="label"><i class="ph ph-bird"></i> Populasi Awal</div>
+                        <div class="value blue">${populasi.jumlah_awal.toLocaleString('id-ID')}</div>
+                    </div>
+                    <div class="populasi-item">
+                        <div class="label"><i class="ph ph-skull"></i> Total Kematian</div>
+                        <div class="value red">${populasi.total_mati.toLocaleString('id-ID')}</div>
+                    </div>
+                    <div class="populasi-item">
+                        <div class="label"><i class="ph ph-trend-up"></i> Populasi Saat Ini</div>
+                        <div class="value green">${populasi.populasi_sekarang.toLocaleString('id-ID')}</div>
+                    </div>
+                </div>
+                <div class="mortalitas">Mortalitas: <strong style="color: #dc2626;">${populasi.persentase_mati}%</strong> dari total populasi</div>
+            `;
+            infoElement.classList.add('active');
+        }
     }
 
     async function addNewPeriode() {
-        const idPeriode = document.getElementById('newPeriodeId').value; const tanggalMasuk = document.getElementById('newPeriodeTanggalMasuk').value;
-        const estimasiHari = document.getElementById('newPeriodeEstimasiHari').value || 60; const jumlahBibit = document.getElementById('newPeriodeJumlahBibit').value; const jenisBibit = document.getElementById('newPeriodeJenisBibit').value;
+        const idPeriode = document.getElementById('newPeriodeId').value; 
+        const tanggalMasuk = document.getElementById('newPeriodeTanggalMasuk').value;
+        const estimasiHari = document.getElementById('newPeriodeEstimasiHari').value || 60; 
+        const jumlahBibit = document.getElementById('newPeriodeJumlahBibit').value; 
+        const jenisBibit = document.getElementById('newPeriodeJenisBibit').value;
+        
         if (!idPeriode || !tanggalMasuk) { showAlert('ID Periode dan Tanggal Bibit Masuk wajib diisi!', 'error'); return; }
+        if (!jumlahBibit || jumlahBibit <= 0) { showAlert('Jumlah Bibit wajib diisi dan harus lebih dari 0!', 'error'); return; }
+        
         try {
-            await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: 'addPeriode', data: { id_periode: idPeriode, tanggal_masuk: tanggalMasuk, estimasi_hari: estimasiHari, jumlah_bibit: jumlahBibit, jenis_bibit: jenisBibit } }) });
+            const response = await fetch(SCRIPT_URL, { 
+                method: 'POST', 
+                mode: 'no-cors', 
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
+                body: JSON.stringify({ 
+                    action: 'addPeriode', 
+                    data: { 
+                        id_periode: idPeriode, 
+                        tanggal_masuk: tanggalMasuk, 
+                        estimasi_hari: estimasiHari, 
+                        jumlah_bibit: jumlahBibit, 
+                        jenis_bibit: jenisBibit 
+                    } 
+                }) 
+            });
+            
             showAlert('Periode baru berhasil ditambahkan!', 'success');
-            document.getElementById('newPeriodeId').value = ''; document.getElementById('newPeriodeTanggalMasuk').value = ''; document.getElementById('addPeriodeForm').classList.remove('active'); loadPeriode();
-        } catch (error) { showAlert('Error: ' + error.message, 'error'); }
+            document.getElementById('newPeriodeId').value = ''; 
+            document.getElementById('newPeriodeTanggalMasuk').value = ''; 
+            document.getElementById('newPeriodeJumlahBibit').value = '';
+            document.getElementById('addPeriodeForm').classList.remove('active'); 
+            loadPeriode();
+        } catch (error) { 
+            showAlert('Error: ' + error.message, 'error'); 
+        }
     }
 
     function getSelectedPeriode() {
-        const periode = document.getElementById('globalPeriode').value; if (!periode) throw new Error("Silakan pilih Periode / Siklus Aktif terlebih dahulu!"); return periode;
+        const periode = document.getElementById('globalPeriode').value; 
+        if (!periode) throw new Error("Silakan pilih Periode / Siklus Aktif terlebih dahulu!"); 
+        return periode;
     }
 
     function initForm(formId, sheetName, dataBuilder) {
         const form = document.getElementById(formId);
         form.addEventListener('submit', async function(e) {
-            e.preventDefault(); if (!this.checkValidity()) { this.reportValidity(); return; }
-            loadingEl.classList.add('active'); const btn = this.querySelector('.btn-submit'); btn.disabled = true; const originalText = btn.textContent; btn.textContent = 'Menyimpan...';
+            e.preventDefault(); 
+            if (!this.checkValidity()) { this.reportValidity(); return; }
+            
+            loadingEl.classList.add('active'); 
+            const btn = this.querySelector('.btn-submit'); 
+            btn.disabled = true; 
+            const originalText = btn.innerHTML; 
+            btn.innerHTML = '<i class="ph ph-spinner ph-spin"></i> Menyimpan...';
+            
             try {
-                const activePeriode = getSelectedPeriode(); const data = await dataBuilder(this); data.sheetName = sheetName; data.id_periode = activePeriode;
-                await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(data) });
+                const activePeriode = getSelectedPeriode(); 
+                const data = await dataBuilder(this); 
+                data.sheetName = sheetName; 
+                data.id_periode = activePeriode;
+                
+                await fetch(SCRIPT_URL, { 
+                    method: 'POST', 
+                    mode: 'no-cors', 
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
+                    body: JSON.stringify(data) 
+                });
+                
                 showAlert('Data berhasil disimpan ke ' + activePeriode + '.', 'success');
-                this.reset(); this.querySelectorAll('.preview-single').forEach(el => el.innerHTML = ''); this.querySelectorAll('input[type="file"]').forEach(fi => { fi.value = ''; });
-                const dateInput = this.querySelector('input[type="date"]'); if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
-            } catch (err) { showAlert('Error: ' + err.message, 'error'); console.error(err); } 
-            finally { loadingEl.classList.remove('active'); btn.disabled = false; btn.textContent = originalText; }
+                this.reset(); 
+                this.querySelectorAll('.preview-single').forEach(el => el.innerHTML = ''); 
+                this.querySelectorAll('input[type="file"]').forEach(fi => { fi.value = ''; });
+                
+                const dateInput = this.querySelector('input[type="date"]'); 
+                if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
+                
+                if (sheetName === 'Report Kematian') {
+                    loadPeriode();
+                }
+            } catch (err) { 
+                showAlert('Error: ' + err.message, 'error'); 
+                console.error(err); 
+            } finally { 
+                loadingEl.classList.remove('active'); 
+                btn.disabled = false; 
+                btn.innerHTML = originalText; 
+            }
         });
     }
 
     async function buildDaily(form) {
-        const getSingleFileAsList = async (id) => { const f = document.getElementById(id).files[0]; const list = []; if (f) { list.push({ data: await fileToBase64(f), name: f.name, mime: f.type }); } return list; };
-        return { tanggal: document.getElementById('dailyTanggal').value, pakan_atas: document.getElementById('dailyPakanAtas').value || 0, pakan_bawah: document.getElementById('dailyPakanBawah').value || 0, abw_sekat1: document.getElementById('dailyAbw1').value || 0, abw_sekat2: document.getElementById('dailyAbw2').value || 0, abw_sekat3: document.getElementById('dailyAbw3').value || 0, abw_sekat4: document.getElementById('dailyAbw4').value || 0, fotoList1: await getSingleFileAsList('dailyFoto1'), fotoList2: await getSingleFileAsList('dailyFoto2'), fotoList3: await getSingleFileAsList('dailyFoto3'), fotoList4: await getSingleFileAsList('dailyFoto4') };
+        const getSingleFileAsList = async (id) => { 
+            const f = document.getElementById(id).files[0]; 
+            const list = []; 
+            if (f) { list.push({ data: await fileToBase64(f), name: f.name, mime: f.type }); } 
+            return list; 
+        };
+        return { 
+            tanggal: document.getElementById('dailyTanggal').value, 
+            pakan_atas: document.getElementById('dailyPakanAtas').value || 0, 
+            pakan_bawah: document.getElementById('dailyPakanBawah').value || 0, 
+            abw_sekat1: document.getElementById('dailyAbw1').value || 0, 
+            abw_sekat2: document.getElementById('dailyAbw2').value || 0, 
+            abw_sekat3: document.getElementById('dailyAbw3').value || 0, 
+            abw_sekat4: document.getElementById('dailyAbw4').value || 0, 
+            fotoList1: await getSingleFileAsList('dailyFoto1'), 
+            fotoList2: await getSingleFileAsList('dailyFoto2'), 
+            fotoList3: await getSingleFileAsList('dailyFoto3'), 
+            fotoList4: await getSingleFileAsList('dailyFoto4') 
+        };
     }
 
     async function buildPakan(form) {
-        const ids = ['pakanFoto1', 'pakanFoto2', 'pakanFoto3', 'pakanFoto4']; const list = [];
-        for (const id of ids) { const f = document.getElementById(id).files[0]; if (f) list.push({ data: await fileToBase64(f), name: f.name, mime: f.type }); }
-        return { tanggal: document.getElementById('pakanTanggal').value, sumber_pakan: document.getElementById('pakanSumber').value, no_po_atau_asal: document.getElementById('pakanPo').value, jumlah_zak: document.getElementById('pakanZak').value, jumlah_kg: document.getElementById('pakanKg').value, kendaraan: document.getElementById('pakanKendaraan').value, deskripsi: document.getElementById('pakanDeskripsi').value, fotoList: list };
+        const ids = ['pakanFoto1', 'pakanFoto2', 'pakanFoto3', 'pakanFoto4']; 
+        const list = [];
+        for (const id of ids) { 
+            const f = document.getElementById(id).files[0]; 
+            if (f) list.push({ data: await fileToBase64(f), name: f.name, mime: f.type }); 
+        }
+        return { 
+            tanggal: document.getElementById('pakanTanggal').value, 
+            sumber_pakan: document.getElementById('pakanSumber').value, 
+            no_po_atau_asal: document.getElementById('pakanPo').value, 
+            jumlah_zak: document.getElementById('pakanZak').value, 
+            jumlah_kg: document.getElementById('pakanKg').value, 
+            kendaraan: document.getElementById('pakanKendaraan').value, 
+            deskripsi: document.getElementById('pakanDeskripsi').value, 
+            fotoList: list 
+        };
     }
 
     async function buildKematian(form) {
-        const ids = ['matiFoto1', 'matiFoto2', 'matiFoto3', 'matiFoto4']; const list = [];
-        for (const id of ids) { const f = document.getElementById(id).files[0]; if (f) list.push({ data: await fileToBase64(f), name: f.name, mime: f.type }); }
-        return { tanggal: document.getElementById('matiTanggal').value, jam: document.getElementById('matiJam').value, pelapor: document.getElementById('matiPelapor').value || 'Staff', jumlah_mati: document.getElementById('matiJumlah').value, fotoList: list };
+        const ids = ['matiFoto1', 'matiFoto2', 'matiFoto3', 'matiFoto4']; 
+        const list = [];
+        for (const id of ids) { 
+            const f = document.getElementById(id).files[0]; 
+            if (f) list.push({ data: await fileToBase64(f), name: f.name, mime: f.type }); 
+        }
+        return { 
+            tanggal: document.getElementById('matiTanggal').value, 
+            jam: document.getElementById('matiJam').value, 
+            pelapor: document.getElementById('matiPelapor').value || 'Staff', 
+            jumlah_mati: document.getElementById('matiJumlah').value, 
+            fotoList: list 
+        };
     }
 
-    initForm('formDaily', 'Report Daily', buildDaily); initForm('formPakan', 'Report Pakan', buildPakan); initForm('formKematian', 'Report Kematian', buildKematian);
+    // Inisialisasi
+    initForm('formDaily', 'Report Daily', buildDaily); 
+    initForm('formPakan', 'Report Pakan', buildPakan); 
+    initForm('formKematian', 'Report Kematian', buildKematian);
+    
     loadPeriode();
-    const today = new Date().toISOString().split('T')[0]; document.querySelectorAll('input[type="date"]').forEach(el => { if (!el.value) el.value = today; });
+    
+    const today = new Date().toISOString().split('T')[0]; 
+    document.querySelectorAll('input[type="date"]').forEach(el => { if (!el.value) el.value = today; });
 </script>
 </body>
 </html>
