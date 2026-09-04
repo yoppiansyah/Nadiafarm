@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nadz Farm's - Input Laporan</title>
+    <title>Nadia Nurhaliza Farm's - Input Laporan</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -441,8 +441,8 @@
                     
                     <div class="form-row" style="margin-bottom: var(--space-md);">
                         <div class="form-group">
-                            <label>Sekat 1</label>
-                            <input type="number" id="dailyAbw1" placeholder="Berat (gram)" step="0.1">
+                            <label>Sekat 1 (Berat per 10 Ekor)</label>
+                            <input type="number" id="dailyAbw1" placeholder="Contoh: 3.2 (dalam Kg)" step="0.1">
                             <div class="photo-slot" onclick="document.getElementById('dailyFoto1').click()" style="margin-top: 12px;">
                                 <div class="slot-label">Foto Sekat 1</div>
                                 <div class="slot-icon"><i class="ph ph-camera-plus"></i></div>
@@ -451,8 +451,8 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Sekat 2</label>
-                            <input type="number" id="dailyAbw2" placeholder="Berat (gram)" step="0.1">
+                            <label>Sekat 2 (Berat per 10 Ekor)</label>
+                            <input type="number" id="dailyAbw2" placeholder="Contoh: 3.2 (dalam Kg)" step="0.1">
                             <div class="photo-slot" onclick="document.getElementById('dailyFoto2').click()" style="margin-top: 12px;">
                                 <div class="slot-label">Foto Sekat 2</div>
                                 <div class="slot-icon"><i class="ph ph-camera-plus"></i></div>
@@ -464,8 +464,8 @@
                     
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Sekat 3</label>
-                            <input type="number" id="dailyAbw3" placeholder="Berat (gram)" step="0.1">
+                            <label>Sekat 3 (Berat per 10 Ekor)</label>
+                            <input type="number" id="dailyAbw3" placeholder="Contoh: 3.2 (dalam Kg)" step="0.1">
                             <div class="photo-slot" onclick="document.getElementById('dailyFoto3').click()" style="margin-top: 12px;">
                                 <div class="slot-label">Foto Sekat 3</div>
                                 <div class="slot-icon"><i class="ph ph-camera-plus"></i></div>
@@ -474,8 +474,8 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Sekat 4</label>
-                            <input type="number" id="dailyAbw4" placeholder="Berat (gram)" step="0.1">
+                            <label>Sekat 4 (Berat per 10 Ekor)</label>
+                            <input type="number" id="dailyAbw4" placeholder="Contoh: 3.2 (dalam Kg)" step="0.1">
                             <div class="photo-slot" onclick="document.getElementById('dailyFoto4').click()" style="margin-top: 12px;">
                                 <div class="slot-label">Foto Sekat 4</div>
                                 <div class="slot-icon"><i class="ph ph-camera-plus"></i></div>
@@ -645,7 +645,7 @@
 </div>
 
 <script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby3voOboRlSVUkCHl6_bceGwFoyLI119OaicNP__Sy9Mz6pvsT2fX4CqF6nUE3RgO34/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyIkN3OGzhRT25_dYSGX4RDW5hIZxuN7d-kATz6Rc1OUGbIa6D9-i8SYD1dNX--vQ/exec';
     
     const alertEl = document.getElementById('alert');
     const loadingEl = document.getElementById('loading');
@@ -818,8 +818,6 @@
         try {
             const response = await fetch(SCRIPT_URL, { 
                 method: 'POST', 
-                mode: 'no-cors', 
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
                 body: JSON.stringify({ 
                     action: 'addPeriode', 
                     data: { 
@@ -832,12 +830,17 @@
                 }) 
             });
             
-            showAlert('Periode baru berhasil ditambahkan!', 'success');
-            document.getElementById('newPeriodeId').value = ''; 
-            document.getElementById('newPeriodeTanggalMasuk').value = ''; 
-            document.getElementById('newPeriodeJumlahBibit').value = '';
-            document.getElementById('addPeriodeForm').classList.remove('active'); 
-            loadPeriode();
+            const result = await response.json();
+            if (result.status === "success") {
+                showAlert('Periode baru berhasil ditambahkan!', 'success');
+                document.getElementById('newPeriodeId').value = ''; 
+                document.getElementById('newPeriodeTanggalMasuk').value = ''; 
+                document.getElementById('newPeriodeJumlahBibit').value = '';
+                document.getElementById('addPeriodeForm').classList.remove('active'); 
+                loadPeriode();
+            } else {
+                showAlert('Error: ' + result.error, 'error');
+            }
         } catch (error) { 
             showAlert('Error: ' + error.message, 'error'); 
         }
@@ -867,23 +870,27 @@
                 data.sheetName = sheetName; 
                 data.id_periode = activePeriode;
                 
-                await fetch(SCRIPT_URL, { 
+                const response = await fetch(SCRIPT_URL, { 
                     method: 'POST', 
-                    mode: 'no-cors', 
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
                     body: JSON.stringify(data) 
                 });
                 
-                showAlert('Data berhasil disimpan ke ' + activePeriode + '.', 'success');
-                this.reset(); 
-                this.querySelectorAll('.preview-single').forEach(el => el.innerHTML = ''); 
-                this.querySelectorAll('input[type="file"]').forEach(fi => { fi.value = ''; });
+                const result = await response.json();
                 
-                const dateInput = this.querySelector('input[type="date"]'); 
-                if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
-                
-                if (sheetName === 'Report Kematian') {
-                    loadPeriode();
+                if (result.status === "success") {
+                    showAlert('Data berhasil disimpan ke ' + activePeriode + '.', 'success');
+                    this.reset(); 
+                    this.querySelectorAll('.preview-single').forEach(el => el.innerHTML = ''); 
+                    this.querySelectorAll('input[type="file"]').forEach(fi => { fi.value = ''; });
+                    
+                    const dateInput = this.querySelector('input[type="date"]'); 
+                    if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
+                    
+                    if (sheetName === 'Report Kematian') {
+                        loadPeriode();
+                    }
+                } else {
+                    showAlert('Error: ' + result.error, 'error');
                 }
             } catch (err) { 
                 showAlert('Error: ' + err.message, 'error'); 
