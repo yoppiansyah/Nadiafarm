@@ -22,7 +22,7 @@
             --danger: #e74c3c;
         }
 
-        /* Dark Mode Support (Konsisten dengan Dashboard) */
+        /* Dark Mode Support */
         @media (prefers-color-scheme: dark) {
             :root {
                 --bg-color: #0f172a;
@@ -152,12 +152,12 @@
             .header .status { justify-content: center; }
             .form-row { grid-template-columns: 1fr; gap: 0; } 
             .tab-btn { flex: 1; justify-content: center; font-size: 13px; padding: 10px; } 
-            .tab-btn span { display: none; } /* Hide text on very small screens, keep icon */
+            .tab-btn span { display: none; }
             .populasi-grid { grid-template-columns: 1fr; } 
         }
         @media (max-width: 480px) { 
             .photo-slot-grid { grid-template-columns: repeat(2, 1fr); } 
-            .tab-btn span { display: inline; } /* Revert for normal mobile */
+            .tab-btn span { display: inline; }
         }
     </style>
 </head>
@@ -184,7 +184,7 @@
             <select id="globalPeriode" onchange="onPeriodeChange()">
                 <option value="">-- Memuat Periode... --</option>
             </select>
-            <div class="hint"><i class="ph ph-info"></i> Umur ayam dihitung otomatis dari tanggal bibit masuk.</div>
+            <div class="hint"><i class="ph ph-info"></i> Umur ayam dihitung otomatis (DOC masuk = 0 hari, besok = 1 hari).</div>
             <div id="populasiInfo" class="populasi-info"></div>
         </div>
 
@@ -442,7 +442,8 @@
 </div>
 
 <script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwgh_5pGsCJR3WF2jsesSSMG6ODp2XFm6lFcpbRc46AHPl4l4nSz6rdX5UdfT4KxY6m/exec';
+    // GANTI dengan URL Web App Anda setelah deploy
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwzaUStNbCvGvUpWvqzzWBO0rSAgkjz4RgusXuKDr-xC8o9_Az6FRNMadOqSWd4qh7n/exec';
     
     const alertEl = document.getElementById('alert');
     const loadingEl = document.getElementById('loading');
@@ -529,6 +530,17 @@
         document.getElementById('addPeriodeForm').classList.toggle('active'); 
     }
 
+    // Fungsi hitung umur dari tanggal masuk
+    function hitungUmur(tanggalMasuk) {
+        if (!tanggalMasuk) return 0;
+        const tglMasuk = new Date(tanggalMasuk);
+        tglMasuk.setHours(0, 0, 0, 0);
+        const sekarang = new Date();
+        sekarang.setHours(0, 0, 0, 0);
+        const selisih = Math.floor((sekarang - tglMasuk) / (1000 * 60 * 60 * 24));
+        return selisih > 0 ? selisih : 0;
+    }
+
     async function loadPeriode() {
         try {
             const response = await fetch(SCRIPT_URL + '?action=getPeriode');
@@ -544,7 +556,8 @@
                     option.value = periode.id_periode;
                     
                     if (periode.populasi) {
-                        option.textContent = `${periode.id_periode} | Populasi: ${periode.populasi.populasi_sekarang} ekor`;
+                        const umur = hitungUmur(periode.tanggal_masuk);
+                        option.textContent = `${periode.id_periode} | Populasi: ${periode.populasi.populasi_sekarang} ekor | Umur: ${umur} hari`;
                     } else {
                         option.textContent = periode.display_name || periode.id_periode;
                     }
@@ -613,7 +626,7 @@
         if (!jumlahBibit || jumlahBibit <= 0) { showAlert('Jumlah Bibit wajib diisi dan harus lebih dari 0!', 'error'); return; }
         
         try {
-            const response = await fetch(SCRIPT_URL, { 
+            await fetch(SCRIPT_URL, { 
                 method: 'POST', 
                 mode: 'no-cors', 
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
@@ -762,6 +775,3 @@
 </script>
 </body>
 </html>
-
-
-
