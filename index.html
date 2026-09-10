@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nadz Farm's - Input Laporan</title>
-    <!-- Font & ProfesSional Icons -->
+    <!-- Font & Professional Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
@@ -91,6 +91,23 @@
         .populasi-item .value.green { color: #16a34a; }
         .mortalitas { margin-top: 12px; text-align: center; font-size: 12px; color: var(--text-muted); padding-top: 10px; border-top: 1px dashed var(--border); }
 
+        /* Info Umur */
+        .umur-info {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(139, 92, 246, 0.1);
+            color: #7c3aed;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            margin-top: 12px;
+        }
+        @media (prefers-color-scheme: dark) {
+            .umur-info { color: #a78bfa; background: rgba(139, 92, 246, 0.2); }
+        }
+
         .btn-add-periode { width: 100%; padding: 12px; background: var(--accent); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; font-family: inherit; }
         .btn-add-periode:hover { background: var(--accent-hover); transform: translateY(-1px); }
         .btn-add-periode i { font-size: 18px; }
@@ -115,7 +132,7 @@
         .info-box .title i { font-size: 16px; color: var(--primary); }
 
         .form-group { margin-bottom: 18px; }
-        .form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: var(--text-main); display: flex; align-items: center; gap: 4px; }
+        .form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: var(--text-main); display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
         .form-group label .req { color: var(--danger); }
         .form-group .hint { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 14px; border: 2px solid var(--border); border-radius: 8px; font-size: 14px; background: var(--card-bg); color: var(--text-main); font-family: inherit; transition: 0.2s; }
@@ -185,6 +202,10 @@
                 <option value="">-- Memuat Periode... --</option>
             </select>
             <div class="hint"><i class="ph ph-info"></i> Umur ayam dihitung otomatis (DOC masuk = 0 hari, besok = 1 hari).</div>
+            
+            <!-- Info Umur Otomatis -->
+            <div id="umurInfo" class="umur-info" style="display: none;"></div>
+            
             <div id="populasiInfo" class="populasi-info"></div>
         </div>
 
@@ -251,12 +272,12 @@
                 </div>
                 
                 <div class="info-box">
-                    <div class="title"><i class="ph ph-camera"></i> Dokumentasi Timbangan</div>
+                    <div class="title"><i class="ph ph-camera"></i> Dokumentasi Timbangan (kg untuk 10 ekor)</div>
                 </div>
                 
                 <div class="form-group">
-                    <label>Sekat 1</label>
-                    <input type="number" id="dailyAbw1" placeholder="Berat (gram)" step="0.1">
+                    <label>Sekat 1 <span class="hint" style="display:inline;font-weight:400;">(kg untuk 10 ekor)</span></label>
+                    <input type="number" id="dailyAbw1" placeholder="Contoh: 6.5" step="0.01" min="0">
                     <div class="photo-slot" onclick="document.getElementById('dailyFoto1').click()" style="margin-top: 8px;">
                         <div class="slot-label">Foto Sekat 1</div>
                         <div class="slot-icon"><i class="ph ph-camera-plus"></i></div>
@@ -265,8 +286,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Sekat 2</label>
-                    <input type="number" id="dailyAbw2" placeholder="Berat (gram)" step="0.1">
+                    <label>Sekat 2 <span class="hint" style="display:inline;font-weight:400;">(kg untuk 10 ekor)</span></label>
+                    <input type="number" id="dailyAbw2" placeholder="Contoh: 6.5" step="0.01" min="0">
                     <div class="photo-slot" onclick="document.getElementById('dailyFoto2').click()" style="margin-top: 8px;">
                         <div class="slot-label">Foto Sekat 2</div>
                         <div class="slot-icon"><i class="ph ph-camera-plus"></i></div>
@@ -275,8 +296,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Sekat 3</label>
-                    <input type="number" id="dailyAbw3" placeholder="Berat (gram)" step="0.1">
+                    <label>Sekat 3 <span class="hint" style="display:inline;font-weight:400;">(kg untuk 10 ekor)</span></label>
+                    <input type="number" id="dailyAbw3" placeholder="Contoh: 6.5" step="0.01" min="0">
                     <div class="photo-slot" onclick="document.getElementById('dailyFoto3').click()" style="margin-top: 8px;">
                         <div class="slot-label">Foto Sekat 3</div>
                         <div class="slot-icon"><i class="ph ph-camera-plus"></i></div>
@@ -285,8 +306,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Sekat 4</label>
-                    <input type="number" id="dailyAbw4" placeholder="Berat (gram)" step="0.1">
+                    <label>Sekat 4 <span class="hint" style="display:inline;font-weight:400;">(kg untuk 10 ekor)</span></label>
+                    <input type="number" id="dailyAbw4" placeholder="Contoh: 6.5" step="0.01" min="0">
                     <div class="photo-slot" onclick="document.getElementById('dailyFoto4').click()" style="margin-top: 8px;">
                         <div class="slot-label">Foto Sekat 4</div>
                         <div class="slot-icon"><i class="ph ph-camera-plus"></i></div>
@@ -442,7 +463,9 @@
 </div>
 
 <script>
-    // GANTI dengan URL Web App Anda setelah deploy
+    // ============================================================
+    // PENTING: GUNAKAN URL YANG SAMA DENGAN DASHBOARD!
+    // ============================================================
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzp0LQV0ZJ4YWnB0WwSS7Tqt9wV9k7upwVvoF3AkHeLOB9TOtQb9p9rI6QzelbCZ-eM/exec';
     
     const alertEl = document.getElementById('alert');
@@ -541,6 +564,19 @@
         return selisih > 0 ? selisih : 0;
     }
 
+    // Fungsi update info umur
+    function updateUmurInfo(periodeData) {
+        const umurInfo = document.getElementById('umurInfo');
+        
+        if (periodeData && periodeData.tanggal_masuk) {
+            const umur = hitungUmur(periodeData.tanggal_masuk);
+            umurInfo.style.display = 'inline-flex';
+            umurInfo.innerHTML = `<i class="ph ph-calendar-check"></i> Umur Ayam: ${umur} Hari`;
+        } else {
+            umurInfo.style.display = 'none';
+        }
+    }
+
     async function loadPeriode() {
         try {
             const response = await fetch(SCRIPT_URL + '?action=getPeriode');
@@ -568,6 +604,7 @@
                 if (activePeriode) {
                     select.value = activePeriode.id_periode;
                     updatePopulasiInfo(activePeriode.populasi);
+                    updateUmurInfo(activePeriode);
                 }
             }
         } catch (error) { 
@@ -585,8 +622,10 @@
             } else {
                 document.getElementById('populasiInfo').classList.remove('active');
             }
+            updateUmurInfo(periodeData);
         } else {
             document.getElementById('populasiInfo').classList.remove('active');
+            document.getElementById('umurInfo').style.display = 'none';
         }
     }
 
@@ -659,6 +698,32 @@
         return periode;
     }
 
+    // ============================================================
+    // VALIDASI ABW (kg untuk 10 ekor)
+    // ============================================================
+    function validateABW(value, fieldName) {
+        if (!value || value === "" || value === 0) return 0;
+        
+        let num = parseFloat(value);
+        if (isNaN(num)) return 0;
+        
+        // Deteksi error input seperti 46207 (harusnya 4.6207 atau 46.207)
+        if (num > 100) {
+            num = num / 1000;
+            if (num > 20) {
+                num = num / 10;
+            }
+        }
+        
+        // Batas wajar: 0.01 - 50 kg untuk 10 ekor
+        if (num > 50 || num < 0) {
+            showAlert(`Nilai ${fieldName} tidak wajar (${num} kg). Pastikan input dalam kg untuk 10 ekor.`, 'error');
+            return 0;
+        }
+        
+        return num;
+    }
+
     function initForm(formId, sheetName, dataBuilder) {
         const form = document.getElementById(formId);
         form.addEventListener('submit', async function(e) {
@@ -713,14 +778,21 @@
             if (f) { list.push({ data: await fileToBase64(f), name: f.name, mime: f.type }); } 
             return list; 
         };
+        
+        // Validasi ABW (kg untuk 10 ekor)
+        const abw1 = validateABW(document.getElementById('dailyAbw1').value, 'Sekat 1');
+        const abw2 = validateABW(document.getElementById('dailyAbw2').value, 'Sekat 2');
+        const abw3 = validateABW(document.getElementById('dailyAbw3').value, 'Sekat 3');
+        const abw4 = validateABW(document.getElementById('dailyAbw4').value, 'Sekat 4');
+        
         return { 
             tanggal: document.getElementById('dailyTanggal').value, 
             pakan_atas: document.getElementById('dailyPakanAtas').value || 0, 
             pakan_bawah: document.getElementById('dailyPakanBawah').value || 0, 
-            abw_sekat1: document.getElementById('dailyAbw1').value || 0, 
-            abw_sekat2: document.getElementById('dailyAbw2').value || 0, 
-            abw_sekat3: document.getElementById('dailyAbw3').value || 0, 
-            abw_sekat4: document.getElementById('dailyAbw4').value || 0, 
+            abw_sekat1: abw1, 
+            abw_sekat2: abw2, 
+            abw_sekat3: abw3, 
+            abw_sekat4: abw4, 
             fotoList1: await getSingleFileAsList('dailyFoto1'), 
             fotoList2: await getSingleFileAsList('dailyFoto2'), 
             fotoList3: await getSingleFileAsList('dailyFoto3'), 
