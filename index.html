@@ -7,6 +7,8 @@
     <!-- Font & Professional Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Tambahan Library localForage untuk Antrean Offline -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
     <style>
         :root {
             --primary: #1a1a2e;
@@ -472,6 +474,53 @@
     const loadingEl = document.getElementById('loading');
     let currentPeriodeList = [];
 
+    // ============================================================
+    // SISTEM ANTREAN OFFLINE (IndexedDB via localForage)
+    // ============================================================
+    const offlineStore = localforage.createInstance({ name: "AntreanNadzFarm" });
+
+    async function saveToOfflineQueue(data) {
+        const id = 'laporan_' + Date.now();
+        await offlineStore.setItem(id, data);
+    }
+
+    async function syncOfflineQueue() {
+        const keys = await offlineStore.keys();
+        if (keys.length === 0) return; // Tidak ada antrean
+
+        document.getElementById('statusText').textContent = `Sinkronisasi (${keys.length})...`;
+
+        for (const key of keys) {
+            try {
+                const data = await offlineStore.getItem(key);
+                
+                // Coba tembak ke Google Apps Script
+                await fetch(SCRIPT_URL, { 
+                    method: 'POST', 
+                    mode: 'no-cors', 
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
+                    body: JSON.stringify(data) 
+                });
+                
+                // Jika berhasil terkirim tanpa error jaringan, hapus dari antrean
+                await offlineStore.removeItem(key);
+            } catch (err) {
+                // Berhenti mencoba jika tidak ada internet/koneksi jelek
+                console.warn("Koneksi jelek, pengiriman " + key + " ditunda.");
+                break; 
+            }
+        }
+        
+        checkStatus(); // Reset indikator UI ke asalnya
+    }
+
+    // Jalankan sinkronisasi otomatis
+    window.addEventListener('online', syncOfflineQueue);
+    setInterval(syncOfflineQueue, 60000); // Tiap 1 menit
+
+    // ============================================================
+    // FUNGSI UMUM & UI
+    // ============================================================
     function updateTime() { 
         const now = new Date(); 
         document.getElementById('currentTime').textContent = now.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }); 
@@ -553,7 +602,6 @@
         document.getElementById('addPeriodeForm').classList.toggle('active'); 
     }
 
-    // Fungsi hitung umur dari tanggal masuk
     function hitungUmur(tanggalMasuk) {
         if (!tanggalMasuk) return 0;
         const tglMasuk = new Date(tanggalMasuk);
@@ -564,10 +612,8 @@
         return selisih > 0 ? selisih : 0;
     }
 
-    // Fungsi update info umur
     function updateUmurInfo(periodeData) {
         const umurInfo = document.getElementById('umurInfo');
-        
         if (periodeData && periodeData.tanggal_masuk) {
             const umur = hitungUmur(periodeData.tanggal_masuk);
             umurInfo.style.display = 'inline-flex';
@@ -609,7 +655,7 @@
             }
         } catch (error) { 
             console.error('Gagal load periode:', error); 
-            showAlert('Gagal memuat data periode', 'error');
+            // Kita skip showAlert error periode jika koneksi offline agar tidak mengganggu user.
         }
     }
 
@@ -698,16 +744,12 @@
         return periode;
     }
 
-    // ============================================================
-    // VALIDASI ABW (kg untuk 10 ekor)
-    // ============================================================
     function validateABW(value, fieldName) {
         if (!value || value === "" || value === 0) return 0;
         
         let num = parseFloat(value);
         if (isNaN(num)) return 0;
         
-        // Deteksi error input seperti 46207 (harusnya 4.6207 atau 46.207)
         if (num > 100) {
             num = num / 1000;
             if (num > 20) {
@@ -715,7 +757,6 @@
             }
         }
         
-        // Batas wajar: 0.01 - 50 kg untuk 10 ekor
         if (num > 50 || num < 0) {
             showAlert(`Nilai ${fieldName} tidak wajar (${num} kg). Pastikan input dalam kg untuk 10 ekor.`, 'error');
             return 0;
@@ -724,6 +765,9 @@
         return num;
     }
 
+    // ============================================================
+    // MODIFIKASI SUBMIT FORM (OFFLINE QUEUE TERINTEGRASI)
+    // ============================================================
     function initForm(formId, sheetName, dataBuilder) {
         const form = document.getElementById(formId);
         form.addEventListener('submit', async function(e) {
@@ -734,7 +778,7 @@
             const btn = this.querySelector('.btn-submit'); 
             btn.disabled = true; 
             const originalText = btn.innerHTML; 
-            btn.innerHTML = '<i class="ph ph-spinner ph-spin"></i> Menyimpan...';
+            btn.innerHTML = '<i class="ph ph-spinner ph-spin"></i> Mengamankan...';
             
             try {
                 const activePeriode = getSelectedPeriode(); 
@@ -742,14 +786,16 @@
                 data.sheetName = sheetName; 
                 data.id_periode = activePeriode;
                 
-                await fetch(SCRIPT_URL, { 
-                    method: 'POST', 
-                    mode: 'no-cors', 
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
-                    body: JSON.stringify(data) 
-                });
+                // 1. Selalu simpan ke HP dulu untuk menghindari data hilang karena koneksi putus tiba-tiba
+                await saveToOfflineQueue(data);
                 
-                showAlert('Data berhasil disimpan ke ' + activePeriode + '.', 'success');
+                // 2. Langsung eksekusi sinkronisasi background
+                syncOfflineQueue();
+                
+                // 3. Info user bahwa form aman
+                showAlert('Data diamankan! Jika sinyal jelek, sistem akan mengulang otomatis.', 'success');
+                
+                // 4. Reset form
                 this.reset(); 
                 this.querySelectorAll('.preview-single').forEach(el => el.innerHTML = ''); 
                 this.querySelectorAll('input[type="file"]').forEach(fi => { fi.value = ''; });
@@ -758,11 +804,10 @@
                 if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
                 
                 if (sheetName === 'Report Kematian') {
-                    loadPeriode();
+                    loadPeriode(); // update chart populasi jika lagi online
                 }
             } catch (err) { 
-                showAlert('Error: ' + err.message, 'error'); 
-                console.error(err); 
+                showAlert('Error form: ' + err.message, 'error'); 
             } finally { 
                 loadingEl.classList.remove('active'); 
                 btn.disabled = false; 
@@ -779,7 +824,6 @@
             return list; 
         };
         
-        // Validasi ABW (kg untuk 10 ekor)
         const abw1 = validateABW(document.getElementById('dailyAbw1').value, 'Sekat 1');
         const abw2 = validateABW(document.getElementById('dailyAbw2').value, 'Sekat 2');
         const abw3 = validateABW(document.getElementById('dailyAbw3').value, 'Sekat 3');
