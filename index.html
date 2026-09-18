@@ -101,49 +101,34 @@
         .header::before {
             content: '';
             position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 200px;
-            height: 200px;
+            top: -50%; right: -10%;
+            width: 200px; height: 200px;
             background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
             border-radius: 50%;
         }
         .header .brand { position: relative; z-index: 1; }
         .header .brand h1 { 
-            font-size: 24px; 
-            font-weight: 800; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
+            font-size: 24px; font-weight: 800; 
+            display: flex; align-items: center; gap: 10px; 
             letter-spacing: -0.5px;
         }
         .header .brand h1 i {
             background: rgba(255,255,255,0.2);
-            padding: 8px;
-            border-radius: var(--radius-md);
+            padding: 8px; border-radius: var(--radius-md);
             font-size: 22px;
         }
         .header .brand .sub { 
-            font-size: 12px; 
-            opacity: 0.85; 
-            text-transform: uppercase; 
-            letter-spacing: 1.5px; 
-            margin-top: 6px; 
-            font-weight: 500;
+            font-size: 12px; opacity: 0.85; 
+            text-transform: uppercase; letter-spacing: 1.5px; 
+            margin-top: 6px; font-weight: 500;
         }
         .header .status { 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-            font-size: 13px; 
-            background: rgba(255,255,255,0.15); 
-            padding: 10px 18px; 
-            border-radius: 50px; 
+            display: flex; align-items: center; gap: 10px; 
+            font-size: 13px; background: rgba(255,255,255,0.15); 
+            padding: 10px 18px; border-radius: 50px; 
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.2);
-            position: relative;
-            z-index: 1;
-            font-weight: 600;
+            position: relative; z-index: 1; font-weight: 600;
         }
         .status .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
         .status .dot.online { background: #4ade80; box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.3); animation: pulse-online 2s infinite; }
@@ -163,16 +148,11 @@
 
         /* ============ ALERT ============ */
         .alert { 
-            padding: 14px 18px; 
-            border-radius: var(--radius-md); 
-            margin-bottom: 20px; 
-            display: none; 
-            font-size: 14px; 
-            font-weight: 500; 
+            padding: 14px 18px; border-radius: var(--radius-md); 
+            margin-bottom: 20px; display: none; 
+            font-size: 14px; font-weight: 500; 
             border-left: 4px solid transparent; 
-            align-items: center; 
-            gap: 10px; 
-            line-height: 1.5;
+            align-items: center; gap: 10px; line-height: 1.5;
         }
         .alert.show { display: flex; animation: slideDown 0.3s ease; }
         .alert i { font-size: 20px; flex-shrink: 0; }
@@ -186,44 +166,31 @@
         .periode-box { 
             background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
             border: 1.5px solid rgba(16, 185, 129, 0.3); 
-            padding: 20px; 
-            border-radius: var(--radius-lg); 
-            margin-bottom: 16px; 
-            position: relative;
+            padding: 20px; border-radius: var(--radius-lg); 
+            margin-bottom: 16px; position: relative;
         }
         .periode-box::before {
             content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 4px;
-            height: 100%;
+            position: absolute; top: 0; left: 0;
+            width: 4px; height: 100%;
             background: linear-gradient(180deg, var(--accent) 0%, var(--info) 100%);
             border-radius: var(--radius-lg) 0 0 var(--radius-lg);
         }
         .periode-box label { 
-            font-size: 12px; 
-            font-weight: 700; 
+            font-size: 12px; font-weight: 700; 
             color: var(--accent-dark); 
-            display: flex; 
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 10px; 
-            text-transform: uppercase; 
+            display: flex; align-items: center; gap: 6px;
+            margin-bottom: 10px; text-transform: uppercase; 
             letter-spacing: 0.8px; 
         }
         .periode-box label::before { content: '●'; font-size: 10px; color: var(--accent); }
         .periode-box select { 
-            width: 100%; 
-            padding: 12px 16px; 
+            width: 100%; padding: 12px 16px; 
             border: 1.5px solid var(--border-strong); 
             border-radius: var(--radius-md); 
-            font-size: 15px; 
-            font-weight: 600; 
-            color: var(--text-main); 
-            background: var(--card-bg); 
-            cursor: pointer; 
-            outline: none; 
-            font-family: inherit;
+            font-size: 15px; font-weight: 600; 
+            color: var(--text-main); background: var(--card-bg); 
+            cursor: pointer; outline: none; font-family: inherit;
             transition: all 0.2s;
         }
         .periode-box select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
@@ -231,16 +198,11 @@
 
         /* ============ UMUR & POPULASI ============ */
         .umur-info { 
-            display: inline-flex; 
-            align-items: center; 
-            gap: 8px; 
+            display: inline-flex; align-items: center; gap: 8px; 
             background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
-            color: #6d28d9; 
-            padding: 10px 18px; 
-            border-radius: 50px; 
-            font-weight: 700; 
-            font-size: 13px; 
-            margin-top: 14px; 
+            color: #6d28d9; padding: 10px 18px; 
+            border-radius: 50px; font-weight: 700; 
+            font-size: 13px; margin-top: 14px; 
             border: 1px solid #c4b5fd;
         }
         .umur-info i { font-size: 16px; }
@@ -249,8 +211,7 @@
         }
 
         .populasi-info { 
-            margin-top: 16px; 
-            padding: 18px; 
+            margin-top: 16px; padding: 18px; 
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%);
             border-radius: var(--radius-md); 
             border: 1px solid rgba(59, 130, 246, 0.2); 
@@ -258,36 +219,25 @@
         }
         .populasi-info.active { display: block; animation: fadeIn 0.3s ease; }
         .populasi-info .title { 
-            font-weight: 700; 
-            color: var(--info); 
-            margin-bottom: 14px; 
-            font-size: 12px; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
+            font-weight: 700; color: var(--info); 
+            margin-bottom: 14px; font-size: 12px; 
+            display: flex; align-items: center; gap: 8px; 
+            text-transform: uppercase; letter-spacing: 0.8px;
         }
         .populasi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; text-align: center; }
         .populasi-item { 
-            background: var(--card-bg); 
-            padding: 16px 8px; 
+            background: var(--card-bg); padding: 16px 8px; 
             border-radius: var(--radius-md); 
             border: 1px solid var(--border);
             transition: all 0.2s;
         }
         .populasi-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
         .populasi-item .label { 
-            font-size: 10px; 
-            color: var(--text-muted); 
-            margin-bottom: 8px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 4px; 
-            text-transform: uppercase;
-            font-weight: 600;
-            letter-spacing: 0.5px;
+            font-size: 10px; color: var(--text-muted); 
+            margin-bottom: 8px; display: flex; 
+            align-items: center; justify-content: center; 
+            gap: 4px; text-transform: uppercase;
+            font-weight: 600; letter-spacing: 0.5px;
         }
         .populasi-item .label i { font-size: 14px; }
         .populasi-item .value { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
@@ -298,22 +248,14 @@
 
         /* ============ BUTTON PERIODE ============ */
         .btn-add-periode { 
-            width: 100%; 
-            padding: 14px; 
+            width: 100%; padding: 14px; 
             background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
-            color: white; 
-            border: none; 
+            color: white; border: none; 
             border-radius: var(--radius-md); 
-            cursor: pointer; 
-            font-weight: 700; 
-            font-size: 14px; 
-            margin-top: 8px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 8px; 
-            transition: all 0.2s; 
-            font-family: inherit;
+            cursor: pointer; font-weight: 700; 
+            font-size: 14px; margin-top: 8px; 
+            display: flex; align-items: center; justify-content: center; gap: 8px; 
+            transition: all 0.2s; font-family: inherit;
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
             letter-spacing: 0.3px;
         }
@@ -321,60 +263,42 @@
         .btn-add-periode i { font-size: 18px; }
 
         .add-periode-form { 
-            display: none; 
-            margin-top: 16px; 
-            padding: 24px; 
-            background: var(--card-bg); 
+            display: none; margin-top: 16px; 
+            padding: 24px; background: var(--card-bg); 
             border-radius: var(--radius-lg); 
             border: 1.5px solid var(--border); 
             animation: fadeIn 0.3s ease; 
         }
         .add-periode-form.active { display: block; }
         .add-periode-form h3 { 
-            font-size: 16px; 
-            font-weight: 700; 
-            margin-bottom: 20px; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
+            font-size: 16px; font-weight: 700; 
+            margin-bottom: 20px; display: flex; 
+            align-items: center; gap: 10px; 
             color: var(--primary);
         }
 
         /* ============ TABS ============ */
         .tabs { 
-            display: flex; 
-            gap: 8px; 
-            margin-top: 28px; 
-            margin-bottom: 24px; 
-            padding: 6px;
-            background: var(--bg-color);
+            display: flex; gap: 8px; 
+            margin-top: 28px; margin-bottom: 24px; 
+            padding: 6px; background: var(--bg-color);
             border-radius: var(--radius-lg);
-            overflow-x: auto;
-            scrollbar-width: none;
+            overflow-x: auto; scrollbar-width: none;
         }
         .tabs::-webkit-scrollbar { display: none; }
         .tab-btn { 
-            padding: 12px 20px; 
-            border: none; 
-            background: transparent; 
-            color: var(--text-muted); 
-            font-weight: 600; 
-            font-size: 13px; 
-            cursor: pointer; 
-            border-radius: var(--radius-md); 
-            transition: all 0.2s; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-            font-family: inherit;
-            white-space: nowrap;
-            flex-shrink: 0;
+            padding: 12px 20px; border: none; 
+            background: transparent; color: var(--text-muted); 
+            font-weight: 600; font-size: 13px; 
+            cursor: pointer; border-radius: var(--radius-md); 
+            transition: all 0.2s; display: flex; 
+            align-items: center; gap: 8px; 
+            font-family: inherit; white-space: nowrap; flex-shrink: 0;
         }
         .tab-btn i { font-size: 18px; }
         .tab-btn.active { 
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white; 
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+            color: white; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
         }
         .tab-btn:hover:not(.active) { background: var(--card-bg); color: var(--text-main); }
 
@@ -384,17 +308,13 @@
         /* ============ INFO BOX ============ */
         .info-box { 
             background: linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
-            padding: 14px 18px; 
-            border-radius: var(--radius-md); 
+            padding: 14px 18px; border-radius: var(--radius-md); 
             border-left: 4px solid var(--primary); 
             margin-bottom: 20px; 
         }
         .info-box .title { 
-            font-weight: 700; 
-            font-size: 13px; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
+            font-weight: 700; font-size: 13px; 
+            display: flex; align-items: center; gap: 8px; 
             color: var(--primary);
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -404,43 +324,30 @@
         /* ============ FORM ============ */
         .form-group { margin-bottom: 18px; }
         .form-group label { 
-            display: flex;
-            align-items: center;
-            gap: 6px; 
-            margin-bottom: 8px; 
-            font-weight: 600; 
-            font-size: 13px; 
-            color: var(--text-secondary); 
+            display: flex; align-items: center; gap: 6px; 
+            margin-bottom: 8px; font-weight: 600; 
+            font-size: 13px; color: var(--text-secondary); 
             flex-wrap: wrap; 
         }
         .form-group label .req { color: var(--danger); font-weight: 700; }
         .form-group .hint { 
-            font-size: 11px; 
-            color: var(--text-muted); 
-            font-weight: 400;
-            background: var(--bg-color);
-            padding: 2px 8px;
-            border-radius: 10px;
+            font-size: 11px; color: var(--text-muted); font-weight: 400;
+            background: var(--bg-color); padding: 2px 8px; border-radius: 10px;
         }
         .form-group input, 
         .form-group select, 
         .form-group textarea { 
-            width: 100%; 
-            padding: 12px 14px; 
+            width: 100%; padding: 12px 14px; 
             border: 1.5px solid var(--border-strong); 
             border-radius: var(--radius-md); 
-            font-size: 14px; 
-            background: var(--card-bg); 
-            color: var(--text-main); 
-            font-family: inherit; 
-            transition: all 0.2s;
-            font-weight: 500;
+            font-size: 14px; background: var(--card-bg); 
+            color: var(--text-main); font-family: inherit; 
+            transition: all 0.2s; font-weight: 500;
         }
         .form-group input:focus, 
         .form-group select:focus, 
         .form-group textarea:focus { 
-            outline: none; 
-            border-color: var(--primary); 
+            outline: none; border-color: var(--primary); 
             box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
         }
         .form-group input::placeholder, 
@@ -453,18 +360,12 @@
         .photo-slot { 
             border: 2px dashed var(--border-strong); 
             border-radius: var(--radius-md); 
-            padding: 16px 8px; 
-            text-align: center; 
-            cursor: pointer; 
-            background: var(--bg-color); 
-            transition: all 0.25s; 
-            position: relative; 
-            overflow: hidden; 
-            min-height: 110px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
+            padding: 16px 8px; text-align: center; 
+            cursor: pointer; background: var(--bg-color); 
+            transition: all 0.25s; position: relative; 
+            overflow: hidden; min-height: 110px; 
+            display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; 
         }
         .photo-slot:hover { border-color: var(--primary); background: rgba(79, 70, 229, 0.05); transform: translateY(-2px); }
         .photo-slot input[type="file"] { display: none; }
@@ -486,22 +387,18 @@
         }
         .photo-slot.has-image:hover::after { opacity: 1; }
         .photo-slot .preview-single .item { 
-            position: relative; 
-            border-radius: var(--radius-sm); 
-            overflow: hidden; 
-            border: 1.5px solid var(--border); 
-            aspect-ratio: 1/1; 
-            margin-top: 4px; 
-            background: #f1f5f9; 
-            width: 100%; 
+            position: relative; border-radius: var(--radius-sm); 
+            overflow: hidden; border: 1.5px solid var(--border); 
+            aspect-ratio: 1/1; margin-top: 4px; 
+            background: #f1f5f9; width: 100%; 
         }
         .photo-slot .preview-single .item img { width: 100%; height: 100%; object-fit: cover; }
         .photo-slot .preview-single .item .remove { 
             position: absolute; top: 6px; right: 6px; 
             background: var(--danger); color: white; 
             border: 2px solid white; border-radius: 50%; 
-            width: 26px; height: 26px; 
-            cursor: pointer; font-size: 14px; font-weight: 700; 
+            width: 26px; height: 26px; cursor: pointer; 
+            font-size: 14px; font-weight: 700; 
             display: flex; align-items: center; justify-content: center; 
             box-shadow: 0 2px 8px rgba(0,0,0,0.3); 
             transition: 0.2s; z-index: 10; 
@@ -627,22 +524,14 @@
 
         /* ============ BUTTON SUBMIT ============ */
         .btn-submit { 
-            width: 100%; 
-            padding: 16px; 
+            width: 100%; padding: 16px; 
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white; 
-            border: none; 
+            color: white; border: none; 
             border-radius: var(--radius-md); 
-            font-size: 15px; 
-            font-weight: 700; 
-            cursor: pointer; 
-            margin-top: 16px; 
-            transition: all 0.2s; 
-            font-family: inherit; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 10px;
+            font-size: 15px; font-weight: 700; 
+            cursor: pointer; margin-top: 16px; 
+            transition: all 0.2s; font-family: inherit; 
+            display: flex; align-items: center; justify-content: center; gap: 10px;
             letter-spacing: 0.3px;
             box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
         }
@@ -657,18 +546,12 @@
         .announcement-card { 
             background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); 
             border-left: 4px solid var(--info); 
-            padding: 18px; 
-            border-radius: var(--radius-md); 
+            padding: 18px; border-radius: var(--radius-md); 
             margin-bottom: 20px;
         }
         .announcement-card h4 { 
-            color: #1e3a8a; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-            margin-bottom: 10px; 
-            font-size: 14px;
-            font-weight: 700;
+            color: #1e3a8a; display: flex; align-items: center; gap: 8px; 
+            margin-bottom: 10px; font-size: 14px; font-weight: 700;
         }
         .announcement-card p { font-size: 13px; color: #475569; line-height: 1.6; }
         @media (prefers-color-scheme: dark) { 
@@ -678,15 +561,11 @@
 
         .task-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
         .task-item { 
-            display: flex; 
-            align-items: flex-start; 
-            gap: 14px; 
-            background: var(--card-bg); 
-            padding: 16px; 
+            display: flex; align-items: flex-start; gap: 14px; 
+            background: var(--card-bg); padding: 16px; 
             border-radius: var(--radius-md); 
             border: 1.5px solid var(--border); 
-            transition: all 0.2s; 
-            cursor: pointer; 
+            transition: all 0.2s; cursor: pointer; 
         }
         .task-item:hover { border-color: var(--primary); box-shadow: var(--shadow-sm); transform: translateX(2px); }
         .task-item input[type="checkbox"] { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--primary); cursor: pointer; flex-shrink: 0; }
@@ -698,28 +577,19 @@
         .sop-box { 
             background: linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, rgba(245, 158, 11, 0.08) 100%);
             border: 1.5px solid rgba(245, 158, 11, 0.2); 
-            padding: 20px; 
-            border-radius: var(--radius-lg); 
+            padding: 20px; border-radius: var(--radius-lg); 
             margin-bottom: 20px; 
         }
         .sop-title { 
-            font-weight: 700; 
-            color: #d97706; 
-            margin-bottom: 14px; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-            font-size: 14px; 
+            font-weight: 700; color: #d97706; 
+            margin-bottom: 14px; display: flex; 
+            align-items: center; gap: 8px; font-size: 14px; 
         }
         .sop-list { list-style: none; padding: 0; }
         .sop-list li { 
-            display: flex; 
-            align-items: flex-start; 
-            gap: 10px; 
-            font-size: 13px; 
-            color: var(--text-secondary); 
-            margin-bottom: 12px; 
-            line-height: 1.6; 
+            display: flex; align-items: flex-start; gap: 10px; 
+            font-size: 13px; color: var(--text-secondary); 
+            margin-bottom: 12px; line-height: 1.6; 
         }
         .sop-list li i { color: #d97706; font-size: 16px; margin-top: 2px; flex-shrink: 0; }
 
@@ -739,23 +609,15 @@
 
         /* ============ WHATSAPP FLOAT ============ */
         .wa-float {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
+            position: fixed; bottom: 24px; right: 24px;
             background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
+            color: white; width: 60px; height: 60px;
+            border-radius: 50%; display: flex; 
+            align-items: center; justify-content: center; 
+            font-size: 32px; 
             box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
-            z-index: 1000;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            border: 3px solid white;
+            z-index: 1000; transition: all 0.3s ease; 
+            text-decoration: none; border: 3px solid white;
         }
         .wa-float:hover { transform: scale(1.1) rotate(5deg); box-shadow: 0 12px 30px rgba(37, 211, 102, 0.5); }
 
@@ -1144,7 +1006,10 @@
 </div>
 
 <script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyUbS-dVP20B5YJAEDe9Bzh6j4dEnu_RUten-zPprO5yLF1CycVubI9x4mycN98tj3q/exec';
+    // ============================================================
+    // KONFIGURASI - GANTI DENGAN URL DEPLOY ANDA YANG TERBARU
+    // ============================================================
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwp4TABzGJMb6bWYda0PFeUfudq9oGmOm9e_ztqJL8gItginIAFPOC7KTwqrvrWv7tb/exec';
     
     const alertEl = document.getElementById('alert');
     const loadingEl = document.getElementById('loading');
@@ -1156,8 +1021,9 @@
     const offlineStore = localforage.createInstance({ name: "AntreanNadzFarm" });
 
     async function saveToOfflineQueue(data) {
-        const id = 'laporan_' + Date.now();
+        const id = 'laporan_' + Date.now() + '_' + Math.random().toString(36).substring(7);
         await offlineStore.setItem(id, data);
+        return id;
     }
 
     async function syncOfflineQueue() {
@@ -1168,25 +1034,36 @@
         if (keys.length === 0) { 
             statusText.textContent = 'Online & Tersinkronisasi'; 
             statusDot.className = 'dot online';
-            return; 
+            return { success: 0, failed: 0 };
         } 
 
-        statusText.textContent = `Offline: ${keys.length} data di antrean`;
-        statusDot.className = 'dot offline';
+        statusText.textContent = `Mengirim ${keys.length} data...`;
+        statusDot.className = 'dot syncing';
+
+        let success = 0;
+        let failed = 0;
 
         for (const key of keys) {
             try {
-                statusDot.className = 'dot syncing';
                 const data = await offlineStore.getItem(key);
+                
+                // Kirim dengan no-cors (fire and forget)
                 await fetch(SCRIPT_URL, { 
                     method: 'POST', 
                     mode: 'no-cors', 
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
                     body: JSON.stringify(data) 
                 });
+                
+                // Kalau tidak error, hapus dari antrean
                 await offlineStore.removeItem(key);
+                success++;
+                
+                console.log('Terkirim:', key);
             } catch (err) {
-                console.warn("Koneksi jelek, pengiriman " + key + " ditunda.");
+                console.warn("Gagal kirim " + key + ":", err);
+                failed++;
+                // Kalau error, stop loop — coba lagi nanti
                 break; 
             }
         }
@@ -1195,18 +1072,19 @@
         if (sisa.length === 0) {
             statusText.textContent = 'Online & Tersinkronisasi';
             statusDot.className = 'dot online';
-            showAlert('Semua data antrean berhasil dikirim ke server!', 'success');
         } else {
             statusText.textContent = `Offline: ${sisa.length} data di antrean`;
             statusDot.className = 'dot offline';
         }
+        
+        return { success, failed };
     }
 
     window.addEventListener('online', () => {
         checkStatus();
         syncOfflineQueue();
     });
-    setInterval(syncOfflineQueue, 60000); 
+    setInterval(syncOfflineQueue, 30000); 
 
     // ============================================================
     // FUNGSI UI & UTILS
@@ -1360,6 +1238,7 @@
             }
         } catch (error) { 
             console.error('Gagal load periode:', error); 
+            showAlert('Gagal memuat data periode. Cek koneksi internet.', 'error');
         }
     }
 
@@ -1429,7 +1308,7 @@
             document.getElementById('newPeriodeTanggalMasuk').value = ''; 
             document.getElementById('newPeriodeJumlahBibit').value = '';
             document.getElementById('addPeriodeForm').classList.remove('active'); 
-            loadPeriode();
+            setTimeout(loadPeriode, 2000);
         } catch (error) { 
             showAlert('Error: ' + error.message, 'error'); 
         }
@@ -1472,17 +1351,6 @@
         checkbox.addEventListener('change', function() {
             localStorage.setItem(`nadzfarm_task_${taskName}`, this.checked);
         });
-    });
-
-    window.addEventListener('beforeunload', function (e) {
-        const isDailyDirty = document.getElementById('dailyAbw1').value !== '' || document.getElementById('dailyPakanAtas').value !== '0';
-        const isPakanDirty = document.getElementById('pakanSupplier').value !== '';
-        const isKematianDirty = document.getElementById('matiJumlah').value !== '';
-
-        if (isDailyDirty || isPakanDirty || isKematianDirty) {
-            e.preventDefault();
-            e.returnValue = 'Anda memiliki data yang belum disimpan. Yakin ingin keluar?';
-        }
     });
 
     // ============================================================
@@ -1624,12 +1492,6 @@
         };
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-        if (document.getElementById('pakanRowsContainer')) {
-            addPakanRow();
-        }
-    });
-
     // ============================================================
     // SUBMIT LOGIC
     // ============================================================
@@ -1650,19 +1512,27 @@
                 const data = await dataBuilder(this); 
                 data.sheetName = sheetName; 
                 data.id_periode = activePeriode;
+                data.timestamp = new Date().toISOString();
                 
+                // Simpan ke antrean
                 await saveToOfflineQueue(data);
-                syncOfflineQueue();
+                console.log('Data disimpan ke antrean:', data);
                 
-                showAlert('Data diamankan! Jika sinyal jelek, sistem akan mengulang otomatis.', 'success');
+                // Coba sync sekarang
+                const result = await syncOfflineQueue();
+                
+                showAlert('Data tersimpan! Sistem akan mengirim otomatis. Cek status di atas.', 'success');
                 
                 // Reset form
                 if (formId === 'formPakan') {
-                    // Reset pakan rows
                     document.getElementById('pakanRowsContainer').innerHTML = '';
                     pakanRowCounter = 0;
                     addPakanRow();
                     hitungTotalPakan();
+                    document.getElementById('pakanSupplier').value = '';
+                    document.getElementById('pakanPo').value = '';
+                    document.getElementById('pakanKendaraan').value = '';
+                    document.getElementById('pakanDeskripsi').value = '';
                 } else {
                     this.reset(); 
                 }
@@ -1674,9 +1544,10 @@
                 const dateInput = this.querySelector('input[type="date"]'); 
                 if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
                 
-                if (sheetName === 'Report Kematian') loadPeriode();
+                if (sheetName === 'Report Kematian') setTimeout(loadPeriode, 3000);
             } catch (err) { 
-                showAlert('Error form: ' + err.message, 'error'); 
+                showAlert('Error: ' + err.message, 'error'); 
+                console.error(err);
             } finally { 
                 loadingEl.classList.remove('active'); 
                 btn.disabled = false; 
@@ -1755,6 +1626,12 @@
     // ============================================================
     // INIT
     // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+        if (document.getElementById('pakanRowsContainer')) {
+            addPakanRow();
+        }
+    });
+
     initForm('formDaily', 'Report Daily', buildDaily); 
     initForm('formPakan', 'Report Pakan', buildPakan); 
     initForm('formKematian', 'Report Kematian', buildKematian);
@@ -1762,6 +1639,9 @@
     loadPeriode();
     const today = new Date().toISOString().split('T')[0]; 
     document.querySelectorAll('input[type="date"]').forEach(el => { if (!el.value) el.value = today; });
+    
+    // Sync antrean pertama kali
+    setTimeout(syncOfflineQueue, 2000);
 </script>
 </body>
 </html>
