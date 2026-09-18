@@ -58,9 +58,6 @@
             .tab-btn { color: var(--text-muted); }
             .tab-btn.active { background: var(--primary); color: white; }
             .periode-box { background: rgba(16, 185, 129, 0.08) !important; border-color: rgba(16, 185, 129, 0.3) !important; }
-            .task-item { background: #0f172a !important; }
-            .announcement-card { background: rgba(59, 130, 246, 0.1) !important; }
-            .sop-box { background: rgba(245, 158, 11, 0.08) !important; }
             .pakan-row { background: #0f172a !important; border-color: #334155 !important; }
         }
 
@@ -389,6 +386,35 @@
             transition: 0.2s; z-index: 10; 
         }
         .photo-slot .preview-single .item .remove:hover { transform: scale(1.15); }
+        
+        .photo-slot.compressing { border-color: var(--warning); animation: pulse-compress 1s infinite; }
+        @keyframes pulse-compress { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+        .photo-slot.compressing::after {
+            content: 'Memproses...';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(245, 158, 11, 0.9);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            z-index: 5;
+        }
+        .photo-slot .file-size-info {
+            position: absolute;
+            bottom: 4px;
+            left: 4px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: 700;
+            z-index: 10;
+        }
 
         /* ============ MULTI BARIS PAKAN ============ */
         .pakan-row {
@@ -527,56 +553,139 @@
             .btn-submit { position: sticky; bottom: 90px; z-index: 50; box-shadow: 0 -4px 20px rgba(79, 70, 229, 0.3); }
         }
 
-        /* ============ ANNOUNCEMENT & TASK ============ */
+        /* ============ PEMBERITAHUAN (JUDUL MERAH, ISI NORMAL) ============ */
         .announcement-card { 
-            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); 
-            border-left: 4px solid var(--info); 
-            padding: 18px; border-radius: var(--radius-md); 
+            background: #fef2f2;
+            border-left: 4px solid #dc2626;
+            padding: 18px; 
+            border-radius: var(--radius-md); 
             margin-bottom: 20px;
+            border: 1.5px solid #fecaca;
         }
         .announcement-card h4 { 
-            color: #1e3a8a; display: flex; align-items: center; gap: 8px; 
-            margin-bottom: 10px; font-size: 14px; font-weight: 700;
+            color: #dc2626;
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            margin-bottom: 12px; 
+            font-size: 14px; 
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        .announcement-card p { font-size: 13px; color: #475569; line-height: 1.6; }
+        .announcement-card h4 i {
+            font-size: 18px;
+        }
+        .announcement-card p { 
+            font-size: 13px; 
+            color: #334155;
+            line-height: 1.7; 
+            font-weight: 500;
+        }
         @media (prefers-color-scheme: dark) { 
-            .announcement-card h4 { color: #93c5fd; }
+            .announcement-card { 
+                background: rgba(239, 68, 68, 0.1); 
+                border-color: rgba(239, 68, 68, 0.3);
+            }
+            .announcement-card h4 { color: #f87171; }
             .announcement-card p { color: #cbd5e1; } 
         }
 
-        .task-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
-        .task-item { 
-            display: flex; align-items: flex-start; gap: 14px; 
-            background: var(--card-bg); padding: 16px; 
-            border-radius: var(--radius-md); 
-            border: 1.5px solid var(--border); 
-            transition: all 0.2s; cursor: pointer; 
-        }
-        .task-item:hover { border-color: var(--primary); box-shadow: var(--shadow-sm); transform: translateX(2px); }
-        .task-item input[type="checkbox"] { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--primary); cursor: pointer; flex-shrink: 0; }
-        .task-content { flex: 1; }
-        .task-title { font-weight: 700; font-size: 14px; color: var(--text-main); margin-bottom: 4px; transition: 0.2s; }
-        .task-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
-        .task-item input:checked + .task-content .task-title { text-decoration: line-through; opacity: 0.5; color: var(--accent); }
-
+        /* ============ SOP (JUDUL MERAH, ISI NORMAL) ============ */
         .sop-box { 
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, rgba(245, 158, 11, 0.08) 100%);
-            border: 1.5px solid rgba(245, 158, 11, 0.2); 
-            padding: 20px; border-radius: var(--radius-lg); 
+            background: #fef2f2;
+            border: 1.5px solid #fecaca; 
+            padding: 20px; 
+            border-radius: var(--radius-lg); 
             margin-bottom: 20px; 
         }
         .sop-title { 
-            font-weight: 700; color: #d97706; 
-            margin-bottom: 14px; display: flex; 
-            align-items: center; gap: 8px; font-size: 14px; 
+            font-weight: 800; 
+            color: #dc2626;
+            margin-bottom: 16px; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            font-size: 14px; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #fecaca;
         }
-        .sop-list { list-style: none; padding: 0; }
+        .sop-title i {
+            font-size: 18px;
+        }
+        
+        .sop-section {
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px dashed #fecaca;
+        }
+        .sop-section:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .sop-section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 800;
+            color: #dc2626;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            padding: 8px 12px;
+            background: #fee2e2;
+            border-radius: var(--radius-sm);
+        }
+        
+        .sop-list { 
+            list-style: none; 
+            padding: 0; 
+            margin: 0;
+        }
         .sop-list li { 
-            display: flex; align-items: flex-start; gap: 10px; 
-            font-size: 13px; color: var(--text-secondary); 
-            margin-bottom: 12px; line-height: 1.6; 
+            display: flex; 
+            align-items: flex-start; 
+            gap: 10px; 
+            font-size: 12.5px; 
+            color: #334155;
+            margin-bottom: 10px; 
+            line-height: 1.6; 
+            font-weight: 500;
         }
-        .sop-list li i { color: #d97706; font-size: 16px; margin-top: 2px; flex-shrink: 0; }
+        .sop-list li i { 
+            color: #dc2626;
+            font-size: 14px; 
+            margin-top: 2px; 
+            flex-shrink: 0; 
+        }
+        .sop-list li strong {
+            color: #0f172a;
+            font-weight: 700;
+        }
+        
+        @media (prefers-color-scheme: dark) {
+            .sop-box { 
+                background: rgba(239, 68, 68, 0.1); 
+                border-color: rgba(239, 68, 68, 0.3);
+            }
+            .sop-title { 
+                color: #f87171; 
+                border-bottom-color: rgba(248, 113, 113, 0.3); 
+            }
+            .sop-section-title { 
+                color: #f87171; 
+                background: rgba(248, 113, 113, 0.15); 
+            }
+            .sop-list li { color: #cbd5e1; }
+            .sop-list li strong { color: #f1f5f9; }
+            .sop-list li i { color: #f87171; }
+            .sop-section { border-bottom-color: rgba(248, 113, 113, 0.3); }
+        }
 
         /* ============ LOADING ============ */
         .loading { display: none; text-align: center; padding: 30px 0; }
@@ -703,56 +812,107 @@
             <button class="tab-btn" data-tab="kematian"><i class="ph ph-warning-octagon"></i> <span>Kematian</span></button>
         </div>
 
-        <!-- TAB INFO & TUGAS -->
+        <!-- ============================================================
+             TAB INFO & TUGAS
+             ============================================================
+             
+             📝 CARA EDIT:
+             
+             1. PEMBERITAHUAN → Edit di bawah "EDIT PEMBERITAHUAN"
+             2. SOP LAPORAN HARIAN → Edit di bawah "EDIT SOP LAPORAN HARIAN"
+             3. SOP LAPORAN PAKAN → Edit di bawah "EDIT SOP LAPORAN PAKAN"
+             4. SOP LAPORAN KEMATIAN → Edit di bawah "EDIT SOP LAPORAN KEMATIAN"
+             5. HAL PENTING → Edit di bawah "EDIT HAL PENTING"
+             
+             ============================================================ -->
         <div id="tab-info" class="tab-content active">
+            
+            <!-- ========================================================
+                 ✏️ EDIT PEMBERITAHUAN DI SINI
+                 
+                 Judul otomatis berwarna MERAH & HURUF KAPITAL.
+                 Isi teks akan tampil normal (warna biasa).
+                 
+                 Ganti isi <p>...</p> dengan pesan Anda.
+                 Bisa multi baris pakai <br>.
+                 ======================================================== -->
             <div class="announcement-card">
-                <h4><i class="ph ph-bell-ringing"></i> Pemberitahuan Terkini</h4>
-                <p><strong>Perhatian:</strong> Pastikan jaringan internet tersedia saat submit data. Data akan langsung dikirim ke server. Gunakan tombol WA di pojok kanan bawah jika ada kendala.</p>
+                <h4><i class="ph ph-bell-ringing"></i> Pemberitahuan</h4>
+                <p>
+                    Sistem sudah kembali normal dan bisa dipakai seperti biasa.
+                    <br><br>
+                    Mohon bantuan semuanya untuk tetap mengirim laporan harian sebelum pukul 20:00 WIB ya. Kalau dikirim lewat dari jam itu, akan dianggap terlambat. Terlambat 3 kali dalam sebulan akan dikenakan Surat Peringatan.
+                    <br><br>
+                    Sebelum menekan tombol Kirim, pastikan dulu data dan fotonya sudah benar. Terima kasih atas kerja samanya.
+                </p>
             </div>
 
-            <div class="info-box">
-                <div class="title"><i class="ph ph-check-square-offset"></i> Checklist Tugas Wajib Operator</div>
-            </div>
-            <div class="task-list">
-                <label class="task-item">
-                    <input type="checkbox" class="task-checkbox" data-task="kebersihan">
-                    <div class="task-content">
-                        <div class="task-title">Cek Kebersihan</div>
-                        <div class="task-desc">Meliputi bagian luar, dalam serta perkarangan kandang bersih.</div>
-                    </div>
-                </label>
-                <label class="task-item">
-                    <input type="checkbox" class="task-checkbox" data-task="air">
-                    <div class="task-content">
-                        <div class="task-title">Cek Ketersediaan & Tekanan Air Minum</div>
-                        <div class="task-desc">Pastikan nipple drinker tidak mampet dan air terdistribusi merata hingga ujung sekat.</div>
-                    </div>
-                </label>
-                <label class="task-item">
-                    <input type="checkbox" class="task-checkbox" data-task="suhu">
-                    <div class="task-content">
-                        <div class="task-title">Monitoring Suhu & Kelembaban</div>
-                        <div class="task-desc">Cek suhu di area tengah kandang, pastikan blower bekerja optimal sesuai umur ayam.</div>
-                    </div>
-                </label>
-                <label class="task-item">
-                    <input type="checkbox" class="task-checkbox" data-task="disinfektan">
-                    <div class="task-content">
-                        <div class="task-title">Penyemprotan Disinfektan Rutin</div>
-                        <div class="task-desc">Lakukan sterilisasi luar dan dalam area gerbang masuk sesuai jadwal.</div>
-                    </div>
-                </label>
-            </div>
-
+            <!-- ========================================================
+                 📋 SOP & INSTRUKSI PENGISIAN LAPORAN
+                 
+                 Semua judul section otomatis MERAH & KAPITAL.
+                 Isi teks akan tampil normal.
+                 ======================================================== -->
             <div class="sop-box">
-                <div class="sop-title"><i class="ph ph-warning-circle"></i> Instruksi & SOP Pengisian Laporan</div>
-                <ul class="sop-list">
-                    <li><i class="ph ph-caret-right"></i> <span><strong>Laporan Harian</strong> Wajib dikirimkan maksimal pukul 20:00 WIB setiap harinya.</span></li>
-                    <li><i class="ph ph-caret-right"></i> <span><strong>Dokumentasi</strong> Foto timbangan harus tajam, dan angka digital harus terbaca jelas. Jika blur, mohon difoto ulang.</span></li>
-                    <li><i class="ph ph-caret-right"></i> <span><strong>Mortalitas:</strong> Jika terjadi lonjakan kematian mendadak (>10 ekor per jam), segera hentikan aktivitas dan hubungi Kepala Kandang.</span></li>
-                </ul>
+                <div class="sop-title"><i class="ph ph-clipboard-text"></i> SOP & Instruksi Pengisian Laporan</div>
+                
+                <!-- ========================================================
+                     ✏️ EDIT SOP LAPORAN HARIAN
+                     ======================================================== -->
+                <div class="sop-section">
+                    <div class="sop-section-title"><i class="ph ph-number-circle-one"></i> Laporan Harian</div>
+                    <ul class="sop-list">
+                        <li><i class="ph ph-caret-right"></i> <span><strong>Waktu kirim:</strong> Usahakan kirim sebelum pukul 20:00 WIB setiap hari</span></li>
+                        <li><i class="ph ph-caret-right"></i> <span><strong>Pakan Atas & Bawah:</strong> Isi sesuai jumlah karung yang diberikan di sekat atas dan bawah</span></li>
+                        <li><i class="ph ph-caret-right"></i> <span><strong>ABW per Sekat:</strong> Isi berat 10 ekor dalam satuan kilogram. Contoh: kalau total 6.5 kg, tulis 6.5</span></li>
+                        <li><i class="ph ph-caret-right"></i> <span><strong>Foto ABW:</strong> Wajib foto angka timbangan, pastikan angkanya terbaca jelas</span></li>
+                    </ul>
+                </div>
+
+                <!-- ========================================================
+                     ✏️ EDIT SOP LAPORAN PAKAN
+                     ======================================================== -->
+                <div class="sop-section">
+                    <div class="sop-section-title"><i class="ph ph-number-circle-two"></i> Laporan Pakan Masuk</div>
+                    <ul class="sop-list">
+                        <li><i class="ph ph-caret-right"></i> <span><strong>Supplier:</strong> Tulis nama supplier yang mengirim pakan</span></li>
+                        <li><i class="ph ph-caret-right"></i> <span><strong>Jenis Pakan:</strong> Pilih kategori (SB 10, SB 11, SB 12, atau Lainnya) lalu isi jumlah Zak-nya</span></li>
+                        <li><i class="ph ph-caret-right"></i> <span><strong>Total Otomatis:</strong> Sistem akan hitung sendiri total Zak dan Kg (1 Zak = 50 Kg)</span></li>
+                        <li><i class="ph ph-caret-right"></i> <span><strong>Foto:</strong> Ambil foto surat jalan, karung pakan, dan kendaraan pengirim</span></li>
+                    </ul>
+                </div>
+
+                <!-- ========================================================
+                     ✏️ EDIT SOP LAPORAN KEMATIAN
+                     ======================================================== -->
+                <div class="sop-section">
+                    <div class="sop-section-title"><i class="ph ph-number-circle-three"></i> Laporan Kematian</div>
+                    <ul class="sop-list">
+                        <li><i class="ph ph-caret-right"></i> <span><strong>Jam ke-:</strong> Pilih jam sesuai waktu ditemukannya ayam mati (1-24)</span></li>
+                        <li><i class="ph ph-caret-right"></i> <span><strong>Pelapor:</strong> Isi nama Anda yang melaporkan</span></li>
+                        <li><i class="ph ph-caret-right"></i> <span><strong>Jumlah Mati:</strong> Isi jumlah ayam yang mati di jam tersebut</span></li>
+                        <li><i class="ph ph-caret-right"></i> <span><strong>Foto:</strong> Wajib foto ayam mati sebagai bukti laporan</span></li>
+                    </ul>
+                </div>
+
+                <!-- ========================================================
+                     ✏️ EDIT HAL PENTING
+                     ======================================================== -->
+                <div class="sop-section">
+                    <div class="sop-section-title"><i class="ph ph-warning"></i> Hal Penting yang Perlu Diingat</div>
+                    <ul class="sop-list">
+                        <li><i class="ph ph-caret-right"></i> <span><strong>Kematian lebih dari 10 ekor/jam:</strong> Langsung hubungi Kepala Kandang sebelum input laporan</span></li>
+                        <li><i class="ph ph-caret-right"></i> <span><strong>Foto blur atau tidak jelas:</strong> Mohon difoto ulang dulu sebelum kirim</span></li>
+                        <li><i class="ph ph-caret-right"></i> <span><strong>Koneksi bermasalah:</strong> Pastikan status "Online" di atas sebelum kirim laporan</span></li>
+                        <li><i class="ph ph-caret-right"></i> <span><strong>Data tidak boleh dikarang:</strong> Isi laporan sesuai kondisi asli di lapangan</span></li>
+                    </ul>
+                </div>
             </div>
+            
         </div>
+        <!-- ============================================================
+             SELESAI TAB INFO & TUGAS
+             ============================================================ -->
 
         <!-- TAB HARIAN -->
         <div id="tab-daily" class="tab-content">
@@ -992,13 +1152,81 @@
 
 <script>
     // ============================================================
-    // KONFIGURASI - GANTI DENGAN URL DEPLOY ANDA YANG TERBARU
+    // KONFIGURASI
     // ============================================================
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyGxwGT1NEUDjiyhybBCGJ2xKNWVhBYjfgKpeSyvi5rrL8_XRErYj7t0C6G5r8kBFrb/exec';
+    
+    const COMPRESS_MAX_WIDTH = 1200;
+    const COMPRESS_QUALITY = 0.75;
+    const COMPRESS_MAX_SIZE_MB = 20;
     
     const alertEl = document.getElementById('alert');
     const loadingEl = document.getElementById('loading');
     let currentPeriodeList = [];
+    
+    const compressedPhotos = new Map();
+
+    // ============================================================
+    // FUNGSI KOMPRES FOTO
+    // ============================================================
+    function compressImage(file) {
+        return new Promise((resolve, reject) => {
+            if (!file.type.startsWith('image/')) {
+                reject(new Error('File bukan gambar'));
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+                    
+                    if (width > COMPRESS_MAX_WIDTH) {
+                        height = Math.round((height * COMPRESS_MAX_WIDTH) / width);
+                        width = COMPRESS_MAX_WIDTH;
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    
+                    const ctx = canvas.getContext('2d');
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.fillRect(0, 0, width, height);
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', COMPRESS_QUALITY).split(',')[1];
+                    
+                    const originalSize = file.size;
+                    const compressedSize = Math.round((compressedBase64.length * 3) / 4);
+                    const reduction = Math.round((1 - compressedSize / originalSize) * 100);
+                    
+                    resolve({
+                        base64: compressedBase64,
+                        originalSize: originalSize,
+                        compressedSize: compressedSize,
+                        reduction: reduction,
+                        width: width,
+                        height: height,
+                        name: file.name,
+                        mime: 'image/jpeg'
+                    });
+                };
+                img.onerror = () => reject(new Error('Gagal baca gambar'));
+                img.src = e.target.result;
+            };
+            reader.onerror = () => reject(new Error('Gagal baca file'));
+            reader.readAsDataURL(file);
+        });
+    }
+    
+    function formatFileSize(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return Math.round(bytes / 1024) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    }
 
     // ============================================================
     // FUNGSI UI & UTILS
@@ -1040,55 +1268,79 @@
         alertEl._timer = setTimeout(() => alertEl.classList.remove('show'), 5000); 
     }
 
-    function handleSingleFileSelect(input, previewId, slotElement) { 
+    async function handleSingleFileSelect(input, previewId, slotElement) { 
         const container = document.getElementById(previewId); 
         container.innerHTML = ''; 
         const file = input.files[0]; 
         
         if (!file) {
-            slotElement.classList.remove('has-image');
+            slotElement.classList.remove('has-image', 'compressing');
+            compressedPhotos.delete(input.id);
             return; 
         }
         
-        if (file.size > 5 * 1024 * 1024) { 
-            showAlert('Ukuran foto terlalu besar (max 5MB)', 'error'); 
+        if (file.size > COMPRESS_MAX_SIZE_MB * 1024 * 1024) {
+            showAlert(`Ukuran foto terlalu besar (max ${COMPRESS_MAX_SIZE_MB}MB)`, 'error'); 
             input.value = ''; 
             slotElement.classList.remove('has-image');
-            return; 
+            return;
         }
         
-        slotElement.classList.add('has-image');
-        const reader = new FileReader(); 
-        reader.onload = function(e) { 
-            const item = document.createElement('div'); 
-            item.className = 'item'; 
-            const img = document.createElement('img'); 
-            img.src = e.target.result; 
-            img.alt = file.name; 
-            const remove = document.createElement('button'); 
-            remove.className = 'remove'; 
-            remove.innerHTML = '<i class="ph ph-x"></i>'; 
-            remove.type = 'button'; 
-            remove.addEventListener('click', function(e) { 
-                e.stopPropagation(); 
-                input.value = ''; 
-                container.innerHTML = ''; 
+        slotElement.classList.add('compressing');
+        
+        try {
+            const result = await compressImage(file);
+            
+            compressedPhotos.set(input.id, {
+                data: result.base64,
+                name: result.name,
+                mime: result.mime
+            });
+            
+            slotElement.classList.remove('compressing');
+            slotElement.classList.add('has-image');
+            
+            const item = document.createElement('div');
+            item.className = 'item';
+            
+            const img = document.createElement('img');
+            img.src = 'data:image/jpeg;base64,' + result.base64;
+            img.alt = file.name;
+            
+            const remove = document.createElement('button');
+            remove.className = 'remove';
+            remove.innerHTML = '<i class="ph ph-x"></i>';
+            remove.type = 'button';
+            remove.addEventListener('click', function(e) {
+                e.stopPropagation();
+                input.value = '';
+                container.innerHTML = '';
                 slotElement.classList.remove('has-image');
-            }); 
-            item.appendChild(img); 
-            item.appendChild(remove); 
-            container.appendChild(item); 
-        }; 
-        reader.readAsDataURL(file); 
+                compressedPhotos.delete(input.id);
+            });
+            
+            const sizeInfo = document.createElement('div');
+            sizeInfo.className = 'file-size-info';
+            sizeInfo.textContent = `${formatFileSize(result.originalSize)} → ${formatFileSize(result.compressedSize)}`;
+            
+            item.appendChild(img);
+            item.appendChild(remove);
+            item.appendChild(sizeInfo);
+            container.appendChild(item);
+            
+            console.log(`Foto ${input.id}: ${formatFileSize(result.originalSize)} → ${formatFileSize(result.compressedSize)} (hemat ${result.reduction}%)`);
+            
+        } catch (err) {
+            slotElement.classList.remove('compressing', 'has-image');
+            showAlert('Gagal memproses foto: ' + err.message, 'error');
+            input.value = '';
+            compressedPhotos.delete(input.id);
+            console.error(err);
+        }
     }
 
-    function fileToBase64(file) { 
-        return new Promise((resolve, reject) => { 
-            const reader = new FileReader(); 
-            reader.onload = () => resolve(reader.result.split(',')[1]); 
-            reader.onerror = reject; 
-            reader.readAsDataURL(file); 
-        }); 
+    function getCompressedPhoto(inputId) {
+        return compressedPhotos.get(inputId) || null;
     }
 
     function toggleAddPeriode() { 
@@ -1256,16 +1508,6 @@
         }
     });
 
-    document.querySelectorAll('.task-checkbox').forEach((checkbox, index) => {
-        const taskName = checkbox.getAttribute('data-task');
-        const savedState = localStorage.getItem(`nadzfarm_task_${taskName}`);
-        if (savedState === 'true') checkbox.checked = true;
-
-        checkbox.addEventListener('change', function() {
-            localStorage.setItem(`nadzfarm_task_${taskName}`, this.checked);
-        });
-    });
-
     // ============================================================
     // MULTI BARIS PAKAN
     // ============================================================
@@ -1406,7 +1648,7 @@
     }
 
     // ============================================================
-    // SUBMIT LOGIC - KIRIM LANGSUNG TANPA ANTREAN
+    // SUBMIT LOGIC
     // ============================================================
     function initForm(formId, sheetName, dataBuilder) {
         const form = document.getElementById(formId);
@@ -1426,7 +1668,6 @@
                 data.sheetName = sheetName; 
                 data.id_periode = activePeriode;
                 
-                // KIRIM LANGSUNG KE SERVER
                 await fetch(SCRIPT_URL, { 
                     method: 'POST', 
                     mode: 'no-cors', 
@@ -1438,7 +1679,6 @@
                 
                 showAlert('Data berhasil terkirim ke server!', 'success');
                 
-                // Reset form
                 if (formId === 'formPakan') {
                     document.getElementById('pakanRowsContainer').innerHTML = '';
                     pakanRowCounter = 0;
@@ -1453,8 +1693,11 @@
                 }
                 
                 this.querySelectorAll('.preview-single').forEach(el => el.innerHTML = ''); 
-                this.querySelectorAll('input[type="file"]').forEach(fi => { fi.value = ''; });
-                this.querySelectorAll('.photo-slot').forEach(slot => slot.classList.remove('has-image'));
+                this.querySelectorAll('input[type="file"]').forEach(fi => { 
+                    fi.value = '';
+                    compressedPhotos.delete(fi.id);
+                });
+                this.querySelectorAll('.photo-slot').forEach(slot => slot.classList.remove('has-image', 'compressing'));
                 
                 const dateInput = this.querySelector('input[type="date"]'); 
                 if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
@@ -1472,11 +1715,9 @@
     }
 
     async function buildDaily(form) {
-        const getSingleFileAsList = async (id) => { 
-            const f = document.getElementById(id).files[0]; 
-            const list = []; 
-            if (f) { list.push({ data: await fileToBase64(f), name: f.name, mime: f.type }); } 
-            return list; 
+        const getPhoto = (id) => {
+            const photo = getCompressedPhoto(id);
+            return photo ? [photo] : [];
         };
         
         return { 
@@ -1487,20 +1728,19 @@
             abw_sekat2: validateABW(document.getElementById('dailyAbw2').value, 'Sekat 2'), 
             abw_sekat3: validateABW(document.getElementById('dailyAbw3').value, 'Sekat 3'), 
             abw_sekat4: validateABW(document.getElementById('dailyAbw4').value, 'Sekat 4'), 
-            fotoList1: await getSingleFileAsList('dailyFoto1'), 
-            fotoList2: await getSingleFileAsList('dailyFoto2'), 
-            fotoList3: await getSingleFileAsList('dailyFoto3'), 
-            fotoList4: await getSingleFileAsList('dailyFoto4') 
+            fotoList1: getPhoto('dailyFoto1'), 
+            fotoList2: getPhoto('dailyFoto2'), 
+            fotoList3: getPhoto('dailyFoto3'), 
+            fotoList4: getPhoto('dailyFoto4') 
         };
     }
 
     async function buildPakan(form) {
-        const ids = ['pakanFoto1', 'pakanFoto2', 'pakanFoto3', 'pakanFoto4']; 
         const list = [];
-        for (const id of ids) { 
-            const f = document.getElementById(id).files[0]; 
-            if (f) list.push({ data: await fileToBase64(f), name: f.name, mime: f.type }); 
-        }
+        ['pakanFoto1', 'pakanFoto2', 'pakanFoto3', 'pakanFoto4'].forEach(id => {
+            const photo = getCompressedPhoto(id);
+            if (photo) list.push(photo);
+        });
         
         const aggregated = aggregatePakanData();
         
@@ -1523,12 +1763,12 @@
     }
 
     async function buildKematian(form) {
-        const ids = ['matiFoto1', 'matiFoto2', 'matiFoto3', 'matiFoto4']; 
         const list = [];
-        for (const id of ids) { 
-            const f = document.getElementById(id).files[0]; 
-            if (f) list.push({ data: await fileToBase64(f), name: f.name, mime: f.type }); 
-        }
+        ['matiFoto1', 'matiFoto2', 'matiFoto3', 'matiFoto4'].forEach(id => {
+            const photo = getCompressedPhoto(id);
+            if (photo) list.push(photo);
+        });
+        
         return { 
             tanggal: document.getElementById('matiTanggal').value, 
             jam: document.getElementById('matiJam').value, 
