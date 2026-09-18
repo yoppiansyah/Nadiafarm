@@ -7,7 +7,7 @@
     <!-- Font & Professional Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <!-- Tambahan Library localForage untuk Antrean Offline -->
+    <!-- Library localForage untuk Antrean Offline -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
     <style>
         :root {
@@ -48,8 +48,8 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg-color); min-height: 100vh; padding: 20px; color: var(--text-main); transition: background 0.3s; }
-        .container { max-width: 960px; margin: 0 auto; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-color); min-height: 100vh; padding: 20px; color: var(--text-main); transition: background 0.3s; padding-bottom: 80px; }
+        .container { max-width: 960px; margin: 0 auto; position: relative; }
         
         .header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); color: white; padding: 20px 28px; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
         .header .brand h1 { font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
@@ -93,22 +93,8 @@
         .populasi-item .value.green { color: #16a34a; }
         .mortalitas { margin-top: 12px; text-align: center; font-size: 12px; color: var(--text-muted); padding-top: 10px; border-top: 1px dashed var(--border); }
 
-        /* Info Umur */
-        .umur-info {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(139, 92, 246, 0.1);
-            color: #7c3aed;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 14px;
-            margin-top: 12px;
-        }
-        @media (prefers-color-scheme: dark) {
-            .umur-info { color: #a78bfa; background: rgba(139, 92, 246, 0.2); }
-        }
+        .umur-info { display: inline-flex; align-items: center; gap: 6px; background: rgba(139, 92, 246, 0.1); color: #7c3aed; padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 14px; margin-top: 12px; }
+        @media (prefers-color-scheme: dark) { .umur-info { color: #a78bfa; background: rgba(139, 92, 246, 0.2); } }
 
         .btn-add-periode { width: 100%; padding: 12px; background: var(--accent); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; font-family: inherit; }
         .btn-add-periode:hover { background: var(--accent-hover); transform: translateY(-1px); }
@@ -127,6 +113,29 @@
         .tab-content { display: none; animation: fadeIn 0.3s ease; }
         .tab-content.active { display: block; }
         @keyframes fadeIn { 0% { opacity: 0; transform: translateY(6px); } 100% { opacity: 1; transform: translateY(0); } }
+
+        /* Styling Tab Info & Tugas */
+        .announcement-card { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #3b82f6; padding: 16px; border-radius: 8px; margin-bottom: 20px; }
+        @media (prefers-color-scheme: dark) { .announcement-card { background: rgba(59, 130, 246, 0.1); border-left-color: #60a5fa; } }
+        .announcement-card h4 { color: #1e3a8a; display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 14px; }
+        @media (prefers-color-scheme: dark) { .announcement-card h4 { color: #93c5fd; } }
+        .announcement-card p { font-size: 13px; color: #475569; line-height: 1.5; }
+        @media (prefers-color-scheme: dark) { .announcement-card p { color: #cbd5e1; } }
+
+        .task-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        .task-item { display: flex; align-items: flex-start; gap: 12px; background: var(--card-bg); padding: 14px; border-radius: 8px; border: 1px solid var(--border); transition: 0.2s; cursor: pointer; }
+        .task-item:hover { border-color: var(--primary); }
+        .task-item input[type="checkbox"] { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--primary); cursor: pointer; flex-shrink: 0; }
+        .task-content { flex: 1; }
+        .task-title { font-weight: 600; font-size: 14px; color: var(--text-main); margin-bottom: 4px; transition: 0.2s; }
+        .task-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+        .task-item input:checked + .task-content .task-title { text-decoration: line-through; opacity: 0.6; color: var(--success); }
+
+        .sop-box { background: rgba(245, 158, 11, 0.05); border: 1px solid rgba(245, 158, 11, 0.2); padding: 16px; border-radius: 8px; margin-bottom: 20px; }
+        .sop-title { font-weight: 700; color: #d97706; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; font-size: 14px; }
+        .sop-list { list-style: none; padding: 0; }
+        .sop-list li { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--text-main); margin-bottom: 10px; line-height: 1.4; }
+        .sop-list li i { color: #d97706; font-size: 16px; margin-top: 1px; flex-shrink: 0; }
 
         .info-box { background: rgba(26, 26, 46, 0.03); padding: 14px 18px; border-radius: 8px; border-left: 4px solid var(--primary); margin-bottom: 20px; }
         @media (prefers-color-scheme: dark) { .info-box { background: rgba(139, 92, 246, 0.1); } }
@@ -165,6 +174,30 @@
         .loading .text { font-size: 14px; font-weight: 600; color: var(--text-muted); }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
+        /* Floating WhatsApp Button */
+        .wa-float {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background-color: #25D366;
+            color: white;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .wa-float:hover {
+            transform: scale(1.1);
+            background-color: #20bd5a;
+        }
+
         @media (max-width: 768px) { 
             .header { flex-direction: column; align-items: stretch; text-align: center; } 
             .header .brand h1 { justify-content: center; }
@@ -173,6 +206,7 @@
             .tab-btn { flex: 1; justify-content: center; font-size: 13px; padding: 10px; } 
             .tab-btn span { display: none; }
             .populasi-grid { grid-template-columns: 1fr; } 
+            .wa-float { bottom: 20px; right: 20px; width: 50px; height: 50px; font-size: 28px; }
         }
         @media (max-width: 480px) { 
             .photo-slot-grid { grid-template-columns: repeat(2, 1fr); } 
@@ -205,9 +239,7 @@
             </select>
             <div class="hint"><i class="ph ph-info"></i> Umur ayam dihitung otomatis (DOC masuk = 0 hari, besok = 1 hari).</div>
             
-            <!-- Info Umur Otomatis -->
             <div id="umurInfo" class="umur-info" style="display: none;"></div>
-            
             <div id="populasiInfo" class="populasi-info"></div>
         </div>
 
@@ -247,13 +279,58 @@
         </div>
 
         <div class="tabs">
-            <button class="tab-btn active" data-tab="daily"><i class="ph ph-clipboard-text"></i> <span>Harian</span></button>
+            <button class="tab-btn active" data-tab="info"><i class="ph ph-megaphone"></i> <span>Info & Tugas</span></button>
+            <button class="tab-btn" data-tab="daily"><i class="ph ph-clipboard-text"></i> <span>Harian</span></button>
             <button class="tab-btn" data-tab="pakan"><i class="ph ph-bowl-food"></i> <span>Pakan</span></button>
             <button class="tab-btn" data-tab="kematian"><i class="ph ph-warning-octagon"></i> <span>Kematian</span></button>
         </div>
 
+        <!-- TAB INFO & TUGAS -->
+        <div id="tab-info" class="tab-content active">
+            <div class="announcement-card">
+                <h4><i class="ph ph-bell-ringing"></i> Pemberitahuan Terkini</h4>
+                <p><strong>Perhatian:</strong> Pastikan jaringan internet tersedia saat submit data agar antrean pengiriman segera diproses. Gunakan tombol WA di pojok kanan bawah jika ada kendala.</p>
+            </div>
+
+            <div class="info-box">
+                <div class="title"><i class="ph ph-check-square-offset"></i> Checklist Tugas Wajib Operator</div>
+            </div>
+            <div class="task-list">
+                <label class="task-item">
+                    <input type="checkbox">
+                    <div class="task-content">
+                        <div class="task-title">Cek Ketersediaan & Tekanan Air Minum</div>
+                        <div class="task-desc">Pastikan nipple drinker tidak mampet dan air terdistribusi merata hingga ujung sekat.</div>
+                    </div>
+                </label>
+                <label class="task-item">
+                    <input type="checkbox">
+                    <div class="task-content">
+                        <div class="task-title">Monitoring Suhu & Kelembaban</div>
+                        <div class="task-desc">Cek suhu di area tengah kandang, pastikan blower bekerja optimal sesuai umur ayam.</div>
+                    </div>
+                </label>
+                <label class="task-item">
+                    <input type="checkbox">
+                    <div class="task-content">
+                        <div class="task-title">Penyemprotan Disinfektan Rutin</div>
+                        <div class="task-desc">Lakukan sterilisasi luar dan dalam area gerbang masuk sesuai jadwal.</div>
+                    </div>
+                </label>
+            </div>
+
+            <div class="sop-box">
+                <div class="sop-title"><i class="ph ph-warning-circle"></i> Instruksi & SOP Pengisian Laporan</div>
+                <ul class="sop-list">
+                    <li><i class="ph ph-caret-right"></i> <strong>Laporan Harian</strong> wajib dikirimkan maksimal pukul 20:00 WIB setiap harinya.</li>
+                    <li><i class="ph ph-caret-right"></i> <strong>Dokumentasi</strong> foto timbangan harus tajam, dan angka digital harus terbaca jelas. Jika blur, mohon difoto ulang.</li>
+                    <li><i class="ph ph-caret-right"></i> <strong>Mortalitas:</strong> Jika terjadi lonjakan kematian mendadak (>10 ekor per jam), segera hentikan aktivitas dan hubungi Kepala Kandang/Dokter Hewan area.</li>
+                </ul>
+            </div>
+        </div>
+
         <!-- TAB HARIAN -->
-        <div id="tab-daily" class="tab-content active">
+        <div id="tab-daily" class="tab-content">
             <form id="formDaily">
                 <div class="info-box">
                     <div class="title"><i class="ph ph-list-dashes"></i> Laporan Harian</div>
@@ -462,21 +539,23 @@
             <div class="text">Menyimpan data...</div>
         </div>
     </div>
+    
+    <!-- Tombol Floating Bantuan WhatsApp -->
+    <!-- GANTI NOMOR 6281234567890 DI BAWAH DENGAN NOMOR WA ANDA -->
+    <a href="https://wa.me/6282289467410?text=Halo%20Admin,%20saya%20mengalami%20kendala%20saat%20menggunakan%20Sistem%20Laporan%20Nadz%20Farm" 
+       class="wa-float" target="_blank" title="Bantuan Teknis">
+        <i class="ph-fill ph-whatsapp-logo"></i>
+    </a>
 </div>
 
 <script>
-    // ============================================================
-    // PENTING: GUNAKAN URL YANG SAMA DENGAN DASHBOARD!
-    // ============================================================
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyl6Efdb0LPSeB2Cz_MAB7r3ieryIc-JGLVEmy7ZznkH-_UEyKqARsy9f3mHqOBBYB8/exec';
     
     const alertEl = document.getElementById('alert');
     const loadingEl = document.getElementById('loading');
     let currentPeriodeList = [];
 
-    // ============================================================
-    // SISTEM ANTREAN OFFLINE (IndexedDB via localForage)
-    // ============================================================
+    // --- SISTEM ANTREAN OFFLINE ---
     const offlineStore = localforage.createInstance({ name: "AntreanNadzFarm" });
 
     async function saveToOfflineQueue(data) {
@@ -486,41 +565,32 @@
 
     async function syncOfflineQueue() {
         const keys = await offlineStore.keys();
-        if (keys.length === 0) return; // Tidak ada antrean
+        if (keys.length === 0) return; 
 
         document.getElementById('statusText').textContent = `Sinkronisasi (${keys.length})...`;
 
         for (const key of keys) {
             try {
                 const data = await offlineStore.getItem(key);
-                
-                // Coba tembak ke Google Apps Script
                 await fetch(SCRIPT_URL, { 
                     method: 'POST', 
                     mode: 'no-cors', 
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
                     body: JSON.stringify(data) 
                 });
-                
-                // Jika berhasil terkirim tanpa error jaringan, hapus dari antrean
                 await offlineStore.removeItem(key);
             } catch (err) {
-                // Berhenti mencoba jika tidak ada internet/koneksi jelek
                 console.warn("Koneksi jelek, pengiriman " + key + " ditunda.");
                 break; 
             }
         }
-        
-        checkStatus(); // Reset indikator UI ke asalnya
+        checkStatus();
     }
 
-    // Jalankan sinkronisasi otomatis
     window.addEventListener('online', syncOfflineQueue);
-    setInterval(syncOfflineQueue, 60000); // Tiap 1 menit
+    setInterval(syncOfflineQueue, 60000); 
 
-    // ============================================================
-    // FUNGSI UMUM & UI
-    // ============================================================
+    // --- FUNGSI UI & UTILS ---
     function updateTime() { 
         const now = new Date(); 
         document.getElementById('currentTime').textContent = now.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }); 
@@ -655,7 +725,6 @@
             }
         } catch (error) { 
             console.error('Gagal load periode:', error); 
-            // Kita skip showAlert error periode jika koneksi offline agar tidak mengganggu user.
         }
     }
 
@@ -717,16 +786,9 @@
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
                 body: JSON.stringify({ 
                     action: 'addPeriode', 
-                    data: { 
-                        id_periode: idPeriode, 
-                        tanggal_masuk: tanggalMasuk, 
-                        estimasi_hari: estimasiHari, 
-                        jumlah_bibit: jumlahBibit, 
-                        jenis_bibit: jenisBibit 
-                    } 
+                    data: { id_periode: idPeriode, tanggal_masuk: tanggalMasuk, estimasi_hari: estimasiHari, jumlah_bibit: jumlahBibit, jenis_bibit: jenisBibit } 
                 }) 
             });
-            
             showAlert('Periode baru berhasil ditambahkan!', 'success');
             document.getElementById('newPeriodeId').value = ''; 
             document.getElementById('newPeriodeTanggalMasuk').value = ''; 
@@ -746,28 +808,17 @@
 
     function validateABW(value, fieldName) {
         if (!value || value === "" || value === 0) return 0;
-        
         let num = parseFloat(value);
         if (isNaN(num)) return 0;
-        
-        if (num > 100) {
-            num = num / 1000;
-            if (num > 20) {
-                num = num / 10;
-            }
-        }
-        
+        if (num > 100) { num = num / 1000; if (num > 20) { num = num / 10; } }
         if (num > 50 || num < 0) {
             showAlert(`Nilai ${fieldName} tidak wajar (${num} kg). Pastikan input dalam kg untuk 10 ekor.`, 'error');
             return 0;
         }
-        
         return num;
     }
 
-    // ============================================================
-    // MODIFIKASI SUBMIT FORM (OFFLINE QUEUE TERINTEGRASI)
-    // ============================================================
+    // --- SUBMIT LOGIC ---
     function initForm(formId, sheetName, dataBuilder) {
         const form = document.getElementById(formId);
         form.addEventListener('submit', async function(e) {
@@ -786,26 +837,18 @@
                 data.sheetName = sheetName; 
                 data.id_periode = activePeriode;
                 
-                // 1. Selalu simpan ke HP dulu untuk menghindari data hilang karena koneksi putus tiba-tiba
                 await saveToOfflineQueue(data);
-                
-                // 2. Langsung eksekusi sinkronisasi background
                 syncOfflineQueue();
                 
-                // 3. Info user bahwa form aman
                 showAlert('Data diamankan! Jika sinyal jelek, sistem akan mengulang otomatis.', 'success');
                 
-                // 4. Reset form
                 this.reset(); 
                 this.querySelectorAll('.preview-single').forEach(el => el.innerHTML = ''); 
                 this.querySelectorAll('input[type="file"]').forEach(fi => { fi.value = ''; });
-                
                 const dateInput = this.querySelector('input[type="date"]'); 
                 if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
                 
-                if (sheetName === 'Report Kematian') {
-                    loadPeriode(); // update chart populasi jika lagi online
-                }
+                if (sheetName === 'Report Kematian') loadPeriode();
             } catch (err) { 
                 showAlert('Error form: ' + err.message, 'error'); 
             } finally { 
@@ -824,19 +867,14 @@
             return list; 
         };
         
-        const abw1 = validateABW(document.getElementById('dailyAbw1').value, 'Sekat 1');
-        const abw2 = validateABW(document.getElementById('dailyAbw2').value, 'Sekat 2');
-        const abw3 = validateABW(document.getElementById('dailyAbw3').value, 'Sekat 3');
-        const abw4 = validateABW(document.getElementById('dailyAbw4').value, 'Sekat 4');
-        
         return { 
             tanggal: document.getElementById('dailyTanggal').value, 
             pakan_atas: document.getElementById('dailyPakanAtas').value || 0, 
             pakan_bawah: document.getElementById('dailyPakanBawah').value || 0, 
-            abw_sekat1: abw1, 
-            abw_sekat2: abw2, 
-            abw_sekat3: abw3, 
-            abw_sekat4: abw4, 
+            abw_sekat1: validateABW(document.getElementById('dailyAbw1').value, 'Sekat 1'), 
+            abw_sekat2: validateABW(document.getElementById('dailyAbw2').value, 'Sekat 2'), 
+            abw_sekat3: validateABW(document.getElementById('dailyAbw3').value, 'Sekat 3'), 
+            abw_sekat4: validateABW(document.getElementById('dailyAbw4').value, 'Sekat 4'), 
             fotoList1: await getSingleFileAsList('dailyFoto1'), 
             fotoList2: await getSingleFileAsList('dailyFoto2'), 
             fotoList3: await getSingleFileAsList('dailyFoto3'), 
@@ -879,13 +917,12 @@
         };
     }
 
-    // Inisialisasi
+    // --- INIT ---
     initForm('formDaily', 'Report Daily', buildDaily); 
     initForm('formPakan', 'Report Pakan', buildPakan); 
     initForm('formKematian', 'Report Kematian', buildKematian);
     
     loadPeriode();
-    
     const today = new Date().toISOString().split('T')[0]; 
     document.querySelectorAll('input[type="date"]').forEach(el => { if (!el.value) el.value = today; });
 </script>
