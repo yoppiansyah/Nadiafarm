@@ -6,7 +6,6 @@
     <title>Nadz Farm's - Input Laporan</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
     <style>
         :root {
             --primary: #4f46e5;
@@ -27,11 +26,8 @@
             --border: #e2e8f0;
             --border-strong: #cbd5e1;
             
-            --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-            --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.04);
             --shadow-lg: 0 10px 15px rgba(0,0,0,0.06), 0 4px 6px rgba(0,0,0,0.04);
-            --shadow-xl: 0 20px 25px rgba(0,0,0,0.08), 0 10px 10px rgba(0,0,0,0.04);
             --shadow-primary: 0 10px 25px -5px rgba(79, 70, 229, 0.3);
             
             --radius-sm: 8px;
@@ -57,7 +53,6 @@
                 color: white !important; 
                 border-color: #334155 !important; 
             }
-            .section-card { background: #1e293b !important; border-color: #334155 !important; }
             .photo-slot { background: #0f172a !important; border-color: #334155 !important; }
             .photo-slot:hover { border-color: var(--primary-light) !important; background: #1e293b !important; }
             .tab-btn { color: var(--text-muted); }
@@ -132,8 +127,7 @@
         }
         .status .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
         .status .dot.online { background: #4ade80; box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.3); animation: pulse-online 2s infinite; }
-        .status .dot.offline { background: #fbbf24; box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.3); }
-        .status .dot.syncing { background: #60a5fa; box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.3); animation: pulse-online 1s infinite; }
+        .status .dot.offline { background: #f87171; box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.3); }
         @keyframes pulse-online { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
         .status .time { opacity: 0.85; font-size: 12px; border-left: 1px solid rgba(255,255,255,0.3); padding-left: 10px; margin-left: 4px; }
 
@@ -377,15 +371,6 @@
         .photo-slot.has-image .preview-single { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
         .photo-slot.has-image .preview-single .item { margin: 0; border: none; border-radius: 0; width: 100%; height: 100%; }
         .photo-slot.has-image .preview-single .item img { width: 100%; height: 100%; object-fit: cover; }
-        .photo-slot.has-image::after {
-            content: 'Ketuk untuk ganti';
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); color: white;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 12px; font-weight: 700; opacity: 0; transition: 0.2s;
-            pointer-events: none;
-        }
-        .photo-slot.has-image:hover::after { opacity: 1; }
         .photo-slot .preview-single .item { 
             position: relative; border-radius: var(--radius-sm); 
             overflow: hidden; border: 1.5px solid var(--border); 
@@ -722,7 +707,7 @@
         <div id="tab-info" class="tab-content active">
             <div class="announcement-card">
                 <h4><i class="ph ph-bell-ringing"></i> Pemberitahuan Terkini</h4>
-                <p><strong>Perhatian:</strong> Pastikan jaringan internet tersedia saat submit data agar antrean pengiriman segera diproses. Data akan otomatis disimpan di antrean lokal jika sinyal jelek. Gunakan tombol WA di pojok kanan bawah jika ada kendala.</p>
+                <p><strong>Perhatian:</strong> Pastikan jaringan internet tersedia saat submit data. Data akan langsung dikirim ke server. Gunakan tombol WA di pojok kanan bawah jika ada kendala.</p>
             </div>
 
             <div class="info-box">
@@ -1016,77 +1001,6 @@
     let currentPeriodeList = [];
 
     // ============================================================
-    // SISTEM ANTREAN OFFLINE
-    // ============================================================
-    const offlineStore = localforage.createInstance({ name: "AntreanNadzFarm" });
-
-    async function saveToOfflineQueue(data) {
-        const id = 'laporan_' + Date.now() + '_' + Math.random().toString(36).substring(7);
-        await offlineStore.setItem(id, data);
-        return id;
-    }
-
-    async function syncOfflineQueue() {
-        const keys = await offlineStore.keys();
-        const statusText = document.getElementById('statusText');
-        const statusDot = document.getElementById('statusDot');
-        
-        if (keys.length === 0) { 
-            statusText.textContent = 'Online & Tersinkronisasi'; 
-            statusDot.className = 'dot online';
-            return { success: 0, failed: 0 };
-        } 
-
-        statusText.textContent = `Mengirim ${keys.length} data...`;
-        statusDot.className = 'dot syncing';
-
-        let success = 0;
-        let failed = 0;
-
-        for (const key of keys) {
-            try {
-                const data = await offlineStore.getItem(key);
-                
-                // Kirim dengan no-cors (fire and forget)
-                await fetch(SCRIPT_URL, { 
-                    method: 'POST', 
-                    mode: 'no-cors', 
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
-                    body: JSON.stringify(data) 
-                });
-                
-                // Kalau tidak error, hapus dari antrean
-                await offlineStore.removeItem(key);
-                success++;
-                
-                console.log('Terkirim:', key);
-            } catch (err) {
-                console.warn("Gagal kirim " + key + ":", err);
-                failed++;
-                // Kalau error, stop loop — coba lagi nanti
-                break; 
-            }
-        }
-        
-        const sisa = await offlineStore.keys();
-        if (sisa.length === 0) {
-            statusText.textContent = 'Online & Tersinkronisasi';
-            statusDot.className = 'dot online';
-        } else {
-            statusText.textContent = `Offline: ${sisa.length} data di antrean`;
-            statusDot.className = 'dot offline';
-        }
-        
-        return { success, failed };
-    }
-
-    window.addEventListener('online', () => {
-        checkStatus();
-        syncOfflineQueue();
-    });
-    setInterval(syncOfflineQueue, 30000); 
-
-    // ============================================================
     // FUNGSI UI & UTILS
     // ============================================================
     function updateTime() { 
@@ -1098,17 +1012,16 @@
     async function checkStatus() { 
         try { 
             await fetch(SCRIPT_URL, { method: 'GET', mode: 'no-cors' }); 
-            const keys = await offlineStore.keys();
-            if (keys.length === 0) {
-                document.getElementById('statusDot').className = 'dot online'; 
-                document.getElementById('statusText').textContent = 'Online & Tersinkronisasi'; 
-            }
+            document.getElementById('statusDot').className = 'dot online'; 
+            document.getElementById('statusText').textContent = 'Online'; 
         } catch (_) { 
             document.getElementById('statusDot').className = 'dot offline'; 
             document.getElementById('statusText').textContent = 'Offline'; 
         } 
     } 
     checkStatus(); setInterval(checkStatus, 30000);
+
+    window.addEventListener('online', checkStatus);
 
     document.querySelectorAll('.tab-btn').forEach(btn => { 
         btn.addEventListener('click', function() { 
@@ -1493,7 +1406,7 @@
     }
 
     // ============================================================
-    // SUBMIT LOGIC
+    // SUBMIT LOGIC - KIRIM LANGSUNG TANPA ANTREAN
     // ============================================================
     function initForm(formId, sheetName, dataBuilder) {
         const form = document.getElementById(formId);
@@ -1505,23 +1418,25 @@
             const btn = this.querySelector('.btn-submit'); 
             btn.disabled = true; 
             const originalText = btn.innerHTML; 
-            btn.innerHTML = '<i class="ph ph-spinner ph-spin"></i> Mengamankan...';
+            btn.innerHTML = '<i class="ph ph-spinner ph-spin"></i> Mengirim...';
             
             try {
                 const activePeriode = getSelectedPeriode(); 
                 const data = await dataBuilder(this); 
                 data.sheetName = sheetName; 
                 data.id_periode = activePeriode;
-                data.timestamp = new Date().toISOString();
                 
-                // Simpan ke antrean
-                await saveToOfflineQueue(data);
-                console.log('Data disimpan ke antrean:', data);
+                // KIRIM LANGSUNG KE SERVER
+                await fetch(SCRIPT_URL, { 
+                    method: 'POST', 
+                    mode: 'no-cors', 
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
+                    body: JSON.stringify(data) 
+                });
                 
-                // Coba sync sekarang
-                const result = await syncOfflineQueue();
+                console.log('Data terkirim ke server:', data);
                 
-                showAlert('Data tersimpan! Sistem akan mengirim otomatis. Cek status di atas.', 'success');
+                showAlert('Data berhasil terkirim ke server!', 'success');
                 
                 // Reset form
                 if (formId === 'formPakan') {
@@ -1546,7 +1461,7 @@
                 
                 if (sheetName === 'Report Kematian') setTimeout(loadPeriode, 3000);
             } catch (err) { 
-                showAlert('Error: ' + err.message, 'error'); 
+                showAlert('Gagal kirim: ' + err.message, 'error'); 
                 console.error(err);
             } finally { 
                 loadingEl.classList.remove('active'); 
@@ -1639,9 +1554,6 @@
     loadPeriode();
     const today = new Date().toISOString().split('T')[0]; 
     document.querySelectorAll('input[type="date"]').forEach(el => { if (!el.value) el.value = today; });
-    
-    // Sync antrean pertama kali
-    setTimeout(syncOfflineQueue, 2000);
 </script>
 </body>
 </html>
